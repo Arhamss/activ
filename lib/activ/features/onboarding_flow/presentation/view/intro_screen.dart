@@ -80,52 +80,39 @@ class _IntroScreenState extends State<IntroScreen> {
           const SizedBox(height: 20),
         ],
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(
-              24,
-              0,
-              24,
-              8,
-            ),
-            child: ActivButton(
-              borderRadius: 15,
-              onPressed: () {
-                if (_currentPageIndex < 2) {
-                  _controller.nextPage(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                  );
-                } else {
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ActivButton(
+                onPressed: () {
+                  if (_currentPageIndex < 2) {
+                    _controller.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                    );
+                  } else {
+                    context.goNamed(AppRouteNames.signUpScreen);
+                  }
+                },
+                text: (_currentPageIndex < 2)
+                    ? Localization.nextText
+                    : Localization.getStartedText,
+                isLoading: false,
+              ),
+              ActivButton(
+                backgroundColor: AppColors.secondaryColor,
+                onPressed: () {
                   context.goNamed(AppRouteNames.signUpScreen);
-                }
-              },
-              text: (_currentPageIndex < 2)
-                  ? Localization.nextText
-                  : Localization.getStartedText,
-              isLoading: false,
-            ),
+                },
+                text: Localization.skipText,
+                isLoading: false,
+              ),
+            ],
           ),
-          Padding(
-            padding: EdgeInsets.fromLTRB(
-              24,
-              0,
-              24,
-              MediaQuery.of(context).size.height * 0.1,
-            ),
-            child: ActivButton(
-              backgroundColor: AppColors.secondaryColor,
-              borderRadius: 15,
-              onPressed: () {
-                context.goNamed(AppRouteNames.signInScreen);
-              },
-              text: Localization.skipText,
-              isLoading: false,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

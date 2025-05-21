@@ -1,4 +1,5 @@
 import 'package:activ/constants/app_colors.dart';
+import 'package:activ/constants/app_text_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -12,6 +13,7 @@ class SocialButton extends StatelessWidget {
     this.textColor = AppColors.black,
     this.height = 56.0,
   });
+
   final String text;
   final String svgPath;
   final VoidCallback onPressed;
@@ -52,7 +54,7 @@ class SocialButton extends StatelessWidget {
               Center(
                 child: Text(
                   text,
-                  style: TextStyle(
+                  style: context.b2.copyWith(
                     color: textColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w700,

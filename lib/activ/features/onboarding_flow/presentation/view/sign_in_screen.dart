@@ -89,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             controller: emailController,
                             validator: (p0) {
                               if (p0 == null || p0.isEmpty) {
-                                return Localization.emailRequired ;
+                                return Localization.emailRequired;
                               }
                               if (RegExp(
                                 r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
@@ -125,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: Text(
                               Localization.forgotPassword,
                               style: context.b2.copyWith(
-                                color: AppColors.textTertiary,
+                                color: AppColors.grey,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
                               ),

@@ -2,10 +2,8 @@ import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.da
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/activ/features/onboarding_flow/presentation/widgets/social_button.dart';
 import 'package:activ/exports.dart';
-import 'package:activ/l10n/l10n.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
-import 'package:flutter/services.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -27,11 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          forceMaterialTransparency: true,
-        ),
         body: SafeArea(
           child: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
             listener: (context, state) {
@@ -56,11 +49,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return SingleChildScrollView(
-                  padding: EdgeInsets.fromLTRB(
-                    24,
-                    0, // Change from 24 to 0 to match sign-in
-                    24,
-                    MediaQuery.of(context).viewInsets.bottom + 24,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
                   ),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
@@ -71,26 +61,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            const SizedBox(height: 32), // Add this line
+                            SizedBox(height: constraints.maxHeight * 0.05),
                             SvgPicture.asset(AssetPaths.smallLogo),
-                            const SizedBox(height: 32),
+                            SizedBox(height: constraints.maxHeight * 0.05),
                             Text(
                               Localization.signUpToContinue,
                               style: context.h3.copyWith(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 32,
                               ),
-                              textAlign: TextAlign.start,
+                              textAlign: TextAlign.center,
                             ),
-
                             const SizedBox(height: 16),
                             ActivTextField(
-                              contentPadding:
-                                  const EdgeInsets.fromLTRB(12, 16, 0, 16),
                               prefixPath: AssetPaths.emailLogo,
                               type: ActivTextFieldType.email,
                               hintText: Localization.email,
-                              borderRadius: 12,
                               controller: emailController,
                               validator: (p0) {
                                 if (p0 == null || p0.isEmpty) {
@@ -105,12 +91,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             const SizedBox(height: 16),
                             ActivTextField(
-                              contentPadding:
-                                  const EdgeInsets.fromLTRB(12, 16, 0, 16),
                               prefixPath: AssetPaths.passwordLogo,
                               type: ActivTextFieldType.password,
                               hintText: Localization.password,
-                              borderRadius: 12,
                               controller: passwordController,
                               validator: (p0) {
                                 if (p0 == null || p0.isEmpty) {
@@ -121,26 +104,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 return null;
                               },
                             ),
-                            const SizedBox(height: 32),
+                            SizedBox(height: constraints.maxHeight * 0.02),
                             BlocBuilder<OnboardingFlowCubit,
                                 OnboardingFlowState>(
                               builder: (context, state) {
                                 return ActivButton(
-                                  borderRadius: 16,
                                   onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      // context
-                                      //     .read<OnboardingFlowCubit>()
-                                      //     .signUp(
-                                      //       nameController.text.trim(),
-                                      //       emailController.text
-                                      //           .trim()
-                                      //           .toLowerCase(),
-                                      //       passwordController.text.trim(),
-                                      //     );
-                                    } else {
-                                      
-                                    }
+                                    if (_formKey.currentState!.validate()) {}
                                   },
                                   text: Localization.nextText,
                                   isLoading: state.signUp.isLoading,
@@ -158,12 +128,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
+                                    horizontal: 16,
+                                  ),
                                   child: Text(
                                     'OR',
                                     style: context.b2.copyWith(
                                       color: AppColors.textPrimary,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w800,
                                       fontSize: 19,
                                     ),
                                   ),
@@ -181,11 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 OnboardingFlowState>(
                               builder: (context, state) {
                                 return SocialButton(
-                                  onPressed: () {
-                                    // context
-                                    //     .read<OnboardingFlowCubit>()
-                                    //     .signInWithGoogle();
-                                  },
+                                  onPressed: () {},
                                   text: Localization.continueWithGoogle,
                                   svgPath: AssetPaths.googleIcon,
                                 );
@@ -196,32 +163,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 OnboardingFlowState>(
                               builder: (context, state) {
                                 return SocialButton(
-                                  onPressed: () {
-                                    // context
-                                    //     .read<OnboardingFlowCubit>()
-                                    //     .signInWithApple();
-                                  },
+                                  onPressed: () {},
                                   text: Localization.continieWithApple,
                                   svgPath: AssetPaths.appleIcon,
                                 );
                               },
                             ),
-                            const Spacer(),
+                            const SizedBox(height: 16),
                             RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
                                 text: Localization.byContinuingYouAgreeToOur,
                                 style: context.b2.copyWith(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.grey,
+                                  fontWeight: FontWeight.w400,
                                   fontSize: 14,
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(
                                     text: Localization.termsOfService,
                                     style: context.b2.copyWith(
-                                      color: AppColors.black,
-                                      fontWeight: FontWeight.w700,
+                                      fontWeight: FontWeight.w500,
                                       fontSize: 14,
                                     ),
                                   ),
@@ -233,8 +195,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  Localization.alreadyHaveAccount,
-                                  style: context.b2.copyWith(),
+                                  '${Localization.alreadyHaveAccount} ',
+                                  style: context.b2.copyWith(
+                                    color: AppColors.grey,
+                                  ),
                                 ),
                                 GestureDetector(
                                   onTap: () => context
@@ -242,8 +206,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   child: Text(
                                     Localization.signIn,
                                     style: context.b2.copyWith(
-                                      color: AppColors
-                                          .secondaryColor, // Change from primaryBlue to match sign-in
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),

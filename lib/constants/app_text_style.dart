@@ -1,105 +1,122 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:activ/constants/app_colors.dart';
+import 'package:flutter/material.dart';
 
 extension AppTextStyle on BuildContext {
-  TextStyle get h1 => GoogleFonts.urbanist(
+  // Headlines
+  TextStyle get h1 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 32,
-        fontWeight: FontWeight.w700,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w700, // bold
+        color: AppColors.black,
       );
 
-  TextStyle get h2 => GoogleFonts.urbanist(
+  TextStyle get h2 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 28,
-        fontWeight: FontWeight.w600,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w600, // semi
+        color: AppColors.black,
       );
 
-  TextStyle get h3 => GoogleFonts.urbanist(
+  TextStyle get h3 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 24,
-        fontWeight: FontWeight.w500,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w500, // medium
+        color: AppColors.black,
       );
 
   // Titles
-  TextStyle get t1 => GoogleFonts.urbanist(
+  TextStyle get t1 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 20,
-        fontWeight: FontWeight.w600,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w600, // semi
+        color: AppColors.black,
       );
 
-  TextStyle get t2 => GoogleFonts.urbanist(
+  TextStyle get t2 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w500, // medium
+        color: AppColors.black,
       );
 
-  TextStyle get t3 => GoogleFonts.urbanist(
+  TextStyle get t3 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 16,
-        fontWeight: FontWeight.w500,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w500, // medium
+        color: AppColors.black,
       );
 
   // Body
-  TextStyle get b1 => GoogleFonts.urbanist(
+  TextStyle get b1 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 16,
-        fontWeight: FontWeight.w400,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w400, // book
+        color: AppColors.black,
       );
 
-  TextStyle get b2 => GoogleFonts.urbanist(
+  TextStyle get b2 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w400, // book
+        color: AppColors.black,
       );
 
-  TextStyle get b3 => GoogleFonts.urbanist(
+  TextStyle get b3 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 12,
-        fontWeight: FontWeight.w400,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w400, // book
+        color: AppColors.black,
       );
 
   // Labels
-  TextStyle get l1 => GoogleFonts.urbanist(
+  TextStyle get l1 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 14,
-        fontWeight: FontWeight.w600,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w600, // semi
+        color: AppColors.black,
       );
 
-  TextStyle get l2 => GoogleFonts.urbanist(
+  TextStyle get l2 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 12,
-        fontWeight: FontWeight.w500,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w500, // medium
+        color: AppColors.black,
       );
 
-  TextStyle get l3 => GoogleFonts.urbanist(
+  TextStyle get l3 => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 10,
-        fontWeight: FontWeight.w400,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w400, // book
+        color: AppColors.black,
       );
 
-  TextStyle get thickText => GoogleFonts.urbanist(
+  TextStyle get thickText => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 18,
-        fontWeight: FontWeight.w800,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w800, // thick
+        color: AppColors.black,
       );
 
-  TextStyle get lightText => GoogleFonts.urbanist(
+  TextStyle get lightText => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 18,
-        fontWeight: FontWeight.w300,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w300, // lig
+        color: AppColors.black,
       );
 
-  TextStyle get extraLightText => GoogleFonts.urbanist(
+  TextStyle get extraLightText => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 18,
-        fontWeight: FontWeight.w200,
-        color: AppColors.primaryBrown,
+        fontWeight: FontWeight.w200, // xlig
+        color: AppColors.black,
       );
 
-  TextStyle get italicBody => GoogleFonts.urbanist(
+  TextStyle get italicBody => const TextStyle(
+        fontFamily: 'Urbanist',
         fontSize: 14,
         fontWeight: FontWeight.w400,
         fontStyle: FontStyle.italic,
-        color: AppColors.primaryBrown,
+        // bookoblique, semioblique, etc.
+        color: AppColors.black,
       );
 }

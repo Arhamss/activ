@@ -32,79 +32,19 @@ class Assets {
   static const String fontsUrbanistThin = 'assets/fonts/Urbanist-Thin.otf';
   static const String fontsUrbanistThinItalic =
       'assets/fonts/Urbanist-ThinItalic.otf';
-  static const String imagesMbLogoOrange = 'assets/images/mb_logo_orange.png';
-  static const String imagesUserAvatar = 'assets/images/user_avatar.png';
-  static const String vectorsAboutUs = 'assets/vectors/about_us.svg';
-  static const String vectorsAddIcon = 'assets/vectors/add_icon.svg';
-  static const String vectorsAppleLogo = 'assets/vectors/apple_logo.svg';
-  static const String vectorsBackArrow = 'assets/vectors/back_arrow.svg';
-  static const String vectorsCameraIcon = 'assets/vectors/camera_icon.svg';
-  static const String vectorsCloseIcon = 'assets/vectors/close_icon.svg';
-  static const String vectorsContactUs = 'assets/vectors/contact_us.svg';
-  static const String vectorsDeleteAccountIcon =
-      'assets/vectors/delete_account_icon.svg';
-  static const String vectorsDrawerIcon = 'assets/vectors/drawer_icon.svg';
-  static const String vectorsEditIcon = 'assets/vectors/edit_icon.svg';
-  static const String vectorsEmailIcon = 'assets/vectors/email_icon.svg';
-  static const String vectorsEmptyIcon = 'assets/vectors/empty_icon.svg';
-  static const String vectorsExcellentIcon =
-      'assets/vectors/excellent_icon.svg';
-  static const String vectorsEyeCloseIcon = 'assets/vectors/eye_close_icon.svg';
-  static const String vectorsEyeOpenIcon = 'assets/vectors/eye_open_icon.svg';
-  static const String vectorsFairIcon = 'assets/vectors/fair_icon.svg';
-  static const String vectorsFullNameIcon = 'assets/vectors/full_name_icon.svg';
-  static const String vectorsGalleryIcon = 'assets/vectors/gallery_icon.svg';
-  static const String vectorsGoodIcon = 'assets/vectors/good_icon.svg';
-  static const String vectorsGoogleLogo = 'assets/vectors/google_logo.svg';
-  static const String vectorsHappinessIcon =
-      'assets/vectors/happiness_icon.svg';
-  static const String vectorsHomeIcon = 'assets/vectors/home_icon.svg';
-  static const String vectorsIntroImageOne =
-      'assets/vectors/intro_image_one.svg';
-  static const String vectorsIntroImageOneBg =
-      'assets/vectors/intro_image_one_bg.svg';
-  static const String vectorsIntroImageSmileyOne =
-      'assets/vectors/intro_image_smiley_one.svg';
-  static const String vectorsIntroImageSmileyThree =
-      'assets/vectors/intro_image_smiley_three.svg';
-  static const String vectorsIntroImageSmileyTwo =
-      'assets/vectors/intro_image_smiley_two.svg';
-  static const String vectorsIntroImageThree =
-      'assets/vectors/intro_image_three.svg';
-  static const String vectorsIntroImageThreeBg =
-      'assets/vectors/intro_image_three_bg.svg';
-  static const String vectorsIntroImageTwo =
-      'assets/vectors/intro_image_two.svg';
-  static const String vectorsIntroImageTwoBg =
-      'assets/vectors/intro_image_two_bg.svg';
-  static const String vectorsLogoutIcon = 'assets/vectors/logout_icon.svg';
-  static const String vectorsMbSplashLogo = 'assets/vectors/mb_splash_logo.svg';
-  static const String vectorsMicLarge = 'assets/vectors/mic_large.svg';
-  static const String vectorsMicrophoneIcon =
-      'assets/vectors/microphone_icon.svg';
-  static const String vectorsMusicIcon = 'assets/vectors/music_icon.svg';
-  static const String vectorsMusicLibrary = 'assets/vectors/music_library.svg';
-  static const String vectorsPasswordIcon = 'assets/vectors/password_icon.svg';
-  static const String vectorsPauseIcon = 'assets/vectors/pause_icon.svg';
-  static const String vectorsPauseLarge = 'assets/vectors/pause_large.svg';
-  static const String vectorsPersonalInformationIcon =
-      'assets/vectors/personal_information_icon.svg';
-  static const String vectorsPictureIcon = 'assets/vectors/picture_icon.svg';
-  static const String vectorsPlayIcon = 'assets/vectors/play_icon.svg';
-  static const String vectorsPoorIcon = 'assets/vectors/poor_icon.svg';
-  static const String vectorsPrivacyPolicy =
-      'assets/vectors/privacy_policy.svg';
-  static const String vectorsProfileIcon = 'assets/vectors/profile_icon.svg';
-  static const String vectorsRightArrowLong =
-      'assets/vectors/right_arrow_long.svg';
-  static const String vectorsRightArrowShort =
-      'assets/vectors/right_arrow_short.svg';
-  static const String vectorsRightCircleArrow =
-      'assets/vectors/right_circle_arrow.svg';
-  static const String vectorsSliderThumbArrow =
-      'assets/vectors/slider_thumb_arrow.svg';
-  static const String vectorsTrashIcon = 'assets/vectors/trash_icon.svg';
-  static const String vectorsWelcomeImage = 'assets/vectors/welcome_image.svg';
-  static const String vectorsWordsIcon = 'assets/vectors/words_icon.svg';
-  static const String vectorsWorstIcon = 'assets/vectors/worst_icon.svg';
+  static const String imagesIntro1 = 'assets/images/intro_1.png';
+  static const String imagesIntro2 = 'assets/images/intro_2.png';
+  static const String imagesIntro3 = 'assets/images/intro_3.png';
+  static const String imagesLogo = 'assets/images/logo.png';
+  static const String svgsApple = 'assets/svgs/Apple.svg';
+  static const String svgsCheckmark = 'assets/svgs/checkmark.svg';
+  static const String svgsEmail = 'assets/svgs/email.svg';
+  static const String svgsEye = 'assets/svgs/eye.svg';
+  static const String svgsGoogle = 'assets/svgs/Google.svg';
+  static const String svgsIntro1 = 'assets/svgs/intro_1.svg';
+  static const String svgsIntro2 = 'assets/svgs/intro_2.svg';
+  static const String svgsIntro3 = 'assets/svgs/intro_3.svg';
+  static const String svgsLogoSmall = 'assets/svgs/logo_small.svg';
+  static const String svgsPassword = 'assets/svgs/password.svg';
+  static const String svgsVector = 'assets/svgs/Vector.png';
 }

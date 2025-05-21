@@ -9,7 +9,6 @@ abstract class AppColors {
   static const textGrey = Color(0xFF7A869A);
   static const amberTertiary = Color(0xFFFFFBC5);
   static const black = Color(0xFF000000);
-  static const grey = Color(0xFF979797);
   static const white = Color(0xFFFFFFFF);
   static const greenPrimary = Color(0xFF14B82C);
   static const greenSecondary = Color(0xFF042F0C);
@@ -22,7 +21,6 @@ abstract class AppColors {
   static const profileCardBackground = Color(0xFFE6FDE9);
   static const textPrimary = Color(0xFF120D26);
   static const textSecondary = Color(0xFF7A869A);
-  static const textTertiary = Color(0xFF4D5461);
   static const error = Color(0xFFF04438);
   static const textNormal = Color(0xFF6D6D6D);
   static const textFaded = Color(0xFF9E9E9E);
@@ -56,9 +54,6 @@ abstract class AppColors {
   static const darkWhiteBackground = Color(0xFFF2F3F6);
 
   //new colors
-  static const backgroundWhite = Color(0xFFF7F4F2);
-  static const primaryColor = Color(0xFF183227);
-  static const secondaryColor = Color(0xFF8B9B74);
   static const primaryOrange = Color(0xFFE7821D);
   static const secondaryOrange = Color(0xFFFFC89E);
   static const tertiaryOrange = Color(0xFFC96100);
@@ -80,4 +75,10 @@ abstract class AppColors {
   static const drawerIconBackground = Color(0xFFF8F8F8);
   static const checkboxInactive = Color(0xFFCDD4D3);
   static const popupButtonColor = Color(0xFFE76A56);
+
+  //Activ Colors
+  static const backgroundWhite = Color(0xFFF7F4F2);
+  static const primaryColor = Color(0xFF183227);
+  static const secondaryColor = Color(0xFF8B9B74);
+  static const grey = Color(0xFF4D5461);
 }

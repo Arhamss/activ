@@ -1,5 +1,4 @@
 import 'package:activ/core/app_preferences/app_preferences.dart';
-import 'package:activ/core/app_preferences/timestamp_adapter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -14,7 +13,6 @@ abstract class AppModule {
 
   static Future<void> _setupHive() async {
     await Hive.initFlutter();
-    Hive.registerAdapter(TimestampAdapter());
   }
 
   static Future<void> _setupAppPreferences() async {

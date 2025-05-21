@@ -18,26 +18,31 @@ class IntroductionWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 35),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Spacer(),
+          const SizedBox.shrink(),
           SvgPicture.asset(imagePath),
-          const Spacer(),
-          Text(
-            textAlign: TextAlign.center,
-            title,
-            style: context.h1.copyWith(
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            description,
-            textAlign: TextAlign.center,
-            style: context.t1.copyWith(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-            ),
+          const SizedBox.shrink(),
+          Column(
+            children: [
+              Text(
+                textAlign: TextAlign.center,
+                title,
+                style: context.h1.copyWith(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: context.t1.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 20),
         ],

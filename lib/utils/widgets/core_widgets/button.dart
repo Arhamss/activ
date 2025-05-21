@@ -11,7 +11,7 @@ class ActivButton extends StatelessWidget {
     this.textColor = AppColors.white,
     this.disabledTextColor = AppColors.white,
     this.disabledBackgroundColor,
-    this.borderRadius = 100,
+    this.borderRadius = 16,
     this.padding =
         const EdgeInsetsDirectional.symmetric(vertical: 20, horizontal: 24),
     this.fontWeight = FontWeight.w700,

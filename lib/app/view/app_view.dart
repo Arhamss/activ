@@ -17,7 +17,6 @@ class AppView extends StatelessWidget {
         create: (context) => LocaleCubit(context: context),
         child: BlocBuilder<LocaleCubit, LocaleState>(
           builder: (context, state) {
-            Localization.init(context);
             return ToastificationWrapper(
               child: MaterialApp.router(
                 routerConfig: AppRouter.router,
@@ -32,6 +31,10 @@ class AppView extends StatelessWidget {
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
                 debugShowCheckedModeBanner: false,
+                builder: (context, child) {
+                  Localization.init(context);
+                  return child!;
+                },
               ),
             );
           },
@@ -40,3 +43,4 @@ class AppView extends StatelessWidget {
     );
   }
 }
+
