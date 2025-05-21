@@ -20,9 +20,9 @@ abstract class AppColors {
   static const greenClassCardBackground = Color(0xFFF0FDF1);
   static const greenChipColor = Color(0xFFB9F9C2);
   static const profileCardBackground = Color(0xFFE6FDE9);
-  static const textPrimary = Color(0xFF242424);
-  static const textSecondary = Color(0xFF5D5D5D);
-  static const textTertiary = Color(0xFF616161);
+  static const textPrimary = Color(0xFF120D26);
+  static const textSecondary = Color(0xFF7A869A);
+  static const textTertiary = Color(0xFF4D5461);
   static const error = Color(0xFFF04438);
   static const textNormal = Color(0xFF6D6D6D);
   static const textFaded = Color(0xFF9E9E9E);
@@ -48,10 +48,10 @@ abstract class AppColors {
   static const greyShade2 = Color(0xFF2a2d38);
   static const greyShade3 = Color(0xFFF6F6F6);
   static const greyShade4 = Color(0xFFB0B0B0);
-  static const greyShade7 = Color(0xFFE4DFDF);
-  static const drawerTileBackground = Color(0xFFE9F8F9);
   static const greyShade5 = Color.fromRGBO(244, 245, 247, 1);
   static const greyShade6 = Color(0xFFC1C7D0);
+  static const greyShade7 = Color(0xFFE5E6EB);
+  static const drawerTileBackground = Color(0xFFE9F8F9);
   static const redShade1 = Color(0xFFF04438);
   static const darkWhiteBackground = Color(0xFFF2F3F6);
 

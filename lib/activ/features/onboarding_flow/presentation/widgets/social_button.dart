@@ -66,21 +66,3 @@ class SocialButton extends StatelessWidget {
     );
   }
 }
-
-// Example usage for Apple button:
-class AppleSignInButton extends StatelessWidget {
-  const AppleSignInButton({
-    required this.onPressed,
-    super.key,
-  });
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SocialButton(
-      text: 'Connect with Apple',
-      svgPath: 'assets/svgs/apple_logo.svg', // Make sure you have this SVG file
-      onPressed: onPressed,
-    );
-  }
-}

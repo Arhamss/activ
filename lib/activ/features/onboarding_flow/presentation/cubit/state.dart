@@ -11,6 +11,7 @@ class OnboardingFlowState extends Equatable {
     this.forgotPassword = const DataState.initial(),
     this.resetCode,
     this.resetPassword = const DataState.initial(),
+    this.pinCodeEntered = false,
   });
 
   final DataState<AuthData> signIn;
@@ -20,6 +21,7 @@ class OnboardingFlowState extends Equatable {
   final DataState<dynamic> forgotPassword;
   final String? resetCode;
   final DataState<dynamic> resetPassword;
+  final bool pinCodeEntered;
 
   OnboardingFlowState copyWith({
     DataState<AuthData>? signIn,
@@ -29,6 +31,7 @@ class OnboardingFlowState extends Equatable {
     DataState<dynamic>? forgotPassword,
     String? resetCode,
     DataState<dynamic>? resetPassword,
+    bool? pinCodeEntered,
   }) {
     return OnboardingFlowState(
       signIn: signIn ?? this.signIn,
@@ -38,6 +41,7 @@ class OnboardingFlowState extends Equatable {
       forgotPassword: forgotPassword ?? this.forgotPassword,
       resetCode: resetCode ?? this.resetCode,
       resetPassword: resetPassword ?? this.resetPassword,
+      pinCodeEntered: pinCodeEntered ?? this.pinCodeEntered,
     );
   }
 
@@ -48,6 +52,8 @@ class OnboardingFlowState extends Equatable {
         signInWithGoogle,
         signInWithApple,
         forgotPassword,
+        resetPassword,
         resetCode,
+        pinCodeEntered,
       ];
 }

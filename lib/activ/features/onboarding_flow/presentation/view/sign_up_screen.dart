@@ -2,6 +2,8 @@ import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.da
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/activ/features/onboarding_flow/presentation/widgets/social_button.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/l10n/l10n.dart';
+import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:flutter/services.dart';
 
@@ -35,17 +37,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             listener: (context, state) {
               if (state.signUp.isFailure) {
                 ToastHelper.showInfoToast(
-                  state.signUp.errorMessage ?? 'Failed to sign in user',
+                  state.signUp.errorMessage ?? Localization.failedToSignUpUser,
                 );
               } else if (state.signInWithGoogle.isLoaded) {
                 ToastHelper.showInfoToast(
-                  'Successfully signed in with Google',
+                  Localization.successfullySignedInWithGoogle,
                 );
                 //context.goNamed(AppRouteNames.selectLocation);
               } else if (state.signInWithGoogle.isFailure) {
                 ToastHelper.showInfoToast(
                   state.signInWithGoogle.errorMessage ??
-                      'Failed to sign in with Google',
+                      Localization.failedToSignInWithGoogle,
                 );
               } else if (state.signUp.isLoaded) {
                 //context.goNamed(AppRouteNames.selectLocation);
@@ -73,36 +75,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SvgPicture.asset(AssetPaths.smallLogo),
                             const SizedBox(height: 32),
                             Text(
-                              'Sign Up to continue and stay activ',
+                              Localization.signUpToContinue,
                               style: context.h3.copyWith(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 32,
                               ),
                               textAlign: TextAlign.start,
                             ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Already have an account? ',
-                                  style: context.b2.copyWith(),
-                                ),
-                                GestureDetector(
-                                  onTap: () => context
-                                      .goNamed(AppRouteNames.signInScreen),
-                                  child: Text(
-                                    'Sign in',
-                                    style: context.b2.copyWith(
-                                      color: AppColors
-                                          .secondaryColor, // Change from primaryBlue to match sign-in
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 32),
 
                             const SizedBox(height: 16),
                             ActivTextField(
@@ -110,9 +89,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   const EdgeInsets.fromLTRB(12, 16, 0, 16),
                               prefixPath: AssetPaths.emailLogo,
                               type: ActivTextFieldType.email,
-                              hintText: 'Email',
+                              hintText: Localization.email,
                               borderRadius: 12,
                               controller: emailController,
+                              validator: (p0) {
+                                if (p0 == null || p0.isEmpty) {
+                                  return Localization.emailRequired;
+                                } else if (!RegExp(
+                                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+                                    .hasMatch(p0)) {
+                                  return Localization.invalidEmail;
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 16),
                             ActivTextField(
@@ -120,9 +109,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   const EdgeInsets.fromLTRB(12, 16, 0, 16),
                               prefixPath: AssetPaths.passwordLogo,
                               type: ActivTextFieldType.password,
-                              hintText: 'Password',
+                              hintText: Localization.password,
                               borderRadius: 12,
                               controller: passwordController,
+                              validator: (p0) {
+                                if (p0 == null || p0.isEmpty) {
+                                  return Localization.passwordRequired;
+                                } else if (p0.length < 6) {
+                                  return Localization.passwordTooShort;
+                                }
+                                return null;
+                              },
                             ),
                             const SizedBox(height: 32),
                             BlocBuilder<OnboardingFlowCubit,
@@ -142,26 +139,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       //       passwordController.text.trim(),
                                       //     );
                                     } else {
-                                      ToastHelper.showInfoToast(
-                                        'Please fill in all fields',
-                                      );
+                                      
                                     }
                                   },
-                                  text: 'Next',
+                                  text: Localization.nextText,
                                   isLoading: state.signUp.isLoading,
                                 );
                               },
                             ),
-                            const SizedBox(height: 16), // Change from 32
-                            Text(
-                              'OR',
-                              style: context.b2.copyWith(
-                                color: AppColors.greyShade2,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
+                            const SizedBox(height: 24),
+                            Row(
+                              children: [
+                                const Expanded(
+                                  child: Divider(
+                                    color: AppColors.greyShade7,
+                                    thickness: 1.04,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16),
+                                  child: Text(
+                                    'OR',
+                                    style: context.b2.copyWith(
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 19,
+                                    ),
+                                  ),
+                                ),
+                                const Expanded(
+                                  child: Divider(
+                                    color: AppColors.greyShade7,
+                                    thickness: 1.04,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 16), // Change from 32
+                            const SizedBox(height: 24),
                             BlocBuilder<OnboardingFlowCubit,
                                 OnboardingFlowState>(
                               builder: (context, state) {
@@ -171,7 +186,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     //     .read<OnboardingFlowCubit>()
                                     //     .signInWithGoogle();
                                   },
-                                  text: 'Connect with Google',
+                                  text: Localization.continueWithGoogle,
                                   svgPath: AssetPaths.googleIcon,
                                 );
                               },
@@ -186,16 +201,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     //     .read<OnboardingFlowCubit>()
                                     //     .signInWithApple();
                                   },
-                                  text: 'Connect with Apple',
+                                  text: Localization.continieWithApple,
                                   svgPath: AssetPaths.appleIcon,
                                 );
                               },
                             ),
-                            const SizedBox(height: 32),
+                            const Spacer(),
                             RichText(
                               textAlign: TextAlign.center,
                               text: TextSpan(
-                                text: 'By continuing you agree to our ',
+                                text: Localization.byContinuingYouAgreeToOur,
                                 style: context.b2.copyWith(
                                   color: AppColors.black,
                                   fontWeight: FontWeight.w700,
@@ -203,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: 'Terms of Service',
+                                    text: Localization.termsOfService,
                                     style: context.b2.copyWith(
                                       color: AppColors.black,
                                       fontWeight: FontWeight.w700,
@@ -213,7 +228,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  Localization.alreadyHaveAccount,
+                                  style: context.b2.copyWith(),
+                                ),
+                                GestureDetector(
+                                  onTap: () => context
+                                      .goNamed(AppRouteNames.signInScreen),
+                                  child: Text(
+                                    Localization.signIn,
+                                    style: context.b2.copyWith(
+                                      color: AppColors
+                                          .secondaryColor, // Change from primaryBlue to match sign-in
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

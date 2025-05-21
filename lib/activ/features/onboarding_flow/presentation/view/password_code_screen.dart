@@ -1,14 +1,15 @@
-
-
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/constants/app_colors.dart';
 import 'package:activ/constants/app_text_style.dart';
 import 'package:activ/constants/asset_paths.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/l10n/localization_service.dart';
+import 'package:activ/utils/helpers/focus_handler.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:pinput/pinput.dart';
 
 class PasswordCode extends StatefulWidget {
   const PasswordCode({super.key});
@@ -29,67 +30,110 @@ class _PasswordCodeState extends State<PasswordCode> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  SizedBox(height: constraints.maxHeight * 0.05),
-                  Image.asset(AssetPaths.logo, height: 160),
-                  SizedBox(height: constraints.maxHeight * 0.08),
-                  Text(
-                    'Verification Code',
-                    style: context.h1.copyWith(
-                      fontWeight: FontWeight.w700,
+          return FocusHandler(
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+                maxWidth: constraints.maxWidth,
+              ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 32),
+                    Center(
+                      child: SvgPicture.asset(AssetPaths.smallLogo),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Enter the verification code, sent on the email you entered.',
-                    style: context.b2.copyWith(
-                      color: AppColors.greyShade2,
+                    const SizedBox(height: 64),
+                    Text(
+                      Localization.enterResetCode,
+                      style: context.h3.copyWith(
+                        fontWeight: FontWeight.w800,
+                        fontSize: 32,
+                      ),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 30),
-                  ActivTextField(
-                    hintText: 'Code',
-                    labelText: 'Code',
-                    controller: _codeController,
-                  ),
-                  const SizedBox(height: 40),
-                  BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-                    builder: (context, state) {
-                      return ActivButton(
-                        textColor: AppColors.white,
-                        borderRadius: 15,
-                        backgroundColor: AppColors.primaryBlue,
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            // await context
-                            //     .read<OnboardingFlowCubit>()
-                            //     .setResetCode(
-                            //       _codeController.text,
-                            //     );
-
-                            context.goNamed(AppRouteNames.resetPasswordScreen);
-                          } else {
-                            ToastHelper.showInfoToast(
-                              'Please enter a valid code',
+                    const SizedBox(height: 30),
+                    Pinput(
+                      controller: _codeController,
+                      length: 6,
+                      defaultPinTheme: PinTheme(
+                        width: 56,
+                        height: 56,
+                        textStyle: context.b1.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.greyShade6),
+                        ),
+                      ),
+                      focusedPinTheme: PinTheme(
+                        width: 56,
+                        height: 56,
+                        textStyle: context.b1.copyWith(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppColors.primaryColor),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return Localization.pleaseEnterResetCode;
+                        }
+                        if (value.length < 6) {
+                          return Localization.passwordTooShort;
+                        }
+                        return null;
+                      },
+                      onChanged: (value) {
+                        context.read<OnboardingFlowCubit>().setPinCodeEntered(
+                              value.length == 6,
                             );
-                          }
-                        },
-                        text: 'Change Password',
-                        isLoading: false,
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           );
         },
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.only(
+          left: 24,
+          right: 24,
+          bottom: 60,
+        ),
+        child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+          builder: (context, state) {
+            return ActivButton(
+              borderRadius: 16,
+              disabled: !state.pinCodeEntered,
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  context.read<OnboardingFlowCubit>().setResetCode(
+                        _codeController.text.trim(),
+                      );
+                  ToastHelper.showSuccessToast(
+                    Localization.resetCodeSet,
+                  );
+
+                  context.pushNamed(AppRouteNames.resetPasswordScreen);
+                }
+              },
+              text: Localization.continueText,
+              isLoading: state.forgotPassword.isLoading,
+            );
+          },
+        ),
       ),
     );
   }

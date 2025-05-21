@@ -1,5 +1,6 @@
 import 'package:activ/constants/export.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class IntroductionWidget extends StatelessWidget {
   const IntroductionWidget({
@@ -19,7 +20,7 @@ class IntroductionWidget extends StatelessWidget {
       child: Column(
         children: [
           const Spacer(),
-          Image.asset(imagePath),
+          SvgPicture.asset(imagePath),
           const Spacer(),
           Text(
             textAlign: TextAlign.center,

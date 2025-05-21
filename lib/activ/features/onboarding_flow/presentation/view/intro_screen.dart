@@ -1,5 +1,6 @@
 import 'package:activ/activ/features/onboarding_flow/presentation/widgets/intro_widget.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/l10n/localization_service.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -45,24 +46,21 @@ class _IntroScreenState extends State<IntroScreen> {
           Expanded(
             child: PageView(
               controller: _controller,
-              children: const [
+              children: [
                 IntroductionWidget(
                   imagePath: AssetPaths.intro1,
-                  title: ' Explore City and Nearby Sport Clubs',
-                  description:
-                      'Discover sports clubs and facilities around you to join games, train, and stay active.',
+                  title: Localization.intro1Title,
+                  description: Localization.intro1Description,
                 ),
                 IntroductionWidget(
                   imagePath: AssetPaths.intro2,
-                  title: ' Choose your sport and Explore Club',
-                  description:
-                      'Pick your favorite sport and find the best clubs to play and connect',
+                  title: Localization.intro2Title,
+                  description: Localization.intro2Description,
                 ),
                 IntroductionWidget(
                   imagePath: AssetPaths.intro3,
-                  title: 'Select Slot and make a Reservation',
-                  description:
-                      'Pick your preferred time and book your place with ease',
+                  title: Localization.intro3Title,
+                  description: Localization.intro3Description,
                 ),
               ],
             ),
@@ -73,7 +71,7 @@ class _IntroScreenState extends State<IntroScreen> {
             effect: const ExpandingDotsEffect(
               dotWidth: 8,
               dotHeight: 8,
-              activeDotColor: AppColors.secondaryBlue,
+              activeDotColor: AppColors.primaryColor,
               dotColor: AppColors.inactiveProgressBar,
               spacing: 4,
               expansionFactor: 2,
@@ -101,10 +99,12 @@ class _IntroScreenState extends State<IntroScreen> {
                     curve: Curves.easeIn,
                   );
                 } else {
-                  context.goNamed(AppRouteNames.signInScreen);
+                  context.goNamed(AppRouteNames.signUpScreen);
                 }
               },
-              text: (_currentPageIndex < 2) ? 'Next' : 'Get Started',
+              text: (_currentPageIndex < 2)
+                  ? Localization.nextText
+                  : Localization.getStartedText,
               isLoading: false,
             ),
           ),
@@ -121,7 +121,7 @@ class _IntroScreenState extends State<IntroScreen> {
               onPressed: () {
                 context.goNamed(AppRouteNames.signInScreen);
               },
-              text: 'Skip',
+              text: Localization.skipText,
               isLoading: false,
             ),
           ),

@@ -119,72 +119,90 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
   //   }
   // }
 
-  // Future<void> forgotPassword(String email) async {
-  //   emit(state.copyWith(forgotPassword: const DataState.loading()));
-  //   try {
-  //     final response = await repository.forgotPassword(email);
-  //     AppLogger.info('Forgot password response: ${response.isSuccess}');
+  Future<void> forgotPassword(String email) async {
+    emit(state.copyWith(forgotPassword: const DataState.loading()));
+    try {
+      // final response = await repository.forgotPassword(email);
+      //AppLogger.info('Forgot password response: ${response.isSuccess}');
 
-  //     if (response.isSuccess) {
-  //       emit(
-  //         state.copyWith(
-  //           forgotPassword: DataState.loaded(
-  //             data: response.data,
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           forgotPassword: DataState.failure(error: response.message),
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     emit(
-  //       state.copyWith(
-  //         forgotPassword: DataState.failure(error: e.toString()),
-  //       ),
-  //     );
-  //   }
-  // }
+      if (1 == 1) {
+        emit(
+          state.copyWith(
+            forgotPassword: const DataState.loaded(),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            forgotPassword: const DataState.failure(error: 'boom'),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          forgotPassword: const DataState.failure(error: 'boom'),
+        ),
+      );
+    }
+  }
 
-  // Future<void> setResetCode(String code) async {
-  //   emit(state.copyWith(resetCode: code));
-  // }
+  Future<void> setResetCode(String code) async {
+    emit(state.copyWith(resetCode: code));
+  }
 
-  // Future<void> resetPassword(String code, String password) async {
-  //   if (code.isEmpty) {
-  //     emit(
-  //       state.copyWith(
-  //         resetPassword: const DataState.failure(
-  //           error: 'Reset code is required',
-  //         ),
-  //       ),
-  //     );
-  //     return;
-  //   }
+  Future<void> resetPassword(String code, String password) async {
+    emit(state.copyWith(resetPassword: const DataState.loading()));
+    AppLogger.info('Resetting password...');
+    try {
+      if (code.isEmpty) {
+        emit(
+          state.copyWith(
+            resetPassword: const DataState.failure(
+              error: 'Reset code is required',
+            ),
+          ),
+        );
+        return;
+      }
 
-  //   emit(state.copyWith(resetPassword: const DataState.loading()));
-  //   AppLogger.info('Resetting password...');
+      // final response = await repository.resetPassword(code, password);
+      // AppLogger.info('Reset password response: ${response.isSuccess}');
 
-  //   final response = await repository.resetPassword(code, password);
-  //   AppLogger.info('Reset password response: ${response.isSuccess}');
+      if (1 == 1) {
+        AppLogger.info('Password reset successful');
+        emit(
+          state.copyWith(
+            resetPassword: const DataState.loaded(),
+          ),
+        );
+      } else {
+        AppLogger.error('Password reset failed');
+        emit(
+          state.copyWith(
+            resetPassword: const DataState.failure(error: 'boom'),
+          ),
+        );
+      }
+    } catch (e) {
+      AppLogger.error('Error resetting password: $e');
+      emit(
+        state.copyWith(
+          resetPassword: const DataState.failure(error: 'boom'),
+        ),
+      );
+    }
+  }
 
-  //   if (response.data!.statusCode == 200 && response.data!.data != null) {
-  //     AppLogger.info('Password reset successful');
-  //     emit(
-  //       state.copyWith(
-  //         resetPassword: DataState.loaded(data: response.data),
-  //       ),
-  //     );
-  //   } else {
-  //     AppLogger.error('Password reset failed: ${response.message}');
-  //     emit(
-  //       state.copyWith(
-  //         resetPassword: DataState.failure(error: response.message),
-  //       ),
-  //     );
-  //   }
-  // }
+  void setPinCodeEntered(bool value) {
+    emit(state.copyWith(pinCodeEntered: value));
+  }
+
+  void resetForgotPassword() {
+    emit(state.copyWith(forgotPassword: const DataState.initial()));
+  }
+
+  void resetResetPassword() {
+    emit(state.copyWith(resetPassword: const DataState.initial()));
+  }
 }

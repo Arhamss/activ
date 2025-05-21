@@ -2,7 +2,9 @@ import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.da
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart'
     show OnboardingFlowState;
 import 'package:activ/exports.dart';
+import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
+import 'package:activ/utils/widgets/core_widgets/dialog.dart';
 import 'package:flutter/services.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -35,18 +37,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             if (state.forgotPassword.isFailure) {
               ToastHelper.showErrorToast(
                 state.forgotPassword.errorMessage ??
-                    'Failed to send password recovery email',
+                   Localization.failedToSendPasswordRecovery,
               );
             } else if (state.forgotPassword.isLoaded) {
-              context.goNamed(AppRouteNames.resetPasswordCodeScreen);
+              CustomDialog.showActionDialog(
+                svgAssetPath: AssetPaths.checkMark,
+                context: context,
+                title: Localization.success,
+                message: Localization.linkSentToEmail,
+                confirmText: Localization.submit,
+                onConfirm: () {
+                  context.pop();
+                  context.read<OnboardingFlowCubit>().resetForgotPassword();
+                  context.pushNamed(AppRouteNames.resetPasswordCodeScreen);
+                },
+              );
             }
           },
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
                 padding: EdgeInsets.only(
-                  left: 40,
-                  right: 40,
+                  left: 24,
+                  right: 24,
                   bottom: MediaQuery.of(context).viewInsets.bottom + 20,
                 ),
                 child: ConstrainedBox(
@@ -58,7 +71,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     child: Form(
                       key: _formKey,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 32),
                           Center(
@@ -66,11 +78,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           ),
                           const SizedBox(height: 32),
                           Text(
-                            'Forgot Password',
+                            Localization.forgotPassword,
                             style: context.h3.copyWith(
                               fontWeight: FontWeight.w800,
                               fontSize: 32,
                             ),
+                            textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 30),
                           ActivTextField(
@@ -81,28 +94,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             hintText: 'Email',
                             borderRadius: 12,
                             controller: _emailController,
-                          ),
-                          const SizedBox(height: 40),
-                          BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-                            builder: (context, state) {
-                              return ActivButton(
-                                borderRadius: 16,
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    // context
-                                    //     .read<OnboardingFlowCubit>()
-                                    //     .forgotPassword(
-                                    //       _emailController.text.trim(),
-                                    //     );
-
-                                    ToastHelper.showSuccessToast(
-                                      'Form Validated',
-                                    );
-                                  }
-                                },
-                                text: 'Continue',
-                                isLoading: state.forgotPassword.isLoading,
-                              );
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return Localization.emailRequired;
+                              }
+                              if (!RegExp(
+                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+                              ).hasMatch(value)) {
+                                return Localization.invalidEmail;
+                              }
+                              return null;
                             },
                           ),
                         ],
@@ -110,6 +111,36 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                 ),
+              );
+            },
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            bottom: 60,
+          ),
+          child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+            builder: (context, state) {
+              return ActivButton(
+                borderRadius: 16,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    // context
+                    //     .read<OnboardingFlowCubit>()
+                    //     .forgotPassword(
+                    //       _emailController.text.trim(),
+                    //     );
+
+                   
+                    context.read<OnboardingFlowCubit>().forgotPassword(
+                          _emailController.text.trim(),
+                        );
+                  }
+                },
+                text: Localization.continueText,
+                isLoading: state.forgotPassword.isLoading,
               );
             },
           ),
