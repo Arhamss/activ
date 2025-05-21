@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:activ/activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
-import 'package:activ/activ/models/auth_data_model.dart';
+import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
+import 'package:activ/core/models/auth_data_model.dart';
 import 'package:activ/core/api_service/app_api_exception.dart';
 import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';

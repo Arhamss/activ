@@ -1,49 +1,49 @@
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.dart';
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/activ/features/onboarding_flow/presentation/widgets/social_button.dart';
+import 'package:activ/core/field_validators.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
+import 'package:activ/features/onboarding_flow/presentation/widgets/social_button.dart';
+import 'package:activ/core/app_preferences/app_preferences.dart';
+import 'package:activ/core/di/injector.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
+import 'package:flutter/services.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
-  final TextEditingController nameController = TextEditingController();
+class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
+  final cache = Injector.resolve<AppPreferences>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.white,
         body: SafeArea(
           child: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
             listener: (context, state) {
-              if (state.signUp.isFailure) {
+              if (state.signIn.isFailure
+                  // state.signInWithApple.isFailure ||
+                  // state.signInWithGoogle.isFailure
+                  ) {
                 ToastHelper.showInfoToast(
-                  state.signUp.errorMessage ?? Localization.failedToSignUpUser,
+                  state.signIn.errorMessage ?? Localization.failedToSignInUser,
                 );
-              } else if (state.signInWithGoogle.isLoaded) {
-                ToastHelper.showInfoToast(
-                  Localization.successfullySignedInWithGoogle,
-                );
-                //context.goNamed(AppRouteNames.selectLocation);
-              } else if (state.signInWithGoogle.isFailure) {
-                ToastHelper.showInfoToast(
-                  state.signInWithGoogle.errorMessage ??
-                      Localization.failedToSignInWithGoogle,
-                );
-              } else if (state.signUp.isLoaded) {
-                //context.goNamed(AppRouteNames.selectLocation);
+              } else if (state.signIn.isLoaded
+                  // state.signInWithApple.isLoaded ||
+                  // state.signInWithGoogle.isLoaded
+                  ) {
+                // context.goNamed(AppRouteNames.homeScreen);
               }
             },
             child: LayoutBuilder(
@@ -65,44 +65,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             SvgPicture.asset(AssetPaths.smallLogo),
                             SizedBox(height: constraints.maxHeight * 0.05),
                             Text(
-                              Localization.signUpToContinue,
+                              textAlign: TextAlign.center,
+                              Localization.signInToContinue,
                               style: context.h3.copyWith(
                                 fontWeight: FontWeight.w800,
                                 fontSize: 32,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: constraints.maxHeight * 0.05),
                             ActivTextField(
+                              contentPadding:
+                                  const EdgeInsets.fromLTRB(12, 16, 0, 16),
                               prefixPath: AssetPaths.emailLogo,
                               type: ActivTextFieldType.email,
                               hintText: Localization.email,
+                              borderRadius: 12,
                               controller: emailController,
-                              validator: (p0) {
-                                if (p0 == null || p0.isEmpty) {
-                                  return Localization.emailRequired;
-                                } else if (!RegExp(
-                                        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
-                                    .hasMatch(p0)) {
-                                  return Localization.invalidEmail;
-                                }
-                                return null;
-                              },
+                              validator: FieldValidators.emailValidator,
                             ),
                             const SizedBox(height: 16),
                             ActivTextField(
+                              contentPadding:
+                                  const EdgeInsets.fromLTRB(12, 16, 0, 16),
                               prefixPath: AssetPaths.passwordLogo,
                               type: ActivTextFieldType.password,
                               hintText: Localization.password,
+                              borderRadius: 12,
                               controller: passwordController,
-                              validator: (p0) {
-                                if (p0 == null || p0.isEmpty) {
-                                  return Localization.passwordRequired;
-                                } else if (p0.length < 6) {
-                                  return Localization.passwordTooShort;
-                                }
-                                return null;
-                              },
+                              validator: FieldValidators.passwordValidator,
+                            ),
+                            const SizedBox(height: 16),
+                            GestureDetector(
+                              onTap: () => context.pushNamed(
+                                AppRouteNames.forgotPasswordScreen,
+                              ),
+                              child: Text(
+                                Localization.forgotPassword,
+                                style: context.b2.copyWith(
+                                  color: AppColors.grey,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                ),
+                              ),
                             ),
                             SizedBox(height: constraints.maxHeight * 0.02),
                             BlocBuilder<OnboardingFlowCubit,
@@ -112,8 +116,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {}
                                   },
-                                  text: Localization.nextText,
-                                  isLoading: state.signUp.isLoading,
+                                  text: Localization.signIn,
+                                  isLoading: state.signIn.isLoading,
                                 );
                               },
                             ),
@@ -131,10 +135,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     horizontal: 16,
                                   ),
                                   child: Text(
-                                    'OR',
+                                    Localization.orConnectWith,
                                     style: context.b2.copyWith(
                                       color: AppColors.textPrimary,
-                                      fontWeight: FontWeight.w800,
+                                      fontWeight: FontWeight.w700,
                                       fontSize: 19,
                                     ),
                                   ),
@@ -170,41 +174,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               },
                             ),
                             const SizedBox(height: 16),
-                            RichText(
-                              textAlign: TextAlign.center,
-                              text: TextSpan(
-                                text: Localization.byContinuingYouAgreeToOur,
-                                style: context.b2.copyWith(
-                                  color: AppColors.grey,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: Localization.termsOfService,
-                                    style: context.b2.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  '${Localization.alreadyHaveAccount} ',
+                                  Localization.orCreateA,
                                   style: context.b2.copyWith(
                                     color: AppColors.grey,
                                   ),
                                 ),
                                 GestureDetector(
                                   onTap: () => context
-                                      .goNamed(AppRouteNames.signInScreen),
+                                      .goNamed(AppRouteNames.signUpScreen),
                                   child: Text(
-                                    Localization.signIn,
+                                    Localization.newAccount,
                                     style: context.b2.copyWith(
                                       fontWeight: FontWeight.w500,
                                     ),

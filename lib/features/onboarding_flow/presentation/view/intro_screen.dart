@@ -1,6 +1,7 @@
-import 'package:activ/activ/features/onboarding_flow/presentation/widgets/intro_widget.dart';
+import 'package:activ/features/onboarding_flow/presentation/widgets/intro_widget.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
+import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -40,6 +41,12 @@ class _IntroScreenState extends State<IntroScreen> {
       backgroundColor: AppColors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        forceMaterialTransparency: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: Column(
         children: [

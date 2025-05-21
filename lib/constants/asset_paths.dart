@@ -11,7 +11,7 @@ class AssetPaths {
   static const intro2 = 'assets/svgs/intro_2.svg';
   static const intro3 = 'assets/svgs/intro_3.svg';
   static const eye = 'assets/svgs/eye.svg';
-  static const eyeOff = 'assets/svgs/eye.svg';
+  static const eyeOff = 'assets/svgs/eye_slash.svg';
 
   static const logo = 'assets/images/logo.png';
 }

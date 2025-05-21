@@ -1,5 +1,6 @@
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.dart';
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart'
+import 'package:activ/core/field_validators.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart'
     show OnboardingFlowState;
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
@@ -28,6 +29,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.white,
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.black),
+            onPressed: () => context.pop(),
+          ),
           backgroundColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           forceMaterialTransparency: true,
@@ -56,27 +61,23 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           },
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  left: 24,
-                  right: 24,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                  maxWidth: constraints.maxWidth,
                 ),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                    maxWidth: constraints.maxWidth,
-                  ),
-                  child: IntrinsicHeight(
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
                     child: Form(
                       key: _formKey,
                       child: Column(
                         children: [
-                          const SizedBox(height: 32),
+                          SizedBox(height: constraints.maxHeight * 0.05),
                           Center(
                             child: SvgPicture.asset(AssetPaths.smallLogo),
                           ),
-                          const SizedBox(height: 32),
+                          SizedBox(height: constraints.maxHeight * 0.05),
                           Text(
                             Localization.forgotPassword,
                             style: context.h3.copyWith(
@@ -85,7 +86,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 30),
+                          SizedBox(height: constraints.maxHeight * 0.05),
                           ActivTextField(
                             contentPadding:
                                 const EdgeInsets.fromLTRB(12, 16, 0, 16),
@@ -94,17 +95,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             hintText: 'Email',
                             borderRadius: 12,
                             controller: _emailController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return Localization.emailRequired;
-                              }
-                              if (!RegExp(
-                                r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-                              ).hasMatch(value)) {
-                                return Localization.invalidEmail;
-                              }
-                              return null;
-                            },
+                            validator: FieldValidators.passwordValidator,
                           ),
                         ],
                       ),

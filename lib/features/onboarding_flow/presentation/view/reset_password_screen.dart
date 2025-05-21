@@ -1,5 +1,6 @@
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.dart';
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
+import 'package:activ/core/field_validators.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
@@ -66,57 +67,46 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 minHeight: constraints.maxHeight,
                 maxWidth: constraints.maxWidth,
               ),
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SvgPicture.asset(AssetPaths.smallLogo),
-                        const SizedBox(height: 48),
-                        Text(
-                          Localization.resetPassword,
-                          style: context.h1.copyWith(
-                            fontWeight: FontWeight.w800,
-                            fontSize: 32,
-                          ),
-                          textAlign: TextAlign.start,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(AssetPaths.smallLogo),
+                      const SizedBox(height: 48),
+                      Text(
+                        Localization.resetPassword,
+                        style: context.h1.copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 32,
                         ),
-                        const SizedBox(height: 48),
-                        ActivTextField(
-                          borderRadius: 16,
-                          type: ActivTextFieldType.password,
-                          prefixPath: AssetPaths.passwordLogo,
-                          hintText: Localization.newPassword,
-                          controller: _passwordController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return Localization.passwordRequired;
-                            }
-                            if (value.length < 6) {
-                              return Localization.passwordTooShort;
-                            }
-                            return null;
-                          },
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(
+                        height: constraints.maxHeight * 0.08,
+                      ),
+                      ActivTextField(
+                        type: ActivTextFieldType.password,
+                        prefixPath: AssetPaths.passwordLogo,
+                        hintText: Localization.newPassword,
+                        controller: _passwordController,
+                        validator: FieldValidators.passwordValidator,
+                      ),
+                      const SizedBox(height: 20),
+                      ActivTextField(
+                        borderRadius: 16,
+                        type: ActivTextFieldType.password,
+                        prefixPath: AssetPaths.passwordLogo,
+                        hintText: Localization.confirmPassword,
+                        controller: _confirmPasswordController,
+                        validator: (value) =>
+                            FieldValidators.confirmPasswordValidator(
+                          value,
+                          _passwordController,
                         ),
-                        const SizedBox(height: 20),
-                        ActivTextField(
-                          borderRadius: 16,
-                          type: ActivTextFieldType.password,
-                          prefixPath: AssetPaths.passwordLogo,
-                          hintText: Localization.confirmPassword,
-                          controller: _confirmPasswordController,
-                          validator: (value) {
-                            if (value != _passwordController.text) {
-                              return Localization.passwordMismatch;
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -127,12 +117,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 16,
+            horizontal: 24,
           ),
           child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
             builder: (context, state) {
               return ActivButton(
-                borderRadius: 15,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     context.read<OnboardingFlowCubit>().resetPassword(

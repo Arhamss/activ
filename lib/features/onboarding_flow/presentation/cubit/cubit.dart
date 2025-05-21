@@ -1,6 +1,6 @@
-import 'package:activ/activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/activ/models/api_response/api_response_model.dart';
+import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
+import 'package:activ/core/models/api_response/api_response_model.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';

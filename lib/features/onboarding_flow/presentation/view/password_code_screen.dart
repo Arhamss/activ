@@ -1,5 +1,5 @@
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.dart';
-import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
+import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/focus_handler.dart';
@@ -20,8 +20,13 @@ class _PasswordCodeState extends State<PasswordCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         backgroundColor: AppColors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: AppColors.black),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -35,21 +40,23 @@ class _PasswordCodeState extends State<PasswordCode> {
               child: Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 32),
+                    SizedBox(
+                      height: constraints.maxHeight * 0.05,
+                    ),
                     Center(
                       child: SvgPicture.asset(AssetPaths.smallLogo),
                     ),
-                    const SizedBox(height: 64),
+                    SizedBox(height: constraints.maxHeight * 0.1),
                     Text(
+                      textAlign: TextAlign.center,
                       Localization.enterResetCode,
                       style: context.h3.copyWith(
                         fontWeight: FontWeight.w800,
                         fontSize: 32,
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: constraints.maxHeight * 0.05),
                     Pinput(
                       controller: _codeController,
                       length: 6,
@@ -104,12 +111,11 @@ class _PasswordCodeState extends State<PasswordCode> {
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: 16,
+            horizontal: 24,
           ),
           child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
             builder: (context, state) {
               return ActivButton(
-                borderRadius: 16,
                 disabled: !state.pinCodeEntered,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

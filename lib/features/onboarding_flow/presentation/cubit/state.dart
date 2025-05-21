@@ -1,4 +1,4 @@
-import 'package:activ/activ/models/auth_data_model.dart';
+import 'package:activ/core/models/auth_data_model.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:equatable/equatable.dart';
 

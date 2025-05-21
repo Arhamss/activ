@@ -1,5 +1,5 @@
 
-import 'package:activ/activ/models/api_response/api_error.dart';
+import 'package:activ/core/models/api_response/api_error.dart';
 
 class BaseApiResponse<T> {
   BaseApiResponse({

@@ -219,7 +219,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
     if (widget.suffixPath != null) {
       return SvgPicture.asset(
         widget.suffixPath!,
-        colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+        height: 18.18,
+        width: 20,
       );
     } else if (isPassword) {
       return GestureDetector(

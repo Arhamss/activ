@@ -1,5 +1,5 @@
-import 'package:activ/activ/models/api_response/api_response_model.dart';
-import 'package:activ/activ/models/api_response/base_api_response.dart';
+import 'package:activ/core/models/api_response/api_response_model.dart';
+import 'package:activ/core/models/api_response/base_api_response.dart';
 import 'package:dio/dio.dart';
 
 class ApiResponseHandler<T extends BaseApiResponse> {

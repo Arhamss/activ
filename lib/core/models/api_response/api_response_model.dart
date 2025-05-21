@@ -1,5 +1,5 @@
-import 'package:activ/activ/models/api_response/api_response_handler.dart';
-import 'package:activ/activ/models/api_response/base_api_response.dart';
+import 'package:activ/core/models/api_response/api_response_handler.dart';
+import 'package:activ/core/models/api_response/base_api_response.dart';
 import 'package:dio/dio.dart';
 
 enum ResponseStatus {
