@@ -36,16 +36,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         listener: (context, state) {
           if (state.resetPassword.isFailure) {
             ToastHelper.showErrorToast(
-              state.resetPassword.errorMessage ?? Localization.failedToResetPassword,
+              state.resetPassword.errorMessage ??
+                  Localization.failedToResetPassword,
             );
           } else if (state.resetPassword.isLoaded) {
             CustomDialog.showActionDialog(
               svgAssetPath: AssetPaths.checkMark,
               context: context,
               title: Localization.passwordResetSuccessTitle,
-              message:
-                  Localization.passwordResetSuccessMessage,
-              confirmText:Localization.signIn,
+              message: Localization.passwordResetSuccessMessage,
+              confirmText: Localization.signIn,
               onConfirm: () {
                 context.pop();
                 context.read<OnboardingFlowCubit>().resetResetPassword();
@@ -54,72 +54,68 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             );
           } else if (state.resetPassword.isFailure) {
             ToastHelper.showErrorToast(
-              state.resetPassword.errorMessage ?? Localization.failedToResetPassword,
+              state.resetPassword.errorMessage ??
+                  Localization.failedToResetPassword,
             );
           }
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return SingleChildScrollView(
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+                maxWidth: constraints.maxWidth,
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                  maxWidth: constraints.maxWidth,
-                ),
-                child: Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SvgPicture.asset(AssetPaths.smallLogo),
-                          const SizedBox(height: 48),
-                          Text(
-                            Localization.resetPassword,
-                            style: context.h1.copyWith(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 32,
-                            ),
-                            textAlign: TextAlign.start,
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SvgPicture.asset(AssetPaths.smallLogo),
+                        const SizedBox(height: 48),
+                        Text(
+                          Localization.resetPassword,
+                          style: context.h1.copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 32,
                           ),
-                          const SizedBox(height: 48),
-                          ActivTextField(
-                            borderRadius: 16,
-                            type: ActivTextFieldType.password,
-                            prefixPath: AssetPaths.passwordLogo,
-                            hintText: Localization.newPassword,
-                            controller: _passwordController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return Localization.passwordRequired;
-                              }
-                              if (value.length < 6) {
-                                return Localization.passwordTooShort;
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          ActivTextField(
-                            borderRadius: 16,
-                            type: ActivTextFieldType.password,
-                            prefixPath: AssetPaths.passwordLogo,
-                            hintText: Localization.confirmPassword,
-                            controller: _confirmPasswordController,
-                            validator: (value) {
-                              if (value != _passwordController.text) {
-                                return Localization.passwordMismatch;
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
-                      ),
+                          textAlign: TextAlign.start,
+                        ),
+                        const SizedBox(height: 48),
+                        ActivTextField(
+                          borderRadius: 16,
+                          type: ActivTextFieldType.password,
+                          prefixPath: AssetPaths.passwordLogo,
+                          hintText: Localization.newPassword,
+                          controller: _passwordController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return Localization.passwordRequired;
+                            }
+                            if (value.length < 6) {
+                              return Localization.passwordTooShort;
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        ActivTextField(
+                          borderRadius: 16,
+                          type: ActivTextFieldType.password,
+                          prefixPath: AssetPaths.passwordLogo,
+                          hintText: Localization.confirmPassword,
+                          controller: _confirmPasswordController,
+                          validator: (value) {
+                            if (value != _passwordController.text) {
+                              return Localization.passwordMismatch;
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -128,28 +124,28 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           },
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(
-          left: 24,
-          right: 24,
-          bottom: 200,
-        ),
-        child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-          builder: (context, state) {
-            return ActivButton(
-              borderRadius: 15,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  context.read<OnboardingFlowCubit>().resetPassword(
-                        state.resetCode ?? '',
-                        _passwordController.text.trim(),
-                      );
-                }
-              },
-              text: Localization.resetPassword,
-              isLoading: state.resetPassword.isLoading,
-            );
-          },
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+            builder: (context, state) {
+              return ActivButton(
+                borderRadius: 15,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    context.read<OnboardingFlowCubit>().resetPassword(
+                          state.resetCode ?? '',
+                          _passwordController.text.trim(),
+                        );
+                  }
+                },
+                text: Localization.resetPassword,
+                isLoading: state.resetPassword.isLoading,
+              );
+            },
+          ),
         ),
       ),
     );

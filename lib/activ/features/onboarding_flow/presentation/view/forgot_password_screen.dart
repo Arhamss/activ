@@ -37,7 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             if (state.forgotPassword.isFailure) {
               ToastHelper.showErrorToast(
                 state.forgotPassword.errorMessage ??
-                   Localization.failedToSendPasswordRecovery,
+                    Localization.failedToSendPasswordRecovery,
               );
             } else if (state.forgotPassword.isLoaded) {
               CustomDialog.showActionDialog(
@@ -115,34 +115,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             },
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(
-            left: 24,
-            right: 24,
-            bottom: 60,
-          ),
-          child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-            builder: (context, state) {
-              return ActivButton(
-                borderRadius: 16,
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // context
-                    //     .read<OnboardingFlowCubit>()
-                    //     .forgotPassword(
-                    //       _emailController.text.trim(),
-                    //     );
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+              builder: (context, state) {
+                return ActivButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      // context
+                      //     .read<OnboardingFlowCubit>()
+                      //     .forgotPassword(
+                      //       _emailController.text.trim(),
+                      //     );
 
-                   
-                    context.read<OnboardingFlowCubit>().forgotPassword(
-                          _emailController.text.trim(),
-                        );
-                  }
-                },
-                text: Localization.continueText,
-                isLoading: state.forgotPassword.isLoading,
-              );
-            },
+                      context.read<OnboardingFlowCubit>().forgotPassword(
+                            _emailController.text.trim(),
+                          );
+                    }
+                  },
+                  text: Localization.continueText,
+                  isLoading: state.forgotPassword.isLoading,
+                );
+              },
+            ),
           ),
         ),
       ),

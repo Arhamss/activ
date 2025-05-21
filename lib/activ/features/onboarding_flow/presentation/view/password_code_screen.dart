@@ -1,14 +1,9 @@
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/constants/app_colors.dart';
-import 'package:activ/constants/app_text_style.dart';
-import 'package:activ/constants/asset_paths.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/focus_handler.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:pinput/pinput.dart';
 
 class PasswordCode extends StatefulWidget {
@@ -106,33 +101,33 @@ class _PasswordCodeState extends State<PasswordCode> {
           );
         },
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(
-          left: 24,
-          right: 24,
-          bottom: 60,
-        ),
-        child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-          builder: (context, state) {
-            return ActivButton(
-              borderRadius: 16,
-              disabled: !state.pinCodeEntered,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  context.read<OnboardingFlowCubit>().setResetCode(
-                        _codeController.text.trim(),
-                      );
-                  ToastHelper.showSuccessToast(
-                    Localization.resetCodeSet,
-                  );
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+          ),
+          child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+            builder: (context, state) {
+              return ActivButton(
+                borderRadius: 16,
+                disabled: !state.pinCodeEntered,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    context.read<OnboardingFlowCubit>().setResetCode(
+                          _codeController.text.trim(),
+                        );
+                    ToastHelper.showSuccessToast(
+                      Localization.resetCodeSet,
+                    );
 
-                  context.pushNamed(AppRouteNames.resetPasswordScreen);
-                }
-              },
-              text: Localization.continueText,
-              isLoading: state.forgotPassword.isLoading,
-            );
-          },
+                    context.pushNamed(AppRouteNames.resetPasswordScreen);
+                  }
+                },
+                text: Localization.continueText,
+                isLoading: state.forgotPassword.isLoading,
+              );
+            },
+          ),
         ),
       ),
     );
