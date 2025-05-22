@@ -1,5 +1,5 @@
-import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:dio/dio.dart';
+import 'package:activ/core/app_preferences/app_preferences.dart';
 
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(this._appPreferences, this._dio);

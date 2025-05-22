@@ -6,9 +6,12 @@ class AssetPaths {
   static const smallLogo = 'assets/svgs/logo_small.svg';
   static const emailLogo = 'assets/svgs/email.svg';
   static const passwordLogo = 'assets/svgs/password.svg';
+  static const checkMark = 'assets/svgs/checkmark.svg';
+  static const intro1 = 'assets/svgs/intro_1.svg';
+  static const intro2 = 'assets/svgs/intro_2.svg';
+  static const intro3 = 'assets/svgs/intro_3.svg';
+  static const eye = 'assets/svgs/eye.svg';
+  static const eyeOff = 'assets/svgs/eye_slash.svg';
 
   static const logo = 'assets/images/logo.png';
-  static const intro1 = 'assets/images/intro_1.png';
-  static const intro2 = 'assets/images/intro_2.png';
-  static const intro3 = 'assets/images/intro_3.png';
 }

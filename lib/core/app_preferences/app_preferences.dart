@@ -1,5 +1,4 @@
 import 'package:activ/core/app_preferences/base_storage.dart';
-import 'package:activ/core/shared_preference_service.dart';
 
 class AppPreferences extends BaseStorage {
   AppPreferences() {
@@ -59,7 +58,6 @@ class AppPreferences extends BaseStorage {
   }
 
   void clearAll() {
-    SharedPreferenceService().clearData();
     removeAll();
   }
 }

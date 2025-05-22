@@ -11,9 +11,9 @@ class ActivButton extends StatelessWidget {
     this.textColor = AppColors.white,
     this.disabledTextColor = AppColors.white,
     this.disabledBackgroundColor,
-    this.borderRadius = 100,
+    this.borderRadius = 16,
     this.padding =
-        const EdgeInsetsDirectional.symmetric(vertical: 16, horizontal: 24),
+        const EdgeInsetsDirectional.symmetric(vertical: 20, horizontal: 24),
     this.fontWeight = FontWeight.w700,
     this.splashColor = Colors.black12,
     this.fontSize = 16,
@@ -95,7 +95,7 @@ class ActivButton extends StatelessWidget {
                     SizedBox(width: iconSpacing ?? 8),
                   ],
                   Text(
-                    text,
+                    text.toUpperCase(),
                     style: GoogleFonts.urbanist(
                       color: disabled ? disabledTextColor : textColor,
                       fontWeight: fontWeight,

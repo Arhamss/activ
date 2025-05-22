@@ -43,34 +43,38 @@ class AppRouter {
       GoRoute(
         name: AppRouteNames.splash,
         path: AppRoutes.splash,
-        builder: (context, state) => SplashScreen(),
+        builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         name: AppRouteNames.introScreen,
         path: AppRoutes.introScreen,
-        builder: (context, state) => IntroScreen(),
+        builder: (context, state) => const IntroScreen(),
       ),
       GoRoute(
         name: AppRouteNames.signInScreen,
         path: AppRoutes.signInScreen,
-        builder: (context, state) => SignInScreen(),
+        builder: (context, state) => const SignInScreen(),
       ),
       GoRoute(
         name: AppRouteNames.resetPasswordCodeScreen,
         path: AppRoutes.resetPasswordCodeScreen,
-        builder: (context, state) => ResetPasswordScreen(),
+        builder: (context, state) => const PasswordCode(),
+      ),
+      GoRoute(
+        name: AppRouteNames.resetPasswordScreen,
+        path: AppRoutes.resetPasswordScreen,
+        builder: (context, state) => const ResetPasswordScreen(),
       ),
       GoRoute(
         name: AppRouteNames.signUpScreen,
         path: AppRoutes.signUpScreen,
-        builder: (context, state) => SignUpScreen(),
+        builder: (context, state) => const SignUpScreen(),
       ),
       GoRoute(
         name: AppRouteNames.forgotPasswordScreen,
         path: AppRoutes.forgotPasswordScreen,
-        builder: (context, state) => ForgotPasswordScreen(),
+        builder: (context, state) => const ForgotPasswordScreen(),
       ),
-     
     ],
   );
 }

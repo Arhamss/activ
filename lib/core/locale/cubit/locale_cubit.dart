@@ -1,5 +1,6 @@
 import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

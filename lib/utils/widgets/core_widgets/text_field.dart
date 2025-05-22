@@ -2,7 +2,14 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:activ/exports.dart';
 
-enum ActivTextFieldType { email, password, description, number, text }
+enum ActivTextFieldType {
+  email,
+  password,
+  description,
+  number,
+  text,
+  confirmPassword,
+}
 
 class ActivTextField extends StatefulWidget {
   const ActivTextField({
@@ -22,6 +29,7 @@ class ActivTextField extends StatefulWidget {
     this.onTap,
     this.onChanged,
     this.borderRadius,
+    this.passwordToMatch,
     super.key,
   });
 
@@ -41,6 +49,7 @@ class ActivTextField extends StatefulWidget {
   final int descriptionMaxCharacter;
   final void Function(String)? onChanged;
   final double? borderRadius;
+  final String? passwordToMatch;
 
   @override
   State<ActivTextField> createState() => _ActivTextFieldState();
@@ -66,17 +75,23 @@ class _ActivTextFieldState extends State<ActivTextField> {
   }
 
   String? _validate(String? value) {
-    final error = widget.validator?.call(value);
+    // First check for custom validation if provided
+    final customError = widget.validator?.call(value);
+
+    // If custom validation passes (or isn't provided), check type-based validation
+    final typeError = customError;
+
     setState(() {
-      _errorText = error;
+      _errorText = typeError;
     });
-    return null;
+
+    return typeError; // Return the error to show in the form validation
   }
 
   @override
   Widget build(BuildContext context) {
-    final isPassword = widget.type == ActivTextFieldType.password;
-    final isEmail = widget.type == ActivTextFieldType.email;
+    final isPassword = widget.type == ActivTextFieldType.password ||
+        widget.type == ActivTextFieldType.confirmPassword;
     final isDescription = widget.type == ActivTextFieldType.description;
     final isNumber = widget.type == ActivTextFieldType.number;
 
@@ -88,7 +103,7 @@ class _ActivTextFieldState extends State<ActivTextField> {
 
     final baseBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(
-        isDescription ? 24 : widget.borderRadius ?? 100,
+        isDescription ? 24 : widget.borderRadius ?? 12,
       ),
       borderSide: BorderSide(
         color: borderColor,
@@ -122,17 +137,14 @@ class _ActivTextFieldState extends State<ActivTextField> {
             ),
             child: TextFormField(
               focusNode: _focusNode,
-              obscuringCharacter: '*',
               controller: widget.controller,
               obscureText: isPassword ? _obscureText : false,
               readOnly: widget.readOnly ?? false,
-              keyboardType: isEmail
-                  ? TextInputType.emailAddress
-                  : isPassword
-                      ? TextInputType.visiblePassword
-                      : isNumber
-                          ? TextInputType.number
-                          : TextInputType.text,
+              keyboardType: isPassword
+                  ? TextInputType.visiblePassword
+                  : isNumber
+                      ? TextInputType.number
+                      : TextInputType.text,
               maxLines: isDescription ? 5 : 1,
               maxLength: isDescription
                   ? widget.descriptionMaxCharacter
@@ -176,7 +188,7 @@ class _ActivTextFieldState extends State<ActivTextField> {
                         ),
                       )
                     : null,
-                suffixIcon: _buildSuffixIcon(iconColor, isPassword),
+                suffixIcon: buildSuffixIcon(iconColor, isPassword),
                 contentPadding: isDescription
                     ? const EdgeInsetsDirectional.only(start: 16, top: 24)
                     : widget.contentPadding ??
@@ -191,9 +203,10 @@ class _ActivTextFieldState extends State<ActivTextField> {
             const SizedBox(height: 6),
             Text(
               _errorText!,
-              style: const TextStyle(
+              style: GoogleFonts.urbanist(
                 color: AppColors.error,
                 fontSize: 13,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
@@ -202,23 +215,23 @@ class _ActivTextFieldState extends State<ActivTextField> {
     );
   }
 
-  Widget? _buildSuffixIcon(Color iconColor, bool isPassword) {
+  Widget? buildSuffixIcon(Color iconColor, bool isPassword) {
     if (widget.suffixPath != null) {
       return SvgPicture.asset(
         widget.suffixPath!,
-        colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
+        height: 18.18,
+        width: 20,
       );
     } else if (isPassword) {
-      return IconButton(
-        icon: Icon(
-          _obscureText ? Icons.visibility : Icons.visibility_off,
-          color: iconColor,
-        ),
-        onPressed: () {
+      return GestureDetector(
+        onTap: () {
           setState(() {
             _obscureText = !_obscureText;
           });
         },
+        child: SvgPicture.asset(
+          _obscureText ? AssetPaths.eyeOff : AssetPaths.eye,
+        ),
       );
     }
     return null;

@@ -1,119 +1,120 @@
-// import 'package:activ/core/api_service/authentication_interceptor.dart';
-// import 'package:activ/core/api_service/log_interceptor.dart';
-// import 'package:activ/core/app_preferences/app_preferences.dart';
-// import 'package:activ/core/di/injector.dart';
-// import 'package:dio/dio.dart';
-// import 'package:fairway/core/endpoints/endpoints.dart';
-// import 'package:flutter/material.dart';
+import 'package:activ/core/api_service/app_api_exception.dart';
+import 'package:activ/core/api_service/authentication_interceptor.dart';
+import 'package:activ/core/api_service/log_interceptor.dart';
+import 'package:activ/core/app_preferences/app_preferences.dart';
+import 'package:activ/core/di/injector.dart';
+import 'package:activ/core/endpoints/endpoints.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
-// class ApiService {
-//   factory ApiService() => _instance;
+class ApiService {
+  factory ApiService() => _instance;
 
-//   ApiService._internal() {
-//     _dio = Dio(
-//       BaseOptions(
-//         baseUrl: '${Endpoints.baseUrl}/${Endpoints.apiVersion}/',
-//         connectTimeout: const Duration(seconds: 60),
-//         receiveTimeout: const Duration(seconds: 60),
-//         headers: {'Content-Type': 'application/json'},
-//       ),
-//     );
+  ApiService._internal() {
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: '${Endpoints.baseUrl}/${Endpoints.apiVersion}/',
+        connectTimeout: const Duration(seconds: 60),
+        receiveTimeout: const Duration(seconds: 60),
+        headers: {'Content-Type': 'application/json'},
+      ),
+    );
 
-//     _dio.interceptors.add(AuthInterceptor(_appPreferences, _dio));
-//     _dio.interceptors.add(LoggingInterceptor());
-//   }
-//   static final ApiService _instance = ApiService._internal();
+    _dio.interceptors.add(AuthInterceptor(_appPreferences, _dio));
+    _dio.interceptors.add(LoggingInterceptor());
+  }
+  static final ApiService _instance = ApiService._internal();
 
-//   late final Dio _dio;
-//   final AppPreferences _appPreferences = Injector.resolve<AppPreferences>();
+  late final Dio _dio;
+  final AppPreferences _appPreferences = Injector.resolve<AppPreferences>();
 
-//   /// GET Request
-//   Future<Response<dynamic>> get(
-//     String endpoint, {
-//     Map<String, dynamic>? queryParams,
-//   }) async {
-//     return _handleRequest(
-//       () => _dio.get(endpoint, queryParameters: queryParams),
-//     );
-//   }
+  /// GET Request
+  Future<Response<dynamic>> get(
+    String endpoint, {
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _handleRequest(
+      () => _dio.get(endpoint, queryParameters: queryParams),
+    );
+  }
 
-//   /// POST Request
-//   Future<Response<dynamic>> post({
-//     required String endpoint,
-//     dynamic data,
-//   }) async {
-//     return _handleRequest(() => _dio.post(endpoint, data: data));
-//   }
+  /// POST Request
+  Future<Response<dynamic>> post({
+    required String endpoint,
+    dynamic data,
+  }) async {
+    return _handleRequest(() => _dio.post(endpoint, data: data));
+  }
 
-//   /// PUT Request
-//   Future<Response<dynamic>> put(String endpoint, dynamic data) async {
-//     return _handleRequest(() => _dio.put(endpoint, data: data));
-//   }
+  /// PUT Request
+  Future<Response<dynamic>> put(String endpoint, dynamic data) async {
+    return _handleRequest(() => _dio.put(endpoint, data: data));
+  }
 
-//   /// PATCH Request
-//   Future<Response<dynamic>> patch(String endpoint, dynamic data) async {
-//     return _handleRequest(() => _dio.patch(endpoint, data: data));
-//   }
+  /// PATCH Request
+  Future<Response<dynamic>> patch(String endpoint, dynamic data) async {
+    return _handleRequest(() => _dio.patch(endpoint, data: data));
+  }
 
-//   /// DELETE Request
-//   Future<Response<dynamic>> delete(
-//     String endpoint, {
-//     Map<String, dynamic>? queryParams,
-//   }) async {
-//     return _handleRequest(
-//       () => _dio.delete(endpoint, queryParameters: queryParams),
-//     );
-//   }
+  /// DELETE Request
+  Future<Response<dynamic>> delete(
+    String endpoint, {
+    Map<String, dynamic>? queryParams,
+  }) async {
+    return _handleRequest(
+      () => _dio.delete(endpoint, queryParameters: queryParams),
+    );
+  }
 
-//   /// Handles Requests & Centralized Error Handling
-//   Future<Response<dynamic>> _handleRequest(
-//     Future<Response<dynamic>> Function() request,
-//   ) async {
-//     try {
-//       return await request();
-//     } on DioException catch (e) {
-//       throw _handleDioError(e);
-//     } catch (e) {
-//       debugPrint('Unhandled error: $e');
-//       throw AppApiException('Unexpected error occurred');
-//     }
-//   }
+  /// Handles Requests & Centralized Error Handling
+  Future<Response<dynamic>> _handleRequest(
+    Future<Response<dynamic>> Function() request,
+  ) async {
+    try {
+      return await request();
+    } on DioException catch (e) {
+      throw _handleDioError(e);
+    } catch (e) {
+      debugPrint('Unhandled error: $e');
+      throw AppApiException('Unexpected error occurred');
+    }
+  }
 
-//   AppApiException _handleDioError(DioException e) {
-//     var errorMessage = 'An unknown error occurred';
-//     int? statusCode;
+  AppApiException _handleDioError(DioException e) {
+    var errorMessage = 'An unknown error occurred';
+    int? statusCode;
 
-//     if (e.response != null) {
-//       statusCode = e.response?.statusCode;
-//       final responseData = e.response?.data;
+    if (e.response != null) {
+      statusCode = e.response?.statusCode;
+      final responseData = e.response?.data;
 
-//       if (responseData is Map<String, dynamic>) {
-//         final serverMessage = responseData['error']?['message'];
-//         if (serverMessage is String && serverMessage.isNotEmpty) {
-//           errorMessage = serverMessage;
-//         } else {
-//           // Fallbacks
-//           switch (statusCode) {
-//             case 400:
-//               errorMessage = 'Bad request';
-//             case 401:
-//               errorMessage = 'Unauthorized';
-//             case 403:
-//               errorMessage = 'Forbidden';
-//             case 404:
-//               errorMessage = 'Not found';
-//             case 500:
-//               errorMessage = 'Internal server error';
-//             default:
-//               errorMessage = 'Unexpected error: ${e.response?.statusMessage}';
-//           }
-//         }
-//       }
-//     } else {
-//       errorMessage = e.message ?? 'Network error';
-//     }
+      if (responseData is Map<String, dynamic>) {
+        final serverMessage = responseData['error']?['message'];
+        if (serverMessage is String && serverMessage.isNotEmpty) {
+          errorMessage = serverMessage;
+        } else {
+          // Fallbacks
+          switch (statusCode) {
+            case 400:
+              errorMessage = 'Bad request';
+            case 401:
+              errorMessage = 'Unauthorized';
+            case 403:
+              errorMessage = 'Forbidden';
+            case 404:
+              errorMessage = 'Not found';
+            case 500:
+              errorMessage = 'Internal server error';
+            default:
+              errorMessage = 'Unexpected error: ${e.response?.statusMessage}';
+          }
+        }
+      }
+    } else {
+      errorMessage = e.message ?? 'Network error';
+    }
 
-//     debugPrint('❌ API Error: $errorMessage');
-//     throw AppApiException(errorMessage, statusCode: statusCode);
-//   }
-// }
+    debugPrint('❌ API Error: $errorMessage');
+    throw AppApiException(errorMessage, statusCode: statusCode);
+  }
+}
