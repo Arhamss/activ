@@ -65,7 +65,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -122,7 +122,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         bottomNavigationBar: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+              horizontal: 16,
             ),
             child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
               builder: (context, state) {

@@ -4,6 +4,7 @@ import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart'
     show OnboardingFlowState;
 import 'package:activ/l10n/localization_service.dart';
+import 'package:activ/utils/helpers/focus_handler.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/dialog.dart';
 import 'package:flutter/services.dart';
@@ -21,10 +22,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
+    return FocusHandler(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.white,
@@ -62,7 +60,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return Padding(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Form(
                   key: _formKey,
                   child: Column(

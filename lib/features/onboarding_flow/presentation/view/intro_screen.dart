@@ -1,5 +1,5 @@
-import 'package:activ/features/onboarding_flow/presentation/widgets/intro_widget.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/features/onboarding_flow/presentation/widgets/intro_widget.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -89,7 +89,7 @@ class _IntroScreenState extends State<IntroScreen> {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

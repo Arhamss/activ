@@ -31,7 +31,7 @@ class _PasswordCodeState extends State<PasswordCode> {
         body: LayoutBuilder(
           builder: (context, constraints) {
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -113,7 +113,7 @@ class _PasswordCodeState extends State<PasswordCode> {
         bottomNavigationBar: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 24,
+              horizontal: 16,
             ),
             child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
               builder: (context, state) {
