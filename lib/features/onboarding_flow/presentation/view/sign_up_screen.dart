@@ -102,7 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             const Expanded(
                               child: Divider(
                                 color: AppColors.greyShade7,
-                                thickness: 1.04,
+                                thickness: 1,
                               ),
                             ),
                             Padding(
@@ -121,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             const Expanded(
                               child: Divider(
                                 color: AppColors.greyShade7,
-                                thickness: 1.04,
+                                thickness: 1,
                               ),
                             ),
                           ],
@@ -154,14 +154,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             style: context.b2.copyWith(
                               color: AppColors.grey,
                               fontWeight: FontWeight.w400,
-                              fontSize: 14,
                             ),
                             children: <TextSpan>[
                               TextSpan(
                                 text: Localization.termsOfService,
                                 style: context.b2.copyWith(
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 14,
                                 ),
                               ),
                             ],
