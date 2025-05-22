@@ -1,8 +1,8 @@
 import 'package:activ/core/field_validators.dart';
+import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart'
     show OnboardingFlowState;
-import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/dialog.dart';
@@ -49,8 +49,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 svgAssetPath: AssetPaths.checkMark,
                 context: context,
                 title: Localization.success,
-                message: Localization.linkSentToEmail,
-                confirmText: Localization.submit,
+                message: Localization.codeSentToEmail,
+                confirmText: Localization.continueText,
                 onConfirm: () {
                   context.pop();
                   context.read<OnboardingFlowCubit>().resetForgotPassword();
@@ -61,45 +61,45 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           },
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                  maxWidth: constraints.maxWidth,
-                ),
-                child: IntrinsicHeight(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          SizedBox(height: constraints.maxHeight * 0.05),
-                          Center(
-                            child: SvgPicture.asset(AssetPaths.smallLogo),
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.05),
-                          Text(
-                            Localization.forgotPassword,
-                            style: context.h3.copyWith(
-                              fontWeight: FontWeight.w800,
-                              fontSize: 32,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          SizedBox(height: constraints.maxHeight * 0.05),
-                          ActivTextField(
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(12, 16, 0, 16),
-                            prefixPath: AssetPaths.emailLogo,
-                            type: ActivTextFieldType.email,
-                            hintText: 'Email',
-                            borderRadius: 12,
-                            controller: _emailController,
-                            validator: FieldValidators.passwordValidator,
-                          ),
-                        ],
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      SizedBox(height: constraints.maxHeight * 0.05),
+                      Center(
+                        child: SvgPicture.asset(AssetPaths.smallLogo),
                       ),
-                    ),
+                      SizedBox(height: constraints.maxHeight * 0.05),
+                      Text(
+                        Localization.forgotPassword,
+                        style: context.h3.copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 32,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        Localization.forgotPasswordSubtitle,
+                        style: context.b2.copyWith(),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: constraints.maxHeight * 0.05),
+                      ActivTextField(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(12, 16, 0, 16),
+                        prefixPath: AssetPaths.emailLogo,
+                        type: ActivTextFieldType.email,
+                        hintText: 'Email',
+                        borderRadius: 12,
+                        controller: _emailController,
+                        validator: FieldValidators.emailValidator,
+                      ),
+                    ],
                   ),
                 ),
               );
@@ -114,18 +114,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 return ActivButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // context
-                      //     .read<OnboardingFlowCubit>()
-                      //     .forgotPassword(
-                      //       _emailController.text.trim(),
-                      //     );
-
                       context.read<OnboardingFlowCubit>().forgotPassword(
                             _emailController.text.trim(),
                           );
                     }
                   },
-                  text: Localization.continueText,
+                  text: Localization.verify,
                   isLoading: state.forgotPassword.isLoading,
                 );
               },

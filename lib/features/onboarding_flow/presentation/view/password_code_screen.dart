@@ -1,9 +1,8 @@
+import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/focus_handler.dart';
-import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:pinput/pinput.dart';
 
 class PasswordCode extends StatefulWidget {
@@ -19,24 +18,20 @@ class _PasswordCodeState extends State<PasswordCode> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
+    return FocusHandler(
+      child: Scaffold(
         backgroundColor: AppColors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
-          onPressed: () => context.pop(),
+        appBar: AppBar(
+          backgroundColor: AppColors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: AppColors.black),
+            onPressed: () => context.pop(),
+          ),
         ),
-      ),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return FocusHandler(
-            child: Container(
-              padding: const EdgeInsets.all(24),
-              constraints: BoxConstraints(
-                minHeight: constraints.maxHeight,
-                maxWidth: constraints.maxWidth,
-              ),
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -55,6 +50,14 @@ class _PasswordCodeState extends State<PasswordCode> {
                         fontWeight: FontWeight.w800,
                         fontSize: 32,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Text(
+                      Localization.resetCodeSubtitle,
+                      style: context.b2.copyWith(),
+                      textAlign: TextAlign.center,
                     ),
                     SizedBox(height: constraints.maxHeight * 0.05),
                     Pinput(
@@ -104,35 +107,32 @@ class _PasswordCodeState extends State<PasswordCode> {
                   ],
                 ),
               ),
+            );
+          },
+        ),
+        bottomNavigationBar: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 24,
             ),
-          );
-        },
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 24,
-          ),
-          child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-            builder: (context, state) {
-              return ActivButton(
-                disabled: !state.pinCodeEntered,
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<OnboardingFlowCubit>().setResetCode(
-                          _codeController.text.trim(),
-                        );
-                    ToastHelper.showSuccessToast(
-                      Localization.resetCodeSet,
-                    );
+            child: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+              builder: (context, state) {
+                return ActivButton(
+                  disabled: !state.pinCodeEntered,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      context.read<OnboardingFlowCubit>().setResetCode(
+                            _codeController.text.trim(),
+                          );
 
-                    context.pushNamed(AppRouteNames.resetPasswordScreen);
-                  }
-                },
-                text: Localization.continueText,
-                isLoading: state.forgotPassword.isLoading,
-              );
-            },
+                      context.pushNamed(AppRouteNames.resetPasswordScreen);
+                    }
+                  },
+                  text: Localization.verify,
+                  isLoading: state.forgotPassword.isLoading,
+                );
+              },
+            ),
           ),
         ),
       ),
