@@ -1,6 +1,7 @@
 import 'package:activ/core/locale/cubit/locale_cubit.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/go_router/exports.dart';
+import 'package:activ/l10n/arb/app_localizations.dart';
 import 'package:activ/l10n/l10n.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:flutter/material.dart';
@@ -43,4 +44,3 @@ class AppView extends StatelessWidget {
     );
   }
 }
-

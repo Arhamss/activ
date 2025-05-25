@@ -12,6 +12,31 @@ class AssetPaths {
   static const intro3 = 'assets/svgs/intro_3.svg';
   static const eye = 'assets/svgs/eye.svg';
   static const eyeOff = 'assets/svgs/eye_slash.svg';
+  static const activLogo = 'assets/svgs/logo.svg';
+  static const galleryIcon = 'assets/svgs/gallery.svg';
+  static const maleSVG = 'assets/svgs/male.svg';
+  static const femaleSVG = 'assets/svgs/female.svg';
+  static const arrowDown = 'assets/svgs/arrow_down.svg';
+  static const calenderIcon = 'assets/svgs/calendar.svg';
+  static const selectedStarIcon = 'assets/svgs/selected_star.svg';
+  static const unselectedStarIcon = 'assets/svgs/unselected_star.svg';
 
-  static const logo = 'assets/images/logo.png';
+  //interest Icons
+
+  static const runningIcon = 'assets/svgs/sports_icons/running.svg';
+  static const cyclingIcon = 'assets/svgs/sports_icons/cycling.svg';
+  static const swimmingIcon = 'assets/svgs/sports_icons/swimming.svg';
+  static const bowlingIcon = 'assets/svgs/sports_icons/bowling.svg';
+  static const tennisIcon = 'assets/svgs/sports_icons/tennis.svg';
+  static const basketballIcon = 'assets/svgs/sports_icons/basketball.svg';
+  static const footballIcon = 'assets/svgs/sports_icons/football.svg';
+  static const volleyballIcon = 'assets/svgs/sports_icons/volleyball.svg';
+  static const badmintonIcon = 'assets/svgs/sports_icons/badminton.svg';
+  static const tableTennisIcon = 'assets/svgs/sports_icons/table_tennis.svg';
+  static const golfIcon = 'assets/svgs/sports_icons/golf.svg';
+  static const cricketIcon = 'assets/svgs/sports_icons/cricket.svg';
+  static const fitnessIcon = 'assets/svgs/sports_icons/fitness_workouts.svg';
+  static const handBallIcon = 'assets/svgs/sports_icons/handball.svg';
+  static const martialArtsIcon = 'assets/svgs/sports_icons/martial_arts.svg';
+  static const padelIcon = 'assets/svgs/sports_icons/padel.svg';
 }

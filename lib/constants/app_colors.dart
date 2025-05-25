@@ -19,8 +19,6 @@ abstract class AppColors {
   static const greenClassCardBackground = Color(0xFFF0FDF1);
   static const greenChipColor = Color(0xFFB9F9C2);
   static const profileCardBackground = Color(0xFFE6FDE9);
-  static const textPrimary = Color(0xFF120D26);
-  static const textSecondary = Color(0xFF7A869A);
   static const error = Color(0xFFF04438);
   static const textNormal = Color(0xFF6D6D6D);
   static const textFaded = Color(0xFF9E9E9E);
@@ -42,13 +40,6 @@ abstract class AppColors {
   static const greenShade1 = Color(0xFF042F0C);
   static const yellowShade1 = Color(0xFFFFED46);
   static const yellowShade2 = Color(0xFFFFFFEA);
-  static const greyShade1 = Color(0xFFB0B0B0);
-  static const greyShade2 = Color(0xFF2a2d38);
-  static const greyShade3 = Color(0xFFF6F6F6);
-  static const greyShade4 = Color(0xFFB0B0B0);
-  static const greyShade5 = Color.fromRGBO(244, 245, 247, 1);
-  static const greyShade6 = Color(0xFFC1C7D0);
-  static const greyShade7 = Color(0xFFE5E6EB);
   static const drawerTileBackground = Color(0xFFE9F8F9);
   static const redShade1 = Color(0xFFF04438);
   static const darkWhiteBackground = Color(0xFFF2F3F6);
@@ -61,9 +52,7 @@ abstract class AppColors {
   static const primaryBrown = Color(0xFF4F3422);
   static const secondaryBrown = Color(0xFF926247);
   static const lightYellow = Color(0xFFFFEBC2);
-  static const inactiveProgressBar = Color(0xFFE8DDD9);
   static const lightBlue = Color(0xFFd6deff);
-  static const lightText = Color.fromARGB(255, 83, 73, 67);
   static const cloudColor = Color(0xFFF2F5EB);
   static const textFieldGlow = Color(0xFFFE814B);
   static const iconBorderColor = Color(0xFFC9C7C5);
@@ -80,5 +69,18 @@ abstract class AppColors {
   static const backgroundWhite = Color(0xFFF7F4F2);
   static const primaryColor = Color(0xFF183227);
   static const secondaryColor = Color(0xFF8B9B74);
+  static const textPrimary = Color(0xFF120D26);
+  static const textSecondary = Color(0xFF7A869A);
+  static const lightText = Color(0xFF747688);
   static const grey = Color(0xFF4D5461);
+  static const inactiveProgressBar = Color(0xFFD3D5DA);
+  static const activeDetailsProgressBar = Color(0xFF8B9B75);
+  static const greyShade1 = Color(0xFFB0B0B0);
+  static const greyShade2 = Color(0xFF2a2d38);
+  static const greyShade3 = Color(0xFFF6F6F6);
+  static const greyShade4 = Color(0xFFF9FAFB);
+  static const greyShade5 = Color(0xFFC1C7D0);
+  static const greyShade6 = Color(0xFFE5E6EB);
+  static const selectedGender = Color(0xFF8B9B74);
+  static const unSelectedGender = Color(0xFFE0E0E0);
 }

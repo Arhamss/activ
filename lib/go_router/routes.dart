@@ -8,6 +8,7 @@ class AppRoutes {
   static const resetPasswordCodeScreen = '/reset-password-code-screen';
   static const resetPasswordScreen = '/reset-password-screen';
   static const forgotPasswordScreen = '/forgot-password-screen';
+  static const addDetailsScreen = '/add-details-screen';
 }
 
 class AppRouteNames {
@@ -18,4 +19,5 @@ class AppRouteNames {
   static const resetPasswordCodeScreen = 'reset-password-code-screen';
   static const resetPasswordScreen = 'reset-password-screen';
   static const forgotPasswordScreen = 'forgot-password-screen';
+  static const addDetailsScreen = 'add-details-screen';
 }

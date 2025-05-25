@@ -115,7 +115,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           children: [
                             const Expanded(
                               child: Divider(
-                                color: AppColors.greyShade7,
+                                color: AppColors.greyShade6,
                                 thickness: 1.04,
                               ),
                             ),
@@ -134,7 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             const Expanded(
                               child: Divider(
-                                color: AppColors.greyShade7,
+                                color: AppColors.greyShade6,
                                 thickness: 1.04,
                               ),
                             ),
