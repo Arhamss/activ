@@ -37,7 +37,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
           ),
           onPressed: () {
             final currentIndex =
-                context.read<OnboardingFlowCubit>().state.detailsIndex;
+                context.watch<OnboardingFlowCubit>().state.detailsIndex;
             if (currentIndex > 0) {
               context
                   .read<OnboardingFlowCubit>()
@@ -53,9 +53,9 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
             height: 8.32,
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: LinearProgressIndicator(
-              value:
-                  (context.read<OnboardingFlowCubit>().state.detailsIndex + 1) /
-                      _totalSteps,
+              value: (context.watch<OnboardingFlowCubit>().state.detailsIndex +
+                      1) /
+                  _totalSteps,
               backgroundColor: AppColors.inactiveProgressBar,
               valueColor: const AlwaysStoppedAnimation<Color>(
                 AppColors.activeDetailsProgressBar,
