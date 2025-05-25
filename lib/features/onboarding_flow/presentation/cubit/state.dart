@@ -12,6 +12,14 @@ class OnboardingFlowState extends Equatable {
     this.resetCode,
     this.resetPassword = const DataState.initial(),
     this.pinCodeEntered = false,
+    this.detailsIndex = 0,
+    this.imagePath = '',
+    this.phoneNumber = '',
+    this.firstName = '',
+    this.lastName = '',
+    this.dateOfBirth = '',
+    this.gender = '',
+    this.selectedInterests = const {},
   });
 
   final DataState<AuthData> signIn;
@@ -22,6 +30,14 @@ class OnboardingFlowState extends Equatable {
   final String? resetCode;
   final DataState<dynamic> resetPassword;
   final bool pinCodeEntered;
+  final int detailsIndex;
+  final String imagePath;
+  final String phoneNumber;
+  final String firstName;
+  final String lastName;
+  final String dateOfBirth;
+  final String gender;
+  final Map<String, int> selectedInterests;
 
   OnboardingFlowState copyWith({
     DataState<AuthData>? signIn,
@@ -32,6 +48,14 @@ class OnboardingFlowState extends Equatable {
     String? resetCode,
     DataState<dynamic>? resetPassword,
     bool? pinCodeEntered,
+    int? detailsIndex,
+    String? imagePath,
+    String? phoneNumber,
+    String? firstName,
+    String? lastName,
+    String? dateOfBirth,
+    String? gender,
+    Map<String, int>? selectedInterests,
   }) {
     return OnboardingFlowState(
       signIn: signIn ?? this.signIn,
@@ -42,6 +66,14 @@ class OnboardingFlowState extends Equatable {
       resetCode: resetCode ?? this.resetCode,
       resetPassword: resetPassword ?? this.resetPassword,
       pinCodeEntered: pinCodeEntered ?? this.pinCodeEntered,
+      detailsIndex: detailsIndex ?? this.detailsIndex,
+      imagePath: imagePath ?? this.imagePath,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      gender: gender ?? this.gender,
+      selectedInterests: selectedInterests ?? this.selectedInterests,
     );
   }
 
@@ -55,5 +87,13 @@ class OnboardingFlowState extends Equatable {
         resetPassword,
         resetCode,
         pinCodeEntered,
+        detailsIndex,
+        imagePath,
+        phoneNumber,
+        firstName,
+        lastName,
+        dateOfBirth,
+        gender,
+        selectedInterests,
       ];
 }

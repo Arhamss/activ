@@ -4,6 +4,7 @@ import 'package:activ/core/models/api_response/api_response_model.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
   OnboardingFlowCubit({required this.repository})
@@ -194,6 +195,17 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
     }
   }
 
+  Future<void> pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        emit(state.copyWith(imagePath: image.path));
+      }
+    } catch (e) {
+      AppLogger.error('Error picking image: $e');
+    }
+  }
+
   void setPinCodeEntered(bool value) {
     emit(state.copyWith(pinCodeEntered: value));
   }
@@ -204,5 +216,49 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
 
   void resetResetPassword() {
     emit(state.copyWith(resetPassword: const DataState.initial()));
+  }
+
+  void setDetailsIndex(int index) {
+    emit(state.copyWith(detailsIndex: index));
+  }
+
+  void setImagePath(String path) {
+    emit(state.copyWith(imagePath: path));
+  }
+
+  void setPhoneNumber(String phone) {
+    emit(state.copyWith(phoneNumber: phone));
+  }
+
+  void setFirstName(String firstName) {
+    emit(state.copyWith(firstName: firstName));
+  }
+
+  void setLastName(String lastName) {
+    emit(state.copyWith(lastName: lastName));
+  }
+
+  void setDatePicked(String date) {
+    emit(state.copyWith(dateOfBirth: date));
+  }
+
+  void setGender(String gender) {
+    emit(state.copyWith(gender: gender));
+  }
+
+  void addInterest(String sport, int rating) {
+    final updatedInterests = Map<String, int>.from(state.selectedInterests);
+    updatedInterests[sport] = rating;
+    emit(state.copyWith(selectedInterests: updatedInterests));
+  }
+
+  void removeInterest(String sport) {
+    final updatedInterests = Map<String, int>.from(state.selectedInterests);
+    updatedInterests.remove(sport);
+    emit(state.copyWith(selectedInterests: updatedInterests));
+  }
+
+  void resetDetailsIndex() {
+    emit(state.copyWith(detailsIndex: 0));
   }
 }

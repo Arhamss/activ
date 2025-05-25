@@ -75,6 +75,11 @@ class AppRouter {
         path: AppRoutes.forgotPasswordScreen,
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
+      GoRoute(
+        name: AppRouteNames.addDetailsScreen,
+        path: AppRoutes.addDetailsScreen,
+        builder: (context, state) => const AddDetailsScreen(),
+      ),
     ],
   );
 }

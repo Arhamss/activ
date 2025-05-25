@@ -1,6 +1,34 @@
+import 'package:activ/utils/widgets/core_widgets/phone_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:phone_numbers_parser/phone_numbers_parser.dart';
 
 class FieldValidators {
+  static String? phoneNumberValidator(String? value, IsoCode? isoCode) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your phone number';
+    }
+
+    try {
+      final phoneNumber = PhoneNumber.parse(
+        value,
+        callerCountry: isoCode,
+      );
+
+      if (!phoneNumber.isValid()) {
+        return 'Please enter a valid phone number';
+      }
+
+      if (!phoneNumber.isValidLength()) {
+        return 'Please enter a complete phone number';
+      }
+
+      return null;
+    } catch (e) {
+      return 'Please enter a valid phone number';
+    }
+  }
+
   static String? emailValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your email';
@@ -91,13 +119,13 @@ class FieldValidators {
       return 'Please enter a date';
     }
 
-    final date = DateTime.tryParse(value);
+    final date = DateFormat('dd/MM/yyyy').tryParse(value);
     if (date == null) {
-      return 'Please enter a valid date';
+      return 'Please enter a valid date in DD/MM/YYYY format';
     }
 
-    if (date.isBefore(DateTime.now())) {
-      return 'Date must be greater than or equal to today';
+    if (date.isAfter(DateTime.now())) {
+      return 'Date must be in the past';
     }
 
     return null;

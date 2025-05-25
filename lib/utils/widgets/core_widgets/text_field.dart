@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:activ/exports.dart';
+import 'package:intl/intl.dart';
 
 enum ActivTextFieldType {
   email,
@@ -9,6 +10,7 @@ enum ActivTextFieldType {
   number,
   text,
   confirmPassword,
+  datePicker
 }
 
 class ActivTextField extends StatefulWidget {
@@ -85,7 +87,38 @@ class _ActivTextFieldState extends State<ActivTextField> {
       _errorText = typeError;
     });
 
-    return typeError; // Return the error to show in the form validation
+    return typeError; 
+  }
+
+  Future<void> _handleDatePicker() async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.tryParse(widget.controller.text) ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primaryColor,
+              onSurface: AppColors.primaryBrown,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primaryColor,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      final formattedDate = DateFormat('dd/MM/yyyy').format(picked);
+      widget.controller.text = formattedDate;
+      widget.onChanged?.call(formattedDate);
+    }
   }
 
   @override
@@ -94,12 +127,13 @@ class _ActivTextFieldState extends State<ActivTextField> {
         widget.type == ActivTextFieldType.confirmPassword;
     final isDescription = widget.type == ActivTextFieldType.description;
     final isNumber = widget.type == ActivTextFieldType.number;
+    final isDatePicker = widget.type == ActivTextFieldType.datePicker;
 
     final borderColor = _errorText != null
         ? AppColors.error
         : _focusNode.hasFocus
             ? AppColors.primaryColor
-            : AppColors.greyShade7;
+            : AppColors.greyShade6;
 
     final baseBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(
@@ -129,73 +163,89 @@ class _ActivTextFieldState extends State<ActivTextField> {
             ),
             const SizedBox(height: 8),
           ],
-          DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                isDescription ? 24 : widget.borderRadius ?? 12,
-              ),
-            ),
-            child: TextFormField(
-              focusNode: _focusNode,
-              controller: widget.controller,
-              obscureText: isPassword ? _obscureText : false,
-              readOnly: widget.readOnly ?? false,
-              keyboardType: isPassword
-                  ? TextInputType.visiblePassword
-                  : isNumber
-                      ? TextInputType.number
-                      : TextInputType.text,
-              maxLines: isDescription ? 5 : 1,
-              maxLength: isDescription
-                  ? widget.descriptionMaxCharacter
-                  : widget.regularMaxCharacter,
-              maxLengthEnforcement: MaxLengthEnforcement.enforced,
-              inputFormatters:
-                  isNumber ? [FilteringTextInputFormatter.digitsOnly] : null,
-              onChanged: widget.onChanged,
-              onTap: widget.onTap,
-              validator: _validate,
-              style: GoogleFonts.urbanist(
-                color: AppColors.primaryBrown,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-              cursorColor: AppColors.primaryBrown,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: AppColors.white,
-                counterText: '',
-                hintText: widget.hintText,
-                hintStyle: GoogleFonts.urbanist(
-                  color: AppColors.lightText,
-                  fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: isDatePicker ? _handleDatePicker : null,
+            child: AbsorbPointer(
+              absorbing: isDatePicker,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    isDescription ? 24 : widget.borderRadius ?? 12,
+                  ),
                 ),
-                errorStyle: const TextStyle(fontSize: 0, height: 0),
-                border: baseBorder,
-                enabledBorder: baseBorder,
-                focusedBorder: baseBorder,
-                errorBorder: baseBorder,
-                focusedErrorBorder: baseBorder,
-                prefixIconConstraints: const BoxConstraints(minWidth: 40),
-                suffixIconConstraints: const BoxConstraints(minWidth: 40),
-                prefixIcon: widget.prefixPath != null
-                    ? Padding(
-                        padding: const EdgeInsetsDirectional.only(start: 12),
-                        child: SvgPicture.asset(
-                          widget.prefixPath!,
-                          colorFilter:
-                              ColorFilter.mode(iconColor, BlendMode.srcIn),
-                        ),
-                      )
-                    : null,
-                suffixIcon: buildSuffixIcon(iconColor, isPassword),
-                contentPadding: isDescription
-                    ? const EdgeInsetsDirectional.only(start: 16, top: 24)
-                    : widget.contentPadding ??
-                        const EdgeInsetsDirectional.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
-                        ),
+                child: TextFormField(
+                  focusNode: _focusNode,
+                  controller: widget.controller,
+                  obscureText: isPassword ? _obscureText : false,
+                  readOnly: widget.readOnly ?? isDatePicker,
+                  keyboardType: isPassword
+                      ? TextInputType.visiblePassword
+                      : isNumber
+                          ? TextInputType.number
+                          : TextInputType.text,
+                  maxLines: isDescription ? 5 : 1,
+                  maxLength: isDescription
+                      ? widget.descriptionMaxCharacter
+                      : widget.regularMaxCharacter,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  inputFormatters: isNumber
+                      ? [FilteringTextInputFormatter.digitsOnly]
+                      : null,
+                  onChanged: widget.onChanged,
+                  onTap: widget.onTap,
+                  validator: _validate,
+                  style: context.b2.copyWith(
+                    color: AppColors.textDark,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
+                  cursorColor: AppColors.primaryBrown,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: AppColors.white,
+                    counterText: '',
+                    hintText: widget.hintText,
+                    hintStyle: context.b2.copyWith(
+                      color: AppColors.lightText,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                    ),
+                    errorStyle: const TextStyle(fontSize: 0, height: 0),
+                    border: baseBorder,
+                    enabledBorder: baseBorder,
+                    focusedBorder: baseBorder,
+                    errorBorder: baseBorder,
+                    focusedErrorBorder: baseBorder,
+                    prefixIconConstraints: const BoxConstraints(minWidth: 40),
+                    suffixIconConstraints: const BoxConstraints(minWidth: 40),
+                    prefixIcon: widget.prefixPath != null
+                        ? Padding(
+                            padding:
+                                const EdgeInsetsDirectional.only(start: 12),
+                            child: SvgPicture.asset(
+                              widget.prefixPath!,
+                              colorFilter:
+                                  ColorFilter.mode(iconColor, BlendMode.srcIn),
+                            ),
+                          )
+                        : null,
+                    suffixIcon: isDatePicker
+                        ? Padding(
+                            padding: const EdgeInsetsDirectional.only(end: 12),
+                            child: SvgPicture.asset(
+                              AssetPaths.calenderIcon,
+                            ),
+                          )
+                        : buildSuffixIcon(iconColor, isPassword),
+                    contentPadding: isDescription
+                        ? const EdgeInsetsDirectional.only(start: 16, top: 24)
+                        : widget.contentPadding ??
+                            const EdgeInsetsDirectional.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -219,8 +269,6 @@ class _ActivTextFieldState extends State<ActivTextField> {
     if (widget.suffixPath != null) {
       return SvgPicture.asset(
         widget.suffixPath!,
-        height: 18.18,
-        width: 20,
       );
     } else if (isPassword) {
       return GestureDetector(

@@ -1,5 +1,6 @@
 
 import 'package:activ/app/view/app_view.dart';
+import 'package:activ/l10n/arb/app_localizations.dart';
 import 'package:activ/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 

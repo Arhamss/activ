@@ -6,9 +6,8 @@ import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/image_picker.dart';
-import 'package:activ/utils/widgets/phone_textfield.dart';
+import 'package:activ/utils/widgets/core_widgets/phone_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class DetailsStep1Screen extends StatelessWidget {
   DetailsStep1Screen(this.constraints, {super.key});
@@ -30,8 +29,8 @@ class DetailsStep1Screen extends StatelessWidget {
               SizedBox(height: constraints.maxHeight * 0.1),
               ActivImagePicker(
                 imagePath: state.imagePath,
-                onImagePicked: (String) {
-                  context.read<OnboardingFlowCubit>().setImagePath(String);
+                onButtonPressed: () {
+                  context.read<OnboardingFlowCubit>().pickImage();
                 },
               ),
               const SizedBox(height: 24),
@@ -55,17 +54,21 @@ class DetailsStep1Screen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: constraints.maxHeight * 0.03),
-              PhoneInputField(
-                controller: phoneNumberController,
-                validator: FieldValidators.phoneNumberValidator,
+              SafeArea(
+                child: PhoneInputField(
+                  controller: phoneNumberController,
+                  validator: FieldValidators.phoneNumberValidator,
+                ),
               ),
               SizedBox(height: constraints.maxHeight * 0.03),
-              ActivTextField(
-                controller: dobController,
-                hintText: 'Date of Birth',
-                readOnly: true,
-                type: ActivTextFieldType.datePicker,
-                validator: FieldValidators.dateValidator,
+              SafeArea(
+                child: ActivTextField(
+                  controller: dobController,
+                  hintText: 'Date of Birth',
+                  readOnly: true,
+                  type: ActivTextFieldType.datePicker,
+                  validator: FieldValidators.dateValidator,
+                ),
               ),
               SizedBox(height: constraints.maxHeight * 0.05),
               ActivButton(
@@ -94,7 +97,7 @@ class DetailsStep1Screen extends StatelessWidget {
                         );
                   }
                 },
-                isLoading: state.screen1Done.isLoaded,
+                isLoading: false,
               ),
             ],
           ),

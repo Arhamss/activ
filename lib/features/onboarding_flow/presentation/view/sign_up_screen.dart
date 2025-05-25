@@ -89,7 +89,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           builder: (context, state) {
                             return ActivButton(
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {}
+                                if (_formKey.currentState!.validate()) {
+                                  context.pushNamed(
+                                    AppRouteNames.addDetailsScreen,
+                                  );
+                                }
                               },
                               text: Localization.nextText,
                               isLoading: state.signUp.isLoading,
@@ -101,7 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           children: [
                             const Expanded(
                               child: Divider(
-                                color: AppColors.greyShade7,
+                                color: AppColors.greyShade6,
                                 thickness: 1,
                               ),
                             ),
@@ -120,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                             const Expanded(
                               child: Divider(
-                                color: AppColors.greyShade7,
+                                color: AppColors.greyShade6,
                                 thickness: 1,
                               ),
                             ),

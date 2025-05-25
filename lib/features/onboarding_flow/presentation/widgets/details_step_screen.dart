@@ -17,34 +17,33 @@ class StepScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: Container(
-            width: constraints.maxWidth,
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              children: [
-                const SizedBox(height: 8),
-                Text(
-                  title,
-                  style: context.b2.copyWith(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.textPrimary,
-                  ),
+        return Container(
+          width: constraints.maxWidth,
+          height: constraints.maxHeight,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: ListView(
+            children: [
+              const SizedBox(height: 8),
+              Text(
+                title,
+                style: context.b2.copyWith(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textPrimary,
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  subtitle,
-                  style: context.b2.copyWith(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
-                  ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                subtitle,
+                style: context.b2.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textSecondary,
                 ),
-                const SizedBox(height: 24),
-                body(constraints),
-              ],
-            ),
+              ),
+              const SizedBox(height: 24),
+              body(constraints),
+            ],
           ),
         );
       },

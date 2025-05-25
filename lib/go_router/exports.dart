@@ -1,3 +1,4 @@
+import 'package:activ/features/onboarding_flow/presentation/view/add_details.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/forgot_password_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/intro_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/password_code_screen.dart';
