@@ -36,15 +36,84 @@ class Assets {
   static const String imagesIntro2 = 'assets/images/intro_2.png';
   static const String imagesIntro3 = 'assets/images/intro_3.png';
   static const String imagesLogo = 'assets/images/logo.png';
+  static const String interestIconsBadminton =
+      'assets/svgs/interest_icons/Badminton.svg';
+  static const String interestIconsBasketball =
+      'assets/svgs/interest_icons/Basketball.svg';
+  static const String interestIconsBowling =
+      'assets/svgs/interest_icons/Bowling.svg';
+  static const String interestIconsCricket =
+      'assets/svgs/interest_icons/Cricket.svg';
+  static const String interestIconsCycling =
+      'assets/svgs/interest_icons/Cycling.svg';
+  static const String interestIconsFitnessWorkouts =
+      'assets/svgs/interest_icons/Fitness_Workouts.svg';
+  static const String interestIconsFootball =
+      'assets/svgs/interest_icons/Football.svg';
+  static const String interestIconsGolf = 'assets/svgs/interest_icons/Golf.svg';
+  static const String interestIconsHandball =
+      'assets/svgs/interest_icons/Handball.svg';
+  static const String interestIconsMartialArts =
+      'assets/svgs/interest_icons/Martial_Arts.svg';
+  static const String interestIconsPadel =
+      'assets/svgs/interest_icons/Padel.svg';
+  static const String interestIconsRunning =
+      'assets/svgs/interest_icons/Running.svg';
+  static const String interestIconsSwimming =
+      'assets/svgs/interest_icons/Swimming.svg';
+  static const String interestIconsTableTennis =
+      'assets/svgs/interest_icons/Table_Tennis.svg';
+  static const String interestIconsTennis =
+      'assets/svgs/interest_icons/Tennis.svg';
+  static const String interestIconsVolleyball =
+      'assets/svgs/interest_icons/Volleyball.svg';
+  static const String sportsIconsBadminton =
+      'assets/svgs/sports_icons/badminton.svg';
+  static const String sportsIconsBasketball =
+      'assets/svgs/sports_icons/basketball.svg';
+  static const String sportsIconsBowling =
+      'assets/svgs/sports_icons/bowling.svg';
+  static const String sportsIconsCricket =
+      'assets/svgs/sports_icons/cricket.svg';
+  static const String sportsIconsCycling =
+      'assets/svgs/sports_icons/cycling.svg';
+  static const String sportsIconsFitnessWorkouts =
+      'assets/svgs/sports_icons/fitness_workouts.svg';
+  static const String sportsIconsFootball =
+      'assets/svgs/sports_icons/football.svg';
+  static const String sportsIconsGolf = 'assets/svgs/sports_icons/golf.svg';
+  static const String sportsIconsHandball =
+      'assets/svgs/sports_icons/handball.svg';
+  static const String sportsIconsMartialArts =
+      'assets/svgs/sports_icons/martial_arts.svg';
+  static const String sportsIconsPadel = 'assets/svgs/sports_icons/padel.svg';
+  static const String sportsIconsRunning =
+      'assets/svgs/sports_icons/running.svg';
+  static const String sportsIconsSwimming =
+      'assets/svgs/sports_icons/swimming.svg';
+  static const String sportsIconsTableTennis =
+      'assets/svgs/sports_icons/table_tennis.svg';
+  static const String sportsIconsTennis = 'assets/svgs/sports_icons/tennis.svg';
+  static const String sportsIconsVolleyball =
+      'assets/svgs/sports_icons/volleyball.svg';
   static const String svgsApple = 'assets/svgs/Apple.svg';
+  static const String svgsArrowDown = 'assets/svgs/arrow_down.svg';
+  static const String svgsCalendar = 'assets/svgs/calendar.svg';
   static const String svgsCheckmark = 'assets/svgs/checkmark.svg';
   static const String svgsEmail = 'assets/svgs/email.svg';
   static const String svgsEye = 'assets/svgs/eye.svg';
+  static const String svgsEyeSlash = 'assets/svgs/eye_slash.svg';
+  static const String svgsFemale = 'assets/svgs/female.svg';
+  static const String svgsFilledStar = 'assets/svgs/filled_star.svg';
+  static const String svgsGallery = 'assets/svgs/gallery.svg';
   static const String svgsGoogle = 'assets/svgs/Google.svg';
+  static const String svgsHalfStar = 'assets/svgs/half_star.svg';
   static const String svgsIntro1 = 'assets/svgs/intro_1.svg';
   static const String svgsIntro2 = 'assets/svgs/intro_2.svg';
   static const String svgsIntro3 = 'assets/svgs/intro_3.svg';
+  static const String svgsLogo = 'assets/svgs/logo.svg';
   static const String svgsLogoSmall = 'assets/svgs/logo_small.svg';
+  static const String svgsMale = 'assets/svgs/male.svg';
+  static const String svgsOutlinedStar = 'assets/svgs/outlined_star.svg';
   static const String svgsPassword = 'assets/svgs/password.svg';
-  static const String svgsVector = 'assets/svgs/Vector.png';
 }
