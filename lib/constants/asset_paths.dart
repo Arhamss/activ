@@ -18,8 +18,9 @@ class AssetPaths {
   static const femaleSVG = 'assets/svgs/female.svg';
   static const arrowDown = 'assets/svgs/arrow_down.svg';
   static const calenderIcon = 'assets/svgs/calendar.svg';
-  static const selectedStarIcon = 'assets/svgs/selected_star.svg';
-  static const unselectedStarIcon = 'assets/svgs/unselected_star.svg';
+  static const filledStarIcon = 'assets/svgs/filled_star.svg';
+  static const outlinedStarIcon = 'assets/svgs/outlined_star.svg';
+  static const halfStarIcon = 'assets/svgs/half_star.svg';
 
   //interest Icons
 

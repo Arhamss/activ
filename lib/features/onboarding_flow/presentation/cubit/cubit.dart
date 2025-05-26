@@ -1,7 +1,6 @@
+import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/core/models/api_response/api_response_model.dart';
-import 'package:activ/exports.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -226,20 +225,20 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
     emit(state.copyWith(imagePath: path));
   }
 
-  void setPhoneNumber(String phone) {
-    emit(state.copyWith(phoneNumber: phone));
-  }
-
-  void setFirstName(String firstName) {
-    emit(state.copyWith(firstName: firstName));
-  }
-
-  void setLastName(String lastName) {
-    emit(state.copyWith(lastName: lastName));
-  }
-
-  void setDatePicked(String date) {
-    emit(state.copyWith(dateOfBirth: date));
+  void setUserInfo({
+    required String firstName,
+    required String lastName,
+    required String phoneNumber,
+    required String dateOfBirth,
+  }) {
+    emit(
+      state.copyWith(
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        dateOfBirth: dateOfBirth,
+      ),
+    );
   }
 
   void setGender(String gender) {

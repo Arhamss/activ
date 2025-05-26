@@ -36,7 +36,7 @@ class AppRouter {
   }
 
   static final router = GoRouter(
-    initialLocation: AppRoutes.splash,
+    initialLocation: AppRoutes.profileSetupScreen,
     debugLogDiagnostics: true,
     navigatorKey: _rootNavigatorKey,
     routes: [
@@ -76,9 +76,9 @@ class AppRouter {
         builder: (context, state) => const ForgotPasswordScreen(),
       ),
       GoRoute(
-        name: AppRouteNames.addDetailsScreen,
-        path: AppRoutes.addDetailsScreen,
-        builder: (context, state) => const AddDetailsScreen(),
+        name: AppRouteNames.profileSetupScreen,
+        path: AppRoutes.profileSetupScreen,
+        builder: (context, state) => const ProfileSetupScreen(),
       ),
     ],
   );

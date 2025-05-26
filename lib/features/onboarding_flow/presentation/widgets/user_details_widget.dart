@@ -1,23 +1,27 @@
 import 'package:activ/core/field_validators.dart';
-import 'package:activ/core/locale/cubit/locale_cubit.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/l10n/localization_service.dart';
-import 'package:activ/utils/helpers/logger_helper.dart';
-import 'package:activ/utils/widgets/core_widgets/image_picker.dart';
 import 'package:activ/utils/widgets/core_widgets/phone_textfield.dart';
-import 'package:flutter/material.dart';
 
-class DetailsStep1Screen extends StatelessWidget {
-  DetailsStep1Screen(this.constraints, {super.key});
+class UserDetailsWidget extends StatelessWidget {
+  const UserDetailsWidget({
+    required this.constraints,
+    required this.firstNameController,
+    required this.lastNameController,
+    required this.dobController,
+    required this.phoneNumberController,
+    required this.formKey,
+    super.key,
+  });
 
   final BoxConstraints constraints;
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController dobController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+  final TextEditingController firstNameController;
+  final TextEditingController lastNameController;
+  final TextEditingController dobController;
+  final TextEditingController phoneNumberController;
+  final GlobalKey<FormState> formKey;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
@@ -26,7 +30,7 @@ class DetailsStep1Screen extends StatelessWidget {
           key: formKey,
           child: Column(
             children: [
-              SizedBox(height: constraints.maxHeight * 0.1),
+              SizedBox(height: constraints.maxHeight * 0.02),
               ActivImagePicker(
                 imagePath: state.imagePath,
                 onButtonPressed: () {
@@ -43,7 +47,7 @@ class DetailsStep1Screen extends StatelessWidget {
                       validator: FieldValidators.textValidator,
                     ),
                   ),
-                  const SizedBox(width: 16), // Add spacing between the fields
+                  const SizedBox(width: 16),
                   Expanded(
                     child: ActivTextField(
                       controller: lastNameController,
@@ -71,34 +75,6 @@ class DetailsStep1Screen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: constraints.maxHeight * 0.05),
-              ActivButton(
-                text: Localization.continueText,
-                onPressed: () {
-                  AppLogger.info(firstNameController.text);
-                  AppLogger.info(lastNameController.text);
-                  AppLogger.info(phoneNumberController.text);
-                  AppLogger.info(dobController.text);
-
-                  if (formKey.currentState!.validate()) {
-                    context.read<OnboardingFlowCubit>().setFirstName(
-                          firstNameController.text.trim(),
-                        );
-                    context.read<OnboardingFlowCubit>().setLastName(
-                          lastNameController.text.trim(),
-                        );
-                    context.read<OnboardingFlowCubit>().setPhoneNumber(
-                          phoneNumberController.text.trim(),
-                        );
-                    context.read<OnboardingFlowCubit>().setDatePicked(
-                          dobController.text.trim(),
-                        );
-                    context.read<OnboardingFlowCubit>().setDetailsIndex(
-                          state.detailsIndex + 1,
-                        );
-                  }
-                },
-                isLoading: false,
-              ),
             ],
           ),
         );

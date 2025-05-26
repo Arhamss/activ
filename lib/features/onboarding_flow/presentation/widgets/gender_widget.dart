@@ -1,13 +1,10 @@
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
-import 'package:activ/features/onboarding_flow/presentation/widgets/gender%20widget.dart';
-import 'package:activ/l10n/localization_service.dart';
-import 'package:activ/utils/helpers/logger_helper.dart';
-import 'package:flutter/material.dart';
+import 'package:activ/features/onboarding_flow/presentation/widgets/gender_card.dart';
 
-class DetailsStep2Screen extends StatelessWidget {
-  DetailsStep2Screen(this.constraints, {super.key});
+class GenderWidget extends StatelessWidget {
+  GenderWidget(this.constraints, {super.key});
 
   final BoxConstraints constraints;
   final formKey = GlobalKey<FormState>();
@@ -19,14 +16,13 @@ class DetailsStep2Screen extends StatelessWidget {
         return Form(
           key: formKey,
           child: Column(
-            mainAxisSize: MainAxisSize
-                .min, // Allow the column to shrink-wrap its children
+            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: constraints.maxHeight * 0.2),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  GenderOptionWidget(
+                  GenderCard(
                     svgAsset: AssetPaths.maleSVG,
                     title: 'Male',
                     isSelected: state.gender == 'male',
@@ -34,7 +30,7 @@ class DetailsStep2Screen extends StatelessWidget {
                         context.read<OnboardingFlowCubit>().setGender('male'),
                   ),
                   const SizedBox(width: 16),
-                  GenderOptionWidget(
+                  GenderCard(
                     svgAsset: AssetPaths.femaleSVG,
                     title: 'Female',
                     isSelected: state.gender == 'female',
@@ -42,19 +38,6 @@ class DetailsStep2Screen extends StatelessWidget {
                         context.read<OnboardingFlowCubit>().setGender('female'),
                   ),
                 ],
-              ),
-              SizedBox(height: constraints.maxHeight * 0.25),
-              SafeArea(
-                child: ActivButton(
-                  disabled: state.gender.isEmpty,
-                  text: Localization.continueText,
-                  onPressed: () {
-                    context.read<OnboardingFlowCubit>().setDetailsIndex(
-                          state.detailsIndex + 1,
-                        );
-                  },
-                  isLoading: false,
-                ),
               ),
             ],
           ),

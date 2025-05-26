@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   context.pushNamed(
-                                    AppRouteNames.addDetailsScreen,
+                                    AppRouteNames.profileSetupScreen,
                                   );
                                 }
                               },
