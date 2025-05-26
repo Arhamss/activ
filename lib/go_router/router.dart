@@ -36,7 +36,7 @@ class AppRouter {
   }
 
   static final router = GoRouter(
-    initialLocation: AppRoutes.profileSetupScreen,
+    initialLocation: AppRoutes.splash,
     debugLogDiagnostics: true,
     navigatorKey: _rootNavigatorKey,
     routes: [

@@ -6,6 +6,7 @@ import 'package:activ/features/onboarding_flow/presentation/widgets/gender_widge
 import 'package:activ/features/onboarding_flow/presentation/widgets/sports_selection_widget.dart';
 import 'package:activ/features/onboarding_flow/presentation/widgets/user_details_widget.dart';
 import 'package:activ/l10n/localization_service.dart';
+import 'package:activ/utils/helpers/focus_handler.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:flutter/services.dart';
 
@@ -26,59 +27,64 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        backgroundColor: Colors.transparent,
-        leading: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-          builder: (context, state) {
-            return IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                color: AppColors.textPrimary,
-              ),
-              onPressed: () {
-                final currentIndex =
-                    context.read<OnboardingFlowCubit>().state.detailsIndex;
-                if (currentIndex > 0) {
-                  context
-                      .read<OnboardingFlowCubit>()
-                      .setDetailsIndex(currentIndex - 1);
-                } else {
-                  context.pop();
-                }
-              },
-            );
-          },
-        ),
-        actions: [
-          BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+    return FocusHandler(
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        appBar: AppBar(
+          forceMaterialTransparency: true,
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          backgroundColor: Colors.transparent,
+          leading: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
             builder: (context, state) {
-              return Container(
-                width: 100,
-                height: 10,
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: LinearProgressIndicator(
-                  value:
-                      (context.read<OnboardingFlowCubit>().state.detailsIndex +
-                              1) /
-                          _totalSteps,
-                  backgroundColor: AppColors.inactiveProgressBar,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    AppColors.activeDetailsProgressBar,
-                  ),
-                  minHeight: 8,
-                  borderRadius: BorderRadius.circular(100),
+              return IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: AppColors.textPrimary,
                 ),
+                onPressed: () {
+                  final currentIndex =
+                      context.read<OnboardingFlowCubit>().state.detailsIndex;
+                  if (currentIndex > 0) {
+                    context
+                        .read<OnboardingFlowCubit>()
+                        .setDetailsIndex(currentIndex - 1);
+                  } else {
+                    context.pop();
+                  }
+                },
               );
             },
           ),
-        ],
+          actions: [
+            BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+              builder: (context, state) {
+                return Container(
+                  width: 100,
+                  height: 10,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: LinearProgressIndicator(
+                    value: (context
+                                .read<OnboardingFlowCubit>()
+                                .state
+                                .detailsIndex +
+                            1) /
+                        _totalSteps,
+                    backgroundColor: AppColors.inactiveProgressBar,
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      AppColors.activeDetailsProgressBar,
+                    ),
+                    minHeight: 8,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        body: _buildCurrentStepBody(),
+        bottomNavigationBar: _buildBottomNavigation(),
       ),
-      body: _buildCurrentStepBody(),
-      bottomNavigationBar: _buildBottomNavigation(),
     );
   }
 
@@ -141,6 +147,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             phoneNumber: _phoneNumberController.text.trim(),
                             dateOfBirth: _dobController.text.trim(),
                           );
+
                       context
                           .read<OnboardingFlowCubit>()
                           .setDetailsIndex(state.detailsIndex + 1);
@@ -185,41 +192,6 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             return const SizedBox.shrink();
         }
       },
-    );
-  }
-}
-
-class StepNavigationButton extends StatelessWidget {
-  const StepNavigationButton({
-    required this.currentIndex,
-    required this.totalSteps,
-    super.key,
-  });
-
-  final int currentIndex;
-  final int totalSteps;
-
-  @override
-  Widget build(BuildContext context) {
-    final isLastStep = currentIndex == totalSteps - 1;
-
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: ActivButton(
-          disabled: currentIndex == 0,
-          text: Localization.continueText,
-          onPressed: () {
-            if (isLastStep) {
-            } else if (currentIndex == 0) {
-              context.read<OnboardingFlowCubit>().setDetailsIndex(
-                    currentIndex + 1,
-                  );
-            }
-          },
-          isLoading: false,
-        ),
-      ),
     );
   }
 }
