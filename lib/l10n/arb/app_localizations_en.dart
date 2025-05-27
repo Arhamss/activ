@@ -178,7 +178,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get forgotPasswordSubtitle =>
-      'Don’t worry — it happens to the best of us. Let’s reset your password.';
+      'Don\'t worry — it happens to the best of us. Let\'s reset your password.';
 
   @override
   String get signInToContinue => 'Sign in to continue & join the action!';
@@ -243,9 +243,149 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resetCodeSubtitle =>
-      'We’ve sent a 6-digit code to your email. Please enter it below to verify your identity.';
+      'We\'ve sent a 6-digit code to your email. Please enter it below to verify your identity.';
 
   @override
   String get resetPasswordSubtitle =>
       'Enter your new password below to reset it.';
+
+  @override
+  String get signInSuccess => 'Signed In Successfully';
+
+  @override
+  String get failedToLoadSports => 'Failed to Load Sports';
+
+  @override
+  String get enterPhoneNumber => 'Please enter your phone number';
+
+  @override
+  String get enterValidPhoneNumber => 'Please enter a valid phone number';
+
+  @override
+  String get enterCompletePhoneNumber => 'Please enter a complete phone number';
+
+  @override
+  String get enterEmail => 'Please enter your email';
+
+  @override
+  String get enterValidEmail => 'Please enter a valid email';
+
+  @override
+  String get enterPassword => 'Please enter your password';
+
+  @override
+  String get passwordTooShortMessage =>
+      'Please enter a password greater than 6 characters';
+
+  @override
+  String get passwordTooLongMessage =>
+      'Please enter a password less than 100 characters';
+
+  @override
+  String get confirmYourPassword => 'Please confirm your password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get enterName => 'Please enter the name';
+
+  @override
+  String get invalidNameFormat =>
+      'Name can only contain letters, spaces, hyphens, and apostrophes';
+
+  @override
+  String get nameTooShort => 'Name must be at least 2 characters long';
+
+  @override
+  String get nameTooLong => 'Name must be less than 30 characters';
+
+  @override
+  String get enterText => 'Please enter the text';
+
+  @override
+  String get enterNumber => 'Please enter a number';
+
+  @override
+  String get enterValidNumber => 'Please enter a valid number';
+
+  @override
+  String numberMustBeGreaterThan(int min) {
+    return 'Number must be greater than or equal to $min';
+  }
+
+  @override
+  String numberMustBeLessThan(int max) {
+    return 'Number must be less than or equal to $max';
+  }
+
+  @override
+  String get enterDate => 'Please enter a date';
+
+  @override
+  String get enterValidDateFormat =>
+      'Please enter a valid date in DD/MM/YYYY format';
+
+  @override
+  String get dateMustBeInPast => 'Date must be in the past';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String get firstName => 'First Name';
+
+  @override
+  String get lastName => 'Last Name';
+
+  @override
+  String get dateOfBirth => 'Date of Birth';
+
+  @override
+  String get viewAll => 'View All';
+
+  @override
+  String get profileSetupDetailsTitle => 'Tell me some details please?';
+
+  @override
+  String get profileSetupDetailsSubtitle =>
+      'Please provide a few details to help your friend find your activ account';
+
+  @override
+  String get profileSetupGenderTitle => 'What is your Gender?';
+
+  @override
+  String get profileSetupGenderSubtitle =>
+      'This helps us find you more relevant content';
+
+  @override
+  String get profileSetupInterestsTitle => 'What are your interests?';
+
+  @override
+  String get profileSetupInterestsSubtitle =>
+      'Select your interests to personalize your experience';
+
+  @override
+  String get unexpectedStepIndex => 'Unexpected step index.';
+
+  @override
+  String get onboardingCompleted => 'Onboarding Completed!!';
+
+  @override
+  String get male => 'Male';
+
+  @override
+  String get female => 'Female';
+
+  @override
+  String howDoYouRateYourselfIn(String sportName) {
+    return 'How do you rate yourself in $sportName?';
+  }
+
+  @override
+  String get thisHelpsUsFindAndConnectYouToRelevantPeople =>
+      'This helps us find and connect you to relevant people';
 }

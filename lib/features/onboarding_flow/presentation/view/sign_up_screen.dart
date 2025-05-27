@@ -21,6 +21,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    context.read<OnboardingFlowCubit>().resetSignUp();
+    context.read<OnboardingFlowCubit>().resetAllSignIn();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -30,21 +37,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
             listener: (context, state) {
               if (state.signUp.isFailure) {
-                ToastHelper.showInfoToast(
+                ToastHelper.showErrorToast(
                   state.signUp.errorMessage ?? Localization.failedToSignUpUser,
                 );
+                context.read<OnboardingFlowCubit>().resetSignUp();
+                context.read<OnboardingFlowCubit>().resetAllSignIn();
+              } else if (state.signUp.isLoaded) {
+                context.goNamed(AppRouteNames.profileSetupScreen);
               } else if (state.signInWithGoogle.isLoaded) {
-                ToastHelper.showInfoToast(
-                  Localization.successfullySignedInWithGoogle,
-                );
-                //context.goNamed(AppRouteNames.selectLocation);
+                context.goNamed(AppRouteNames.profileSetupScreen);
               } else if (state.signInWithGoogle.isFailure) {
-                ToastHelper.showInfoToast(
+                ToastHelper.showErrorToast(
                   state.signInWithGoogle.errorMessage ??
                       Localization.failedToSignInWithGoogle,
                 );
-              } else if (state.signUp.isLoaded) {
-                //context.goNamed(AppRouteNames.selectLocation);
+                context.read<OnboardingFlowCubit>().resetAllSignIn();
+                context.read<OnboardingFlowCubit>().resetSignUp();
+              } else if (state.signInWithApple.isLoaded) {
+                context.goNamed(AppRouteNames.profileSetupScreen);
+              } else if (state.signInWithApple.isFailure) {
+                ToastHelper.showErrorToast(
+                  state.signInWithApple.errorMessage ??
+                      Localization.failedToSignInUser,
+                );
+                context.read<OnboardingFlowCubit>().resetAllSignIn();
+                context.read<OnboardingFlowCubit>().resetSignUp();
               }
             },
             child: LayoutBuilder(
@@ -90,9 +107,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             return ActivButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  context.pushNamed(
-                                    AppRouteNames.profileSetupScreen,
-                                  );
+                                  context.read<OnboardingFlowCubit>().signUp(
+                                        emailController.text,
+                                        passwordController.text,
+                                      );
                                 }
                               },
                               text: Localization.nextText,
@@ -134,7 +152,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
                           builder: (context, state) {
                             return SocialButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await context
+                                    .read<OnboardingFlowCubit>()
+                                    .signInWithGoogle();
+                              },
                               text: Localization.continueWithGoogle,
                               svgPath: AssetPaths.googleIcon,
                             );
@@ -144,7 +166,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
                           builder: (context, state) {
                             return SocialButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await context
+                                    .read<OnboardingFlowCubit>()
+                                    .signInWithApple();
+                              },
                               text: Localization.continieWithApple,
                               svgPath: AssetPaths.appleIcon,
                             );

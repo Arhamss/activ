@@ -8,6 +8,7 @@ import 'package:activ/features/onboarding_flow/presentation/widgets/user_details
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/focus_handler.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
+import 'package:activ/utils/widgets/core_widgets/phone_textfield.dart';
 import 'package:flutter/services.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
@@ -96,9 +97,8 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
           switch (context.watch<OnboardingFlowCubit>().state.detailsIndex) {
             case 0:
               return StepWidget(
-                title: 'Tell me some details please?',
-                subtitle:
-                    'Please provide a few details to help your friend find your activ account',
+                title: Localization.profileSetupDetailsTitle,
+                subtitle: Localization.profileSetupDetailsSubtitle,
                 body: (constraints) => UserDetailsWidget(
                   constraints: constraints,
                   firstNameController: _firstNameController,
@@ -109,20 +109,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 ),
               );
             case 1:
-              return const StepWidget(
-                title: 'What is your Gender?',
-                subtitle: 'This helps us find you more relevant content',
+              return StepWidget(
+                title: Localization.profileSetupGenderTitle,
+                subtitle: Localization.profileSetupGenderSubtitle,
                 body: GenderWidget.new,
               );
             case 2:
-              return const StepWidget(
-                title: 'What are your interests?',
-                subtitle:
-                    'Select your interests to personalize your experience',
+              return StepWidget(
+                title: Localization.profileSetupInterestsTitle,
+                subtitle: Localization.profileSetupInterestsSubtitle,
                 body: SportsSelectionWidget.new,
               );
             default:
-              return const Center(child: Text('Unexpected step index.'));
+              return Center(child: Text(Localization.unexpectedStepIndex));
           }
         },
       ),
@@ -141,10 +140,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                   text: Localization.continueText,
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      final phoneState = context.read<PhoneFieldCubit>().state;
+                      final formattedPhone =
+                          '+${phoneState.country.phoneCode}${_phoneNumberController.text.trim()}';
+
                       context.read<OnboardingFlowCubit>().setUserInfo(
                             firstName: _firstNameController.text.trim(),
                             lastName: _lastNameController.text.trim(),
-                            phoneNumber: _phoneNumberController.text.trim(),
+                            phoneNumber: formattedPhone,
                             dateOfBirth: _dobController.text.trim(),
                           );
 
@@ -179,12 +182,13 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: ActivButton(
-                  disabled: state.selectedInterests.isEmpty,
-                  text: 'Next',
+                  disabled: state.selectedInterests.isEmpty ||
+                      state.completeOnboarding.isLoading,
+                  text: Localization.nextText,
                   onPressed: () {
-                    ToastHelper.showSuccessToast('Onboarding Completed!!');
+                    context.read<OnboardingFlowCubit>().completeOnboarding();
                   },
-                  isLoading: false,
+                  isLoading: state.completeOnboarding.isLoading,
                 ),
               ),
             );

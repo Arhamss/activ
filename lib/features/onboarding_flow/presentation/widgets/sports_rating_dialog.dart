@@ -1,4 +1,5 @@
 import 'package:activ/exports.dart';
+import 'package:activ/l10n/localization_service.dart';
 import 'package:equatable/equatable.dart';
 
 class SportRatingDialog extends StatefulWidget {
@@ -19,8 +20,7 @@ class _SportRatingDialogState extends State<SportRatingDialog> {
   @override
   void initState() {
     super.initState();
-    currentRating =
-        context.read<SportsDialogCubit>().state.selectedRating.toDouble();
+    currentRating = context.read<SportsDialogCubit>().state.selectedRating;
   }
 
   void _updateRatingFromDrag(DragUpdateDetails details) {
@@ -83,7 +83,7 @@ class _SportRatingDialogState extends State<SportRatingDialog> {
           children: [
             const SizedBox(height: 24),
             Text(
-              'How do you rate yourself in ${widget.sportName}?',
+              Localization.howDoYouRateYourselfIn(widget.sportName),
               textAlign: TextAlign.center,
               style: context.b2.copyWith(
                 fontSize: 22,
@@ -93,7 +93,7 @@ class _SportRatingDialogState extends State<SportRatingDialog> {
             ),
             const SizedBox(height: 16),
             Text(
-              'This helps us find and connect you to relevant people',
+              Localization.thisHelpsUsFindAndConnectYouToRelevantPeople,
               textAlign: TextAlign.center,
               style: context.b2.copyWith(
                 fontSize: 16,

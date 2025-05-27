@@ -2,6 +2,7 @@ import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/features/onboarding_flow/presentation/widgets/gender_card.dart';
+import 'package:activ/l10n/localization_service.dart';
 
 class GenderWidget extends StatelessWidget {
   GenderWidget(this.constraints, {super.key});
@@ -24,7 +25,7 @@ class GenderWidget extends StatelessWidget {
                 children: [
                   GenderCard(
                     svgAsset: AssetPaths.maleSVG,
-                    title: 'Male',
+                    title: Localization.male,
                     isSelected: state.gender == 'male',
                     onTap: () =>
                         context.read<OnboardingFlowCubit>().setGender('male'),
@@ -32,7 +33,7 @@ class GenderWidget extends StatelessWidget {
                   const SizedBox(width: 16),
                   GenderCard(
                     svgAsset: AssetPaths.femaleSVG,
-                    title: 'Female',
+                    title: Localization.female,
                     isSelected: state.gender == 'female',
                     onTap: () =>
                         context.read<OnboardingFlowCubit>().setGender('female'),

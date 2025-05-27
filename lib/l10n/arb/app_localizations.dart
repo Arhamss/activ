@@ -431,7 +431,7 @@ abstract class AppLocalizations {
   /// No description provided for @forgotPasswordSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Don’t worry — it happens to the best of us. Let’s reset your password.'**
+  /// **'Don\'t worry — it happens to the best of us. Let\'s reset your password.'**
   String get forgotPasswordSubtitle;
 
   /// No description provided for @signInToContinue.
@@ -551,7 +551,7 @@ abstract class AppLocalizations {
   /// No description provided for @resetCodeSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'We’ve sent a 6-digit code to your email. Please enter it below to verify your identity.'**
+  /// **'We\'ve sent a 6-digit code to your email. Please enter it below to verify your identity.'**
   String get resetCodeSubtitle;
 
   /// No description provided for @resetPasswordSubtitle.
@@ -559,6 +559,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter your new password below to reset it.'**
   String get resetPasswordSubtitle;
+
+  /// No description provided for @signInSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed In Successfully'**
+  String get signInSuccess;
+
+  /// No description provided for @failedToLoadSports.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to Load Sports'**
+  String get failedToLoadSports;
+
+  /// No description provided for @enterPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get enterPhoneNumber;
+
+  /// No description provided for @enterValidPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number'**
+  String get enterValidPhoneNumber;
+
+  /// No description provided for @enterCompletePhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a complete phone number'**
+  String get enterCompletePhoneNumber;
+
+  /// No description provided for @enterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get enterEmail;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email'**
+  String get enterValidEmail;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get enterPassword;
+
+  /// No description provided for @passwordTooShortMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a password greater than 6 characters'**
+  String get passwordTooShortMessage;
+
+  /// No description provided for @passwordTooLongMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a password less than 100 characters'**
+  String get passwordTooLongMessage;
+
+  /// No description provided for @confirmYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password'**
+  String get confirmYourPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @enterName.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the name'**
+  String get enterName;
+
+  /// No description provided for @invalidNameFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Name can only contain letters, spaces, hyphens, and apostrophes'**
+  String get invalidNameFormat;
+
+  /// No description provided for @nameTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be at least 2 characters long'**
+  String get nameTooShort;
+
+  /// No description provided for @nameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be less than 30 characters'**
+  String get nameTooLong;
+
+  /// No description provided for @enterText.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the text'**
+  String get enterText;
+
+  /// No description provided for @enterNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a number'**
+  String get enterNumber;
+
+  /// No description provided for @enterValidNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid number'**
+  String get enterValidNumber;
+
+  /// Message shown when number is less than minimum
+  ///
+  /// In en, this message translates to:
+  /// **'Number must be greater than or equal to {min}'**
+  String numberMustBeGreaterThan(int min);
+
+  /// Message shown when number exceeds maximum
+  ///
+  /// In en, this message translates to:
+  /// **'Number must be less than or equal to {max}'**
+  String numberMustBeLessThan(int max);
+
+  /// No description provided for @enterDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a date'**
+  String get enterDate;
+
+  /// No description provided for @enterValidDateFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid date in DD/MM/YYYY format'**
+  String get enterValidDateFormat;
+
+  /// No description provided for @dateMustBeInPast.
+  ///
+  /// In en, this message translates to:
+  /// **'Date must be in the past'**
+  String get dateMustBeInPast;
+
+  /// No description provided for @today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// No description provided for @yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// No description provided for @firstName.
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get firstName;
+
+  /// No description provided for @lastName.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get lastName;
+
+  /// No description provided for @dateOfBirth.
+  ///
+  /// In en, this message translates to:
+  /// **'Date of Birth'**
+  String get dateOfBirth;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// No description provided for @profileSetupDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell me some details please?'**
+  String get profileSetupDetailsTitle;
+
+  /// No description provided for @profileSetupDetailsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Please provide a few details to help your friend find your activ account'**
+  String get profileSetupDetailsSubtitle;
+
+  /// No description provided for @profileSetupGenderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What is your Gender?'**
+  String get profileSetupGenderTitle;
+
+  /// No description provided for @profileSetupGenderSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us find you more relevant content'**
+  String get profileSetupGenderSubtitle;
+
+  /// No description provided for @profileSetupInterestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What are your interests?'**
+  String get profileSetupInterestsTitle;
+
+  /// No description provided for @profileSetupInterestsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your interests to personalize your experience'**
+  String get profileSetupInterestsSubtitle;
+
+  /// No description provided for @unexpectedStepIndex.
+  ///
+  /// In en, this message translates to:
+  /// **'Unexpected step index.'**
+  String get unexpectedStepIndex;
+
+  /// No description provided for @onboardingCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Onboarding Completed!!'**
+  String get onboardingCompleted;
+
+  /// No description provided for @male.
+  ///
+  /// In en, this message translates to:
+  /// **'Male'**
+  String get male;
+
+  /// No description provided for @female.
+  ///
+  /// In en, this message translates to:
+  /// **'Female'**
+  String get female;
+
+  /// Question asking user to rate their skill in a sport
+  ///
+  /// In en, this message translates to:
+  /// **'How do you rate yourself in {sportName}?'**
+  String howDoYouRateYourselfIn(String sportName);
+
+  /// No description provided for @thisHelpsUsFindAndConnectYouToRelevantPeople.
+  ///
+  /// In en, this message translates to:
+  /// **'This helps us find and connect you to relevant people'**
+  String get thisHelpsUsFindAndConnectYouToRelevantPeople;
 }
 
 class _AppLocalizationsDelegate

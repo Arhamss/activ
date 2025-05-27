@@ -1,9 +1,14 @@
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
+import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
   OnboardingFlowCubit({required this.repository})
@@ -11,121 +16,121 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
 
   final OnboardingFlowRepository repository;
 
-  // Future<void> signIn(String email, String password) async {
-  //   emit(state.copyWith(signIn: const DataState.loading()));
-  //   try {
-  //     final response = await repository.signIn(email, password);
+  Future<void> signIn(String email, String password) async {
+    emit(state.copyWith(signIn: const DataState.loading()));
+    try {
+      final response = await repository.signIn(email, password);
 
-  //     if (response.isSuccess) {
-  //       emit(
-  //         state.copyWith(
-  //           signIn: DataState.loaded(
-  //             data: response.data,
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           signIn: DataState.failure(error: response.message),
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     emit(state.copyWith(signIn: DataState.failure(error: e.toString())));
-  //   }
-  // }
+      if (response.isSuccess) {
+        emit(
+          state.copyWith(
+            signIn: DataState.loaded(
+              data: response.data,
+            ),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            signIn: DataState.failure(error: response.message),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(state.copyWith(signIn: DataState.failure(error: e.toString())));
+    }
+  }
 
-  // Future<void> signUp(String name, String email, String password) async {
-  //   emit(state.copyWith(signUp: const DataState.loading()));
-  //   try {
-  //     final response = await repository.signUp(name, email, password);
+  Future<void> signUp(String email, String password) async {
+    emit(state.copyWith(signUp: const DataState.loading()));
+    try {
+      final response = await repository.signUp(email, password);
 
-  //     if (response.isSuccess) {
-  //       emit(
-  //         state.copyWith(
-  //           signUp: DataState.loaded(
-  //             data: response.data,
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           signUp: DataState.failure(error: response.message),
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     emit(state.copyWith(signUp: DataState.failure(error: e.toString())));
-  //   }
-  // }
+      if (response.isSuccess) {
+        emit(
+          state.copyWith(
+            signUp: DataState.loaded(
+              data: response.data,
+            ),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            signUp: DataState.failure(error: response.message),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(state.copyWith(signUp: DataState.failure(error: e.toString())));
+    }
+  }
 
-  // Future<void> signInWithGoogle() async {
-  //   emit(state.copyWith(signInWithGoogle: const DataState.loading()));
-  //   try {
-  //     final response = await repository.signInWithGoogle();
+  Future<void> signInWithGoogle() async {
+    emit(state.copyWith(signInWithGoogle: const DataState.loading()));
+    try {
+      final response = await repository.signInWithGoogle();
 
-  //     if (response.isSuccess) {
-  //       emit(
-  //         state.copyWith(
-  //           signInWithGoogle: DataState.loaded(
-  //             data: response.data,
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           signInWithGoogle: DataState.failure(error: response.message),
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     emit(
-  //       state.copyWith(
-  //         signInWithGoogle: DataState.failure(error: e.toString()),
-  //       ),
-  //     );
-  //   }
-  // }
+      if (response.isSuccess) {
+        emit(
+          state.copyWith(
+            signInWithGoogle: DataState.loaded(
+              data: response.data,
+            ),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            signInWithGoogle: DataState.failure(error: response.message),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          signInWithGoogle: DataState.failure(error: e.toString()),
+        ),
+      );
+    }
+  }
 
-  // Future<void> signInWithApple() async {
-  //   emit(state.copyWith(signInWithApple: const DataState.loading()));
-  //   try {
-  //     final response = await repository.signInWithApple();
+  Future<void> signInWithApple() async {
+    emit(state.copyWith(signInWithApple: const DataState.loading()));
+    try {
+      final response = await repository.signInWithApple();
 
-  //     if (response.isSuccess) {
-  //       emit(
-  //         state.copyWith(
-  //           signInWithApple: DataState.loaded(
-  //             data: response.data,
-  //           ),
-  //         ),
-  //       );
-  //     } else {
-  //       emit(
-  //         state.copyWith(
-  //           signInWithApple: DataState.failure(error: response.message),
-  //         ),
-  //       );
-  //     }
-  //   } catch (e) {
-  //     emit(
-  //       state.copyWith(
-  //         signInWithApple: DataState.failure(error: e.toString()),
-  //       ),
-  //     );
-  //   }
-  // }
+      if (response.isSuccess) {
+        emit(
+          state.copyWith(
+            signInWithApple: DataState.loaded(
+              data: response.data,
+            ),
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            signInWithApple: DataState.failure(error: response.message),
+          ),
+        );
+      }
+    } catch (e) {
+      emit(
+        state.copyWith(
+          signInWithApple: DataState.failure(error: e.toString()),
+        ),
+      );
+    }
+  }
 
   Future<void> forgotPassword(String email) async {
     emit(state.copyWith(forgotPassword: const DataState.loading()));
     try {
-      // final response = await repository.forgotPassword(email);
-      //AppLogger.info('Forgot password response: ${response.isSuccess}');
+      final response = await repository.forgotPassword(email);
+      AppLogger.info('Forgot password response: ${response.isSuccess}');
 
-      if (1 == 1) {
+      if (response.isSuccess) {
         emit(
           state.copyWith(
             forgotPassword: const DataState.loaded(),
@@ -166,10 +171,10 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
         return;
       }
 
-      // final response = await repository.resetPassword(code, password);
-      // AppLogger.info('Reset password response: ${response.isSuccess}');
+      final response = await repository.resetPassword(code, password);
+      AppLogger.info('Reset password response: ${response.isSuccess}');
 
-      if (1 == 1) {
+      if (response.isSuccess) {
         AppLogger.info('Password reset successful');
         emit(
           state.copyWith(
@@ -196,17 +201,86 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
 
   Future<void> pickImage() async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+      );
+
       if (image != null) {
-        emit(state.copyWith(imagePath: image.path));
+        emit(state.copyWith(imagePath: image));
+      }
+    } catch (e, stackTrace) {
+      AppLogger.error('Error picking image:', e, stackTrace);
+    }
+  }
+
+  Future<void> getAllSports() async {
+    emit(state.copyWith(sports: const DataState.loading()));
+    try {
+      final response = await repository.getAllSports();
+      if (response.isSuccess) {
+        emit(state.copyWith(sports: DataState.loaded(data: response.data)));
+      } else {
+        emit(
+          state.copyWith(sports: DataState.failure(error: response.message)),
+        );
       }
     } catch (e) {
-      AppLogger.error('Error picking image: $e');
+      emit(
+        state.copyWith(
+          sports: DataState.failure(error: Localization.failedToLoadSports),
+        ),
+      );
+    }
+  }
+
+  Future<void> checkOnboardingStatus() async {
+    final response = await repository.onboarded();
+    if (response.isSuccess) {
+      emit(state.copyWith(onboarded: DataState.loaded(data: response.data)));
+    } else {
+      emit(
+        state.copyWith(
+          onboarded: DataState.failure(error: response.message),
+        ),
+      );
+    }
+  }
+
+  Future<void> completeOnboarding() async {
+    emit(state.copyWith(completeOnboarding: const DataState.loading()));
+    final response = await repository.completeOnboarding(
+      state.firstName,
+      state.lastName,
+      state.dateOfBirth,
+      state.gender,
+      state.phoneNumber,
+      state.selectedInterests,
+      state.imagePath,
+    );
+
+    if (response.isSuccess) {
+      emit(state.copyWith(completeOnboarding: const DataState.loaded()));
+    } else {
+      emit(
+        state.copyWith(
+          completeOnboarding: DataState.failure(error: response.message),
+        ),
+      );
     }
   }
 
   void setPinCodeEntered(bool value) {
     emit(state.copyWith(pinCodeEntered: value));
+  }
+
+  void resetSignUp() {
+    emit(state.copyWith(signUp: const DataState.initial()));
+  }
+
+  void resetAllSignIn() {
+    emit(state.copyWith(signIn: const DataState.initial()));
+    emit(state.copyWith(signInWithGoogle: const DataState.initial()));
+    emit(state.copyWith(signInWithApple: const DataState.initial()));
   }
 
   void resetForgotPassword() {
@@ -221,9 +295,6 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
     emit(state.copyWith(detailsIndex: index));
   }
 
-  void setImagePath(String path) {
-    emit(state.copyWith(imagePath: path));
-  }
 
   void setUserInfo({
     required String firstName,
@@ -245,14 +316,14 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
     emit(state.copyWith(gender: gender));
   }
 
-  void addInterest(String sport, int rating) {
-    final updatedInterests = Map<String, int>.from(state.selectedInterests);
+  void addInterest(String sport, double rating) {
+    final updatedInterests = Map<String, double>.from(state.selectedInterests);
     updatedInterests[sport] = rating;
     emit(state.copyWith(selectedInterests: updatedInterests));
   }
 
   void removeInterest(String sport) {
-    final updatedInterests = Map<String, int>.from(state.selectedInterests);
+    final updatedInterests = Map<String, double>.from(state.selectedInterests);
     updatedInterests.remove(sport);
     emit(state.copyWith(selectedInterests: updatedInterests));
   }

@@ -61,6 +61,8 @@ class _PasswordCodeState extends State<PasswordCode> {
                     ),
                     SizedBox(height: constraints.maxHeight * 0.05),
                     Pinput(
+                      keyboardType: TextInputType.text,
+                      
                       controller: _codeController,
                       length: 6,
                       defaultPinTheme: PinTheme(
