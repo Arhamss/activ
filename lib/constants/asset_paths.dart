@@ -40,4 +40,10 @@ class AssetPaths {
   static const handBallIcon = 'assets/svgs/sports_icons/handball.svg';
   static const martialArtsIcon = 'assets/svgs/sports_icons/martial_arts.svg';
   static const padelIcon = 'assets/svgs/sports_icons/padel.svg';
+
+  //navbar icons
+  static const homeNavbarIcon = 'assets/svgs/navigation/home.svg';
+  static const searchNavbarIcon = 'assets/svgs/navigation/search.svg';
+  static const chatNavbarIcon = 'assets/svgs/navigation/chat.svg';
+  static const profileNavbarIcon = 'assets/svgs/navigation/profile.svg';
 }

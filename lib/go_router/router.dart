@@ -80,6 +80,24 @@ class AppRouter {
         path: AppRoutes.profileSetupScreen,
         builder: (context, state) => const ProfileSetupScreen(),
       ),
+      StatefulShellRoute.indexedStack(
+        branches: <StatefulShellBranch>[
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            initialLocation: AppRoutes.homeScreen,
+            routes: [
+              GoRoute(
+                path: AppRoutes.homeScreen,
+                name: AppRouteNames.homeScreen,
+                builder: (context, state) => const HomeScreen(),
+              ),
+            ],
+          ),
+        ],
+        builder: (context, state, shell) {
+          return UserNavigation(shell: shell);
+        },
+      ),
     ],
   );
 }

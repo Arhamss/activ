@@ -43,34 +43,32 @@ class InterestWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SvgPicture.asset(
-                    svgPath,
-                    fit: BoxFit.cover,
-                  ),
-                ],
-              ),
               Expanded(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
-                      subtitle,
-                      textAlign: TextAlign.center,
-                      style: context.b2.copyWith(
-                        fontSize: 15.04,
-                        fontWeight: FontWeight.w700,
-                        color: isSelected
-                            ? AppColors.selectedGender
-                            : AppColors.textPrimary,
-                      ),
+                    SvgPicture.network(
+                      svgPath,
+                      fit: BoxFit.cover,
                     ),
                   ],
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    subtitle,
+                    textAlign: TextAlign.center,
+                    style: context.b2.copyWith(
+                      fontSize: 15.04,
+                      fontWeight: FontWeight.w700,
+                      color: isSelected
+                          ? AppColors.selectedGender
+                          : AppColors.textPrimary,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

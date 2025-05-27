@@ -1,4 +1,6 @@
 import 'package:activ/app/view/splash.dart';
+import 'package:activ/features/home/presentation/views/home_screen.dart';
+import 'package:activ/features/navigation/presentation/views/user_navigation.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/forgot_password_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/intro_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/password_code_screen.dart';

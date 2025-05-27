@@ -31,18 +31,22 @@ class _SignInScreenState extends State<SignInScreen> {
         body: SafeArea(
           child: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
             listener: (context, state) {
-              if (state.signIn.isFailure
-                  // state.signInWithApple.isFailure ||
-                  // state.signInWithGoogle.isFailure
-                  ) {
+              if (state.signIn.isFailure ||
+                  state.signInWithApple.isFailure ||
+                  state.signInWithGoogle.isFailure) {
                 ToastHelper.showInfoToast(
                   state.signIn.errorMessage ?? Localization.failedToSignInUser,
                 );
-              } else if (state.signIn.isLoaded
-                  // state.signInWithApple.isLoaded ||
-                  // state.signInWithGoogle.isLoaded
-                  ) {
-                // context.goNamed(AppRouteNames.homeScreen);
+                context.read<OnboardingFlowCubit>().resetAllSignIn();
+              } else if (state.signIn.isLoaded ||
+                  state.signInWithApple.isLoaded ||
+                  state.signInWithGoogle.isLoaded) {
+                context.goNamed(AppRouteNames.profileSetupScreen);
+                ToastHelper.showInfoToast(
+                  Localization.signInSuccess,
+                );
+
+                context.read<OnboardingFlowCubit>().resetAllSignIn();
               }
             },
             child: LayoutBuilder(
@@ -103,7 +107,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           builder: (context, state) {
                             return ActivButton(
                               onPressed: () {
-                                if (_formKey.currentState!.validate()) {}
+                                if (_formKey.currentState!.validate()) {
+                                  context.read<OnboardingFlowCubit>().signIn(
+                                        emailController.text,
+                                        passwordController.text,
+                                      );
+                                }
                               },
                               text: Localization.signIn,
                               isLoading: state.signIn.isLoading,
@@ -144,7 +153,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
                           builder: (context, state) {
                             return SocialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context
+                                    .read<OnboardingFlowCubit>()
+                                    .signInWithGoogle();
+                              },
                               text: Localization.continueWithGoogle,
                               svgPath: AssetPaths.googleIcon,
                             );
@@ -154,7 +167,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
                           builder: (context, state) {
                             return SocialButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                context
+                                    .read<OnboardingFlowCubit>()
+                                    .signInWithApple();
+                              },
                               text: Localization.continieWithApple,
                               svgPath: AssetPaths.appleIcon,
                             );

@@ -58,7 +58,7 @@
   "dontHaveAnAccount": "Don't have an account? ",
   "createANewOne": "Create a new one",
   "newAccount": "New account",
-  "forgotPasswordSubtitle": "Don’t worry — it happens to the best of us. Let’s reset your password.",
+  "forgotPasswordSubtitle": "Don't worry — it happens to the best of us. Let's reset your password.",
   "signInToContinue": "Sign in to continue & join the action!",
   "signUpToContinue": "Sign Up to continue and stay activ",
   "continueWithGoogle": "Continue with Google",
@@ -78,6 +78,75 @@
   "pleaseEnterResetCode": "Please enter the reset code",
   "byContinuingYouAgreeToOur": "By continuing you agree to our ",
   "termsOfServiceLink": "Terms of Service",
-  "resetCodeSubtitle": "We’ve sent a 6-digit code to your email. Please enter it below to verify your identity.",
-  "resetPasswordSubtitle": "Enter your new password below to reset it."
+  "resetCodeSubtitle": "We've sent a 6-digit code to your email. Please enter it below to verify your identity.",
+  "resetPasswordSubtitle": "Enter your new password below to reset it.",
+  "signInSuccess":"Signed In Successfully",
+  "failedToLoadSports":"Failed to Load Sports",
+  "enterPhoneNumber": "Please enter your phone number",
+  "enterValidPhoneNumber": "Please enter a valid phone number",
+  "enterCompletePhoneNumber": "Please enter a complete phone number",
+  "enterEmail": "Please enter your email",
+  "enterValidEmail": "Please enter a valid email",
+  "enterPassword": "Please enter your password",
+  "passwordTooShortMessage": "Please enter a password greater than 6 characters",
+  "passwordTooLongMessage": "Please enter a password less than 100 characters",
+  "confirmYourPassword": "Please confirm your password",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "enterName": "Please enter the name",
+  "invalidNameFormat": "Name can only contain letters, spaces, hyphens, and apostrophes",
+  "nameTooShort": "Name must be at least 2 characters long",
+  "nameTooLong": "Name must be less than 30 characters",
+  "enterText": "Please enter the text",
+  "enterNumber": "Please enter a number",
+  "enterValidNumber": "Please enter a valid number",
+  "numberMustBeGreaterThan": "Number must be greater than or equal to {min}",
+  "@numberMustBeGreaterThan": {
+    "description": "Message shown when number is less than minimum",
+    "placeholders": {
+      "min": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "numberMustBeLessThan": "Number must be less than or equal to {max}",
+  "@numberMustBeLessThan": {
+    "description": "Message shown when number exceeds maximum",
+    "placeholders": {
+      "max": {
+        "type": "int",
+        "example": "100"
+      }
+    }
+  },
+  "enterDate": "Please enter a date",
+  "enterValidDateFormat": "Please enter a valid date in DD/MM/YYYY format",
+  "dateMustBeInPast": "Date must be in the past",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "dateOfBirth": "Date of Birth",
+  "viewAll": "View All",
+  "profileSetupDetailsTitle": "Tell me some details please?",
+  "profileSetupDetailsSubtitle": "Please provide a few details to help your friend find your activ account",
+  "profileSetupGenderTitle": "What is your Gender?",
+  "profileSetupGenderSubtitle": "This helps us find you more relevant content",
+  "profileSetupInterestsTitle": "What are your interests?",
+  "profileSetupInterestsSubtitle": "Select your interests to personalize your experience",
+  "unexpectedStepIndex": "Unexpected step index.",
+  "onboardingCompleted": "Onboarding Completed!!",
+  "male":"Male",
+  "female":"Female",
+  "howDoYouRateYourselfIn": "How do you rate yourself in {sportName}?",
+  "@howDoYouRateYourselfIn": {
+    "description": "Question asking user to rate their skill in a sport",
+    "placeholders": {
+      "sportName": {
+        "type": "String",
+        "example": "Football"
+      }
+    }
+  },
+  "thisHelpsUsFindAndConnectYouToRelevantPeople": "This helps us find and connect you to relevant people"
 }

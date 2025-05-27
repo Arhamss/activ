@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:activ/l10n/localization_service.dart';
 
 String formatTime12HourWithTimezone(DateTime? dateTime) {
   final formatter = DateFormat('hh:mm a z');
@@ -71,9 +72,9 @@ class DateUtility {
     final difference = now.difference(date).inDays;
 
     if (difference == 0) {
-      return 'Today';
+      return Localization.today;
     } else if (difference == 1) {
-      return 'Yesterday';
+      return Localization.yesterday;
     } else {
       return DateFormat('EEEE, MMM d').format(date);
     }

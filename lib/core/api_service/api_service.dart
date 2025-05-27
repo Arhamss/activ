@@ -56,6 +56,12 @@ class ApiService {
     return _handleRequest(() => _dio.patch(endpoint, data: data));
   }
 
+  Future<Response<dynamic>> patchMultipart(String endpoint, Map<String, dynamic> data) async {
+  final formData = FormData.fromMap(data);
+  return _handleRequest(() => _dio.patch(endpoint, data: formData));
+}
+
+
   /// DELETE Request
   Future<Response<dynamic>> delete(
     String endpoint, {

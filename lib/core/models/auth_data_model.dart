@@ -6,14 +6,14 @@ import 'package:equatable/equatable.dart';
 class AuthData extends Equatable {
   const AuthData({
     required this.id,
-    required this.name,
+    required this.refreshToken,
     required this.email,
     required this.token,
   });
   factory AuthData.fromJson(Map<String, dynamic> json) {
     return AuthData(
       id: json['id'] as String,
-      name: json['name'] as String,
+      refreshToken: json['refreshToken'] as String,
       email: json['email'] as String,
       token: json['accessToken'] as String,
     );
@@ -29,31 +29,31 @@ class AuthData extends Equatable {
   }
 
   final String id;
-  final String name;
+  final String refreshToken;
   final String email;
   final String token;
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
+        'refreshToken': refreshToken,
         'email': email,
         'accessToken': token,
       };
 
   AuthData copyWith({
     String? id,
-    String? name,
+    String? refreshToken,
     String? email,
     String? token,
   }) {
     return AuthData(
       id: id ?? this.id,
-      name: name ?? this.name,
+      refreshToken: refreshToken ?? this.refreshToken,
       email: email ?? this.email,
       token: token ?? this.token,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, email, token];
+  List<Object?> get props => [id, refreshToken, email, token];
 }

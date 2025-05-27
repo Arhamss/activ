@@ -1,370 +1,472 @@
+
 import 'dart:convert';
 import 'dart:math';
-import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
-import 'package:activ/core/models/auth_data_model.dart';
+
+import 'package:activ/core/api_service/api_service.dart';
 import 'package:activ/core/api_service/app_api_exception.dart';
 import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
+import 'package:activ/core/endpoints/endpoints.dart';
+import 'package:activ/core/models/api_response/api_response_model.dart';
+import 'package:activ/core/models/api_response/base_api_response.dart';
+import 'package:activ/core/models/auth_data_model.dart';
+import 'package:activ/core/models/sport_model.dart';
+import 'package:activ/core/models/sport_response_model.dart';
+import 'package:activ/core/models/user_model/user_model.dart';
+import 'package:activ/core/models/user_model/user_response_model.dart';
+import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/helpers/repository_response.dart';
+// ignore: depend_on_referenced_packages
 import 'package:crypto/crypto.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:dio/dio.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class OnboardingFlowRepositoryImpl implements OnboardingFlowRepository {
   OnboardingFlowRepositoryImpl({
-    //  ApiService? apiService,
+    ApiService? apiService,
     AppPreferences? baseStorage,
-  }) : // _apiService = apiService ?? ApiService(),
+  })  : _apiService = apiService ?? ApiService(),
         _cache = baseStorage ?? Injector.resolve<AppPreferences>();
 
-//  final ApiService _apiService;
+  final ApiService _apiService;
   final AppPreferences _cache;
 
   @override
-  Future<RepositoryResponse> forgotPassword(String email) {
-    // TODO: implement forgotPassword
-    throw UnimplementedError();
+  Future<RepositoryResponse<bool>> onboarded() async {
+    try {
+      final response = await _apiService.get(Endpoints.onboarded);
+
+      if (response.statusCode == 200) {
+        final data = response.data as Map<String, dynamic>;
+        final isOnboarded = data['data']['onboarded'] as bool;
+
+        AppLogger.info(
+          'Onboarded status: $isOnboarded',
+        );
+
+        return RepositoryResponse(
+          isSuccess: true,
+          data: isOnboarded,
+        );
+      } else {
+        final error = response.data['error'] as String?;
+        return RepositoryResponse(
+          isSuccess: false,
+          message: error,
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Onboarded exception:', e, s);
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Onboarded check failed'),
+      );
+    }
   }
 
   @override
-  Future<RepositoryResponse> resetPassword(String code, String password) {
-    // TODO: implement resetPassword
-    throw UnimplementedError();
-  }
+  Future<RepositoryResponse<AuthData>> signIn(
+    String email,
+    String password,
+  ) async {
+    try {
+      final response = await _apiService.post(
+        endpoint: Endpoints.login,
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
 
-  @override
-  Future<RepositoryResponse<AuthData>> signIn(String email, String password) {
-    // TODO: implement signIn
-    throw UnimplementedError();
-  }
+      final result = AuthData.parseResponse(response);
+      final authData = result.response?.data;
 
-  @override
-  Future<RepositoryResponse<AuthData>> signInWithApple() {
-    // TODO: implement signInWithApple
-    throw UnimplementedError();
-  }
+      if (result.isSuccess && authData != null) {
+        _cache
+          ..setToken(authData.token)
+          ..setUserId(authData.id);
 
-  @override
-  Future<RepositoryResponse<AuthData>> signInWithGoogle() {
-    // TODO: implement signInWithGoogle
-    throw UnimplementedError();
+        AppLogger.info('Sign in successful: ${authData.refreshToken}');
+
+        return RepositoryResponse(
+          isSuccess: true,
+          data: authData,
+        );
+      } else {
+        AppLogger.info('Sign in failed: ${result.error}');
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Sign in failed',
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Sign in exception:', e, s);
+
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Sign in failed'),
+      );
+    }
   }
 
   @override
   Future<RepositoryResponse<AuthData>> signUp(
-      String name, String email, String password) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+    String email,
+    String password,
+  ) async {
+    try {
+      final response = await _apiService.post(
+        endpoint: Endpoints.signup,
+        data: {
+          'email': email,
+          'password': password,
+        },
+      );
+
+      final result = AuthData.parseResponse(response);
+      final authData = result.response?.data;
+
+      if (result.isSuccess && authData != null) {
+        _cache
+          ..setToken(authData.token)
+          ..setUserId(authData.id);
+
+        AppLogger.info('Signup successful: ${authData.refreshToken}');
+        return RepositoryResponse(
+          isSuccess: true,
+          data: authData,
+        );
+      } else {
+        AppLogger.error('Signup failed: ${result.error}');
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Sign up failed',
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Signup exception:', e, s);
+
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Sign up failed'),
+      );
+    }
   }
 
-  // @override
-  // Future<RepositoryResponse<AuthData>> signIn(
-  //   String email,
-  //   String password,
-  // ) async {
-  //   try {
-  //     final response = await _apiService.post(
-  //       endpoint: Endpoints.login,
-  //       data: {
-  //         'email': email,
-  //         'password': password,
-  //       },
-  //     );
+  @override
+  Future<RepositoryResponse<bool>> forgotPassword(String email) async {
+    try {
+      final response = await _apiService.post(
+        endpoint: Endpoints.forgotPassword,
+        data: {
+          'email': email,
+        },
+      );
 
-  //     final result = AuthData.parseResponse(response);
-  //     final authData = result.response?.data;
+      final result = ResponseModel.fromApiResponse<BaseApiResponse<void>>(
+        response,
+        (json) => BaseApiResponse<void>.fromJson(json, (_) {}),
+      );
 
-  //     if (result.isSuccess && authData != null) {
-  //       _cache
-  //         ..setToken(authData.token)
-  //         ..setUserId(authData.id);
+      if (result.isSuccess) {
+        AppLogger.info('Password reset email sent to: $email');
+        return RepositoryResponse(
+          isSuccess: true,
+          data: true,
+          message: 'Password reset email sent',
+        );
+      } else {
+        AppLogger.info('Password reset failed: ${result.error}');
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Failed to reset password',
+          data: false,
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Password reset exception:', e, s);
 
-  //       AppLogger.info('Sign in successful: ${authData.name}');
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Failed to reset Password'),
+        data: false,
+      );
+    }
+  }
 
-  //       return RepositoryResponse(
-  //         isSuccess: true,
-  //         data: authData,
-  //       );
-  //     } else {
-  //       AppLogger.info('Sign in failed: ${result.error}');
-  //       return RepositoryResponse(
-  //         isSuccess: false,
-  //         message: result.error ?? 'Sign in failed',
-  //       );
-  //     }
-  //   } catch (e, s) {
-  //     AppLogger.error('Sign in exception:', e, s);
+  @override
+  Future<RepositoryResponse<bool>> resetPassword(
+    String code,
+    String password,
+  ) async {
+    try {
+      final response = await _apiService.post(
+        endpoint: Endpoints.resetPassword,
+        data: {
+          'token': code,
+          'newPassword': password,
+        },
+      );
 
-  //     return RepositoryResponse(
-  //       isSuccess: false,
-  //       message: extractApiErrorMessage(e, 'Sign in failed'),
-  //     );
-  //   }
-  // }
+      final result = ResponseModel.fromApiResponse<BaseApiResponse<void>>(
+        response,
+        (json) => BaseApiResponse<void>.fromJson(json, (_) {}),
+      );
 
-  // @override
-  // Future<RepositoryResponse<AuthData>> signUp(
-  //   String name,
-  //   String email,
-  //   String password,
-  // ) async {
-  //   try {
-  //     final response = await _apiService.post(
-  //       endpoint: Endpoints.signup,
-  //       data: {
-  //         'name': name,
-  //         'email': email,
-  //         'password': password,
-  //         'role': 'user',
-  //       },
-  //     );
+      if (result.isSuccess) {
+        AppLogger.info('Password reset successful');
+        return RepositoryResponse(
+          isSuccess: true,
+          data: true,
+          message: 'Password reset successful',
+        );
+      } else {
+        AppLogger.info('Password reset failed: ${result.error}');
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Failed to reset password',
+          data: false,
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Password reset exception:', e, s);
 
-  //     final result = AuthData.parseResponse(response);
-  //     final authData = result.response?.data;
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Failed to reset password'),
+        data: false,
+      );
+    }
+  }
 
-  //     if (result.isSuccess && authData != null) {
-  //       _cache
-  //         ..setToken(authData.token)
-  //         ..setUserId(authData.id);
+  @override
+  Future<RepositoryResponse<AuthData>> signInWithApple() async {
+    try {
+      final rawNonce = _generateNonce();
+      final nonce = _sha256ofString(rawNonce);
 
-  //       AppLogger.info('Signup successful: ${authData.name}');
-  //       return RepositoryResponse(
-  //         isSuccess: true,
-  //         data: authData,
-  //       );
-  //     } else {
-  //       AppLogger.error('Signup failed: ${result.error}');
-  //       return RepositoryResponse(
-  //         isSuccess: false,
-  //         message: result.error ?? 'Sign up failed',
-  //       );
-  //     }
-  //   } catch (e, s) {
-  //     AppLogger.error('Signup exception:', e, s);
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: nonce,
+      );
 
-  //     return RepositoryResponse(
-  //       isSuccess: false,
-  //       message: extractApiErrorMessage(e, 'Sign up failed'),
-  //     );
-  //   }
-  // }
+      final identityToken = appleCredential.identityToken;
 
-  // @override
-  // Future<RepositoryResponse<bool>> forgotPassword(String email) async {
-  //   try {
-  //     final response = await _apiService.post(
-  //       endpoint: Endpoints.forgotPassword,
-  //       data: {
-  //         'email': email,
-  //       },
-  //     );
+      if (identityToken == null) {
+        throw AppApiException('Identity token is null');
+      }
 
-  //     final result = ResponseModel.fromApiResponse<BaseApiResponse<void>>(
-  //       response,
-  //       (json) => BaseApiResponse<void>.fromJson(json, (_) {}),
-  //     );
+      final response = await _apiService.post(
+        endpoint: Endpoints.signinWithApple,
+        data: {
+          'appleId': identityToken,
+          'email': appleCredential.email,
+          'name': '${appleCredential.givenName} ${appleCredential.familyName}',
+        },
+      );
 
-  //     if (result.isSuccess) {
-  //       AppLogger.info('Password reset email sent to: $email');
-  //       return RepositoryResponse(
-  //         isSuccess: true,
-  //         data: true,
-  //         message: 'Password reset email sent',
-  //       );
-  //     } else {
-  //       AppLogger.info('Password reset failed: ${result.error}');
-  //       return RepositoryResponse(
-  //         isSuccess: false,
-  //         message: result.error ?? 'Failed to reset password',
-  //         data: false,
-  //       );
-  //     }
-  //   } catch (e, s) {
-  //     AppLogger.error('Password reset exception:', e, s);
+      final result = AuthData.parseResponse(response);
+      final authData = result.response?.data;
 
-  //     return RepositoryResponse(
-  //       isSuccess: false,
-  //       message: extractApiErrorMessage(e, 'Failed to reset Password'),
-  //       data: false,
-  //     );
-  //   }
-  // }
+      if (result.isSuccess && authData != null) {
+        _cache
+          ..setToken(authData.token)
+          ..setUserId(authData.id);
 
-  // @override
-  // Future<RepositoryResponse<bool>> resetPassword(
-  //   String code,
-  //   String password,
-  // ) async {
-  //   try {
-  //     final response = await _apiService.post(
-  //       endpoint: Endpoints.resetPassword,
-  //       data: {
-  //         'token': code,
-  //         'newPassword': password,
-  //       },
-  //     );
+        AppLogger.info('Apple Sign in successful: ${authData.refreshToken}');
 
-  //     final result = ResponseModel.fromApiResponse<BaseApiResponse<void>>(
-  //       response,
-  //       (json) => BaseApiResponse<void>.fromJson(json, (_) {}),
-  //     );
+        return RepositoryResponse(
+          isSuccess: true,
+          data: authData,
+        );
+      } else {
+        AppLogger.info('Apple Sign in failed: ${result.error}');
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Apple Sign in failed',
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Apple Sign in exception:', e, s);
 
-  //     if (result.isSuccess) {
-  //       AppLogger.info('Password reset successful');
-  //       return RepositoryResponse(
-  //         isSuccess: true,
-  //         data: true,
-  //         message: 'Password reset successful',
-  //       );
-  //     } else {
-  //       AppLogger.info('Password reset failed: ${result.error}');
-  //       return RepositoryResponse(
-  //         isSuccess: false,
-  //         message: result.error ?? 'Failed to reset password',
-  //         data: false,
-  //       );
-  //     }
-  //   } catch (e, s) {
-  //     AppLogger.error('Password reset exception:', e, s);
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Apple Sign in failed'),
+      );
+    }
+  }
 
-  //     return RepositoryResponse(
-  //       isSuccess: false,
-  //       message: extractApiErrorMessage(e, 'Failed to reset password'),
-  //       data: false,
-  //     );
-  //   }
-  // }
+  String _generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
 
-  // @override
-  // Future<RepositoryResponse<AuthData>> signInWithApple() async {
-  //   // try {
-  //   //   final rawNonce = _generateNonce();
-  //   //   final nonce = _sha256ofString(rawNonce);
+  String _sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
 
-  //   //   final appleCredential = await SignInWithApple.getAppleIDCredential(
-  //   //     scopes: [
-  //   //       AppleIDAuthorizationScopes.email,
-  //   //       AppleIDAuthorizationScopes.fullName,
-  //   //     ],
-  //   //     nonce: nonce,
-  //   //   );
+  @override
+  Future<RepositoryResponse<AuthData>> signInWithGoogle() async {
+    try {
+      final googleSignIn = GoogleSignIn(
+        scopes: ['email', 'profile'],
+      );
 
-  //   //   final authCode = appleCredential.authorizationCode;
-  //   //   final identityToken = appleCredential.identityToken;
+      final account = await googleSignIn.signIn();
+      if (account == null) {
+        throw AppApiException('Google sign in was cancelled');
+      }
 
-  //   //   if (identityToken == null) {
-  //   //     throw AppApiException('Identity token is null');
-  //   //   }
+      final idToken = account.id;
 
-  //   //   final response = await _apiService.post(
-  //   //     endpoint: Endpoints.signinWithApple,
-  //   //     data: {
-  //   //       'appleId': identityToken,
-  //   //       'authorizationCode': authCode,
-  //   //       'email': appleCredential.email,
-  //   //       'name': '${appleCredential.givenName} ${appleCredential.familyName}',
-  //   //     },
-  //   //   );
+      final response = await _apiService.post(
+        endpoint: Endpoints.signinWithGoogle,
+        data: {
+          'idToken': idToken,
+        },
+      );
+      final result = AuthData.parseResponse(response);
+      final authData = result.response?.data;
+      if (result.isSuccess && authData != null) {
+        _cache
+          ..setToken(authData.token)
+          ..setUserId(authData.id);
 
-  //   //   final result = AuthData.parseResponse(response);
-  //   //   final authData = result.response?.data;
+        AppLogger.info('Sign in successful: ${authData.refreshToken}');
 
-  //   //   if (result.isSuccess && authData != null) {
-  //   //     _cache
-  //   //       ..setToken(authData.token)
-  //   //       ..setUserId(authData.id);
+        return RepositoryResponse(
+          isSuccess: true,
+          data: authData,
+        );
+      } else {
+        AppLogger.info('Sign in failed: ${result.error}');
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Sign in failed',
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Sign in exception:', e, s);
 
-  //   //     AppLogger.info('Apple Sign in successful: ${authData.name}');
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Sign in failed'),
+      );
+    }
+  }
 
-  //   //     return RepositoryResponse(
-  //   //       isSuccess: true,
-  //   //       data: authData,
-  //   //     );
-  //   //   } else {
-  //   //     AppLogger.info('Apple Sign in failed: ${result.error}');
-  //   //     return RepositoryResponse(
-  //   //       isSuccess: false,
-  //   //       message: result.error ?? 'Apple Sign in failed',
-  //   //     );
-  //   //   }
-  //   // } catch (e, s) {
-  //   //   AppLogger.error('Apple Sign in exception:', e, s);
+  @override
+  Future<RepositoryResponse<List<SportModel>>> getAllSports() async {
+    try {
+      final response = await _apiService.get(Endpoints.getAllSports);
 
-  //   //   return RepositoryResponse(
-  //   //     isSuccess: false,
-  //   //     message: extractApiErrorMessage(e, 'Apple Sign in failed'),
-  //   //   );
-  //   // }
+      final result = SportsResponseModel.parseResponse(response);
 
-  //   throw UnimplementedError(
-  //     'Apple Sign in is not implemented yet.',
-  //   );
-  // }
+      if (result.isSuccess && result.response != null) {
+        return RepositoryResponse(
+          isSuccess: true,
+          data: result.response!.data!.sports,
+        );
+      } else {
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error ?? 'Get all sports failed',
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Get all sports exception:', e, s);
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Get all sports failed'),
+      );
+    }
+  }
 
-  // String _generateNonce([int length = 32]) {
-  //   const charset =
-  //       '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-  //   final random = Random.secure();
-  //   return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-  //       .join();
-  // }
+  @override
+  Future<RepositoryResponse<UserModel>> completeOnboarding(
+    String firstName,
+    String lastName,
+    String? dateOfBirth,
+    String? gender,
+    String? phoneNumber,
+    Map<String, double> interests,
+    XFile? profilePicture,
+  ) async {
+    try {
+      final sports = interests.entries
+          .map(
+            (entry) => {
+              'sportId': entry.key,
+              'rating': entry.value.toInt(),
+            },
+          )
+          .toList();
 
-  // String _sha256ofString(String input) {
-  //   final bytes = utf8.encode(input);
-  //   final digest = sha256.convert(bytes);
-  //   return digest.toString();
-  // }
+      final payload = {
+        'firstName': firstName,
+        'lastName': lastName,
+        'dob': dateOfBirth != null
+            ? DateFormat('dd/MM/yyyy').parse(dateOfBirth).toIso8601String()
+            : null,
+        'gender': gender,
+        'phoneNumber': phoneNumber,
+        'sports': sports,
+      };
 
-  // @override
-  // Future<RepositoryResponse<AuthData>> signInWithGoogle() async {
-  //   try {
-  //     final googleSignIn = GoogleSignIn(
-  //       scopes: ['email', 'profile'],
-  //     );
+      late final Response response;
 
-  //     final account = await googleSignIn.signIn();
-  //     if (account == null) {
-  //       throw AppApiException('Google sign in was cancelled');
-  //     }
+      if (profilePicture != null) {
+        final multipartData = {
+          ...payload,
+          'image': await MultipartFile.fromFile(
+            profilePicture.path,
+            filename: profilePicture.name,
+          ),
+        };
+        AppLogger.info('Complete onboarding multipart request: $multipartData');
+        response = await _apiService.patchMultipart(
+          Endpoints.completeOnboarding,
+          multipartData,
+        );
+      } else {
+        AppLogger.info('Complete onboarding JSON request: $payload');
+        response = await _apiService.patch(
+          Endpoints.completeOnboarding, 
+          payload,
+        );
+      }
 
-  //     final idToken = account.id;
-  //     final email = account.email;
-  //     final displayName = account.displayName;
+      final result = UserResponseModel.parseResponse(response);
 
-  //     final response = await _apiService.post(
-  //       endpoint: Endpoints.signinWithGoogle,
-  //       data: {
-  //         'googleId': idToken,
-  //       },
-  //     );
-  //     final result = AuthData.parseResponse(response);
-  //     final authData = result.response?.data;
-  //     if (result.isSuccess && authData != null) {
-  //       _cache
-  //         ..setToken(authData.token)
-  //         ..setUserId(authData.id);
-
-  //       AppLogger.info('Sign in successful: ${authData.name}');
-
-  //       return RepositoryResponse(
-  //         isSuccess: true,
-  //         data: authData,
-  //       );
-  //     } else {
-  //       AppLogger.info('Sign in failed: ${result.error}');
-  //       return RepositoryResponse(
-  //         isSuccess: false,
-  //         message: result.error ?? 'Sign in failed',
-  //       );
-  //     }
-  //   } catch (e, s) {
-  //     AppLogger.error('Sign in exception:', e, s);
-
-  //     return RepositoryResponse(
-  //       isSuccess: false,
-  //       message: extractApiErrorMessage(e, 'Sign in failed'),
-  //     );
-  //   }
-  // }
+      if (result.isSuccess) {
+        return RepositoryResponse(
+          isSuccess: true,
+          data: result.response?.data?.user,
+        );
+      } else {
+        return RepositoryResponse(
+          isSuccess: false,
+          message: result.error,
+        );
+      }
+    } catch (e, s) {
+      AppLogger.error('Complete onboarding exception:', e, s);
+      return RepositoryResponse(
+        isSuccess: false,
+        message: extractApiErrorMessage(e, 'Complete onboarding failed'),
+      );
+    }
+  }
 }

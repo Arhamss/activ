@@ -2,6 +2,7 @@ import 'package:activ/core/field_validators.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
+import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/widgets/core_widgets/phone_textfield.dart';
 
 class UserDetailsWidget extends StatelessWidget {
@@ -32,7 +33,7 @@ class UserDetailsWidget extends StatelessWidget {
             children: [
               SizedBox(height: constraints.maxHeight * 0.02),
               ActivImagePicker(
-                imagePath: state.imagePath,
+                imagePath: state.imagePath?.path,
                 onButtonPressed: () {
                   context.read<OnboardingFlowCubit>().pickImage();
                 },
@@ -43,7 +44,7 @@ class UserDetailsWidget extends StatelessWidget {
                   Expanded(
                     child: ActivTextField(
                       controller: firstNameController,
-                      hintText: 'First Name',
+                      hintText: Localization.firstName,
                       validator: FieldValidators.textValidator,
                     ),
                   ),
@@ -51,7 +52,7 @@ class UserDetailsWidget extends StatelessWidget {
                   Expanded(
                     child: ActivTextField(
                       controller: lastNameController,
-                      hintText: 'Last Name',
+                      hintText: Localization.lastName,
                       validator: FieldValidators.textValidator,
                     ),
                   ),
@@ -68,7 +69,7 @@ class UserDetailsWidget extends StatelessWidget {
               SafeArea(
                 child: ActivTextField(
                   controller: dobController,
-                  hintText: 'Date of Birth',
+                  hintText: Localization.dateOfBirth,
                   readOnly: true,
                   type: ActivTextFieldType.datePicker,
                   validator: FieldValidators.dateValidator,

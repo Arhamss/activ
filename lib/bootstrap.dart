@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:activ/config/flavor_config.dart';
 import 'package:activ/core/di/injector.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';

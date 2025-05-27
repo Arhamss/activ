@@ -2,11 +2,12 @@ import 'package:activ/utils/widgets/core_widgets/phone_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:phone_numbers_parser/phone_numbers_parser.dart';
+import 'package:activ/l10n/localization_service.dart';
 
 class FieldValidators {
   static String? phoneNumberValidator(String? value, IsoCode? isoCode) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your phone number';
+      return Localization.enterPhoneNumber;
     }
 
     try {
@@ -16,38 +17,38 @@ class FieldValidators {
       );
 
       if (!phoneNumber.isValid()) {
-        return 'Please enter a valid phone number';
+        return Localization.enterValidPhoneNumber;
       }
 
       if (!phoneNumber.isValidLength()) {
-        return 'Please enter a complete phone number';
+        return Localization.enterCompletePhoneNumber;
       }
 
       return null;
     } catch (e) {
-      return 'Please enter a valid phone number';
+      return Localization.enterValidPhoneNumber;
     }
   }
 
   static String? emailValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your email';
+      return Localization.enterEmail;
     }
     if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-      return 'Please enter a valid email';
+      return Localization.enterValidEmail;
     }
     return null;
   }
 
   static String? passwordValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your password';
+      return Localization.enterPassword;
     }
     if (value.length < 6) {
-      return 'Please enter a password greater than 6 characters';
+      return Localization.passwordTooShortMessage;
     }
     if (value.length > 100) {
-      return 'Please enter a password less than 100 characters';
+      return Localization.passwordTooLongMessage;
     }
     return null;
   }
@@ -57,10 +58,10 @@ class FieldValidators {
     TextEditingController passwordController,
   ) {
     if (value == null || value.isEmpty) {
-      return 'Please confirm your password';
+      return Localization.confirmYourPassword;
     }
     if (value != passwordController.text) {
-      return 'Passwords do not match';
+      return Localization.passwordsDoNotMatch;
     }
 
     return null;
@@ -68,23 +69,23 @@ class FieldValidators {
 
   static String? nameValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter the name';
+      return Localization.enterName;
     }
     if (!RegExp(r"^[a-zA-Z\s'-]+$").hasMatch(value)) {
-      return 'Name can only contain letters, spaces, hyphens, and apostrophes';
+      return Localization.invalidNameFormat;
     }
     if (value.length < 2) {
-      return 'Name must be at least 2 characters long';
+      return Localization.nameTooShort;
     }
     if (value.length > 30) {
-      return 'Name must be less than 30 characters';
+      return Localization.nameTooLong;
     }
     return null;
   }
 
   static String? textValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter the text';
+      return Localization.enterText;
     }
     return null;
   }
@@ -95,20 +96,20 @@ class FieldValidators {
     int? max,
   }) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a number';
+      return Localization.enterNumber;
     }
 
     final number = int.tryParse(value);
     if (number == null) {
-      return 'Please enter a valid number';
+      return Localization.enterValidNumber;
     }
 
     if (min != null && number < min) {
-      return 'Number must be greater than or equal to $min';
+      return Localization.numberMustBeGreaterThan(min);
     }
 
     if (max != null && number > max) {
-      return 'Number must be less than or equal to $max';
+      return Localization.numberMustBeLessThan(max);
     }
 
     return null;
@@ -116,16 +117,16 @@ class FieldValidators {
 
   static String? dateValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a date';
+      return Localization.enterDate;
     }
 
     final date = DateFormat('dd/MM/yyyy').tryParse(value);
     if (date == null) {
-      return 'Please enter a valid date in DD/MM/YYYY format';
+      return Localization.enterValidDateFormat;
     }
 
     if (date.isAfter(DateTime.now())) {
-      return 'Date must be in the past';
+      return Localization.dateMustBeInPast;
     }
 
     return null;
