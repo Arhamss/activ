@@ -1,3 +1,6 @@
+import 'package:activ/core/app_preferences/app_preferences.dart';
+import 'package:activ/core/di/injector.dart';
+import 'package:activ/utils/widgets/core_widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:activ/constants/app_colors.dart';
 import 'package:activ/constants/app_text_style.dart';
@@ -36,6 +39,15 @@ class HomeScreen extends StatelessWidget {
               style: context.b1,
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: ActivButton(
+          text: 'Clear',
+          onPressed: () {
+            Injector.resolve<AppPreferences>().clearAll();
+          },
+          isLoading: false,
         ),
       ),
     );

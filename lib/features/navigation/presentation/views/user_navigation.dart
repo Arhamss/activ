@@ -82,16 +82,11 @@ class UserNavigation extends StatelessWidget {
     final isSelected = index == shell.currentIndex;
     if (isSelected) {
       return Container(
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          shape: BoxShape.circle,
-        ),
-        padding: const EdgeInsets.all(20),
         child: SvgPicture.asset(
           item.icon,
           colorFilter: const ColorFilter.mode(
             AppColors.black,
-            BlendMode.srcIn,
+            BlendMode.srcOut,
           ),
         ),
       );

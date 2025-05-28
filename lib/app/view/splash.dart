@@ -31,8 +31,11 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) {
         if (state.onboarded.isLoaded && state.onboarded.data == true) {
           context.goNamed(AppRouteNames.homeScreen);
-        } else {
+        } else if (state.onboarded.isLoaded && state.onboarded.data == false) {
           context.goNamed(AppRouteNames.profileSetupScreen);
+        }
+        else if (state.onboarded.isFailure) {
+          context.goNamed(AppRouteNames.introScreen);
         }
       },
       child: Scaffold(
