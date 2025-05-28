@@ -453,7 +453,6 @@ class OnboardingFlowRepositoryImpl implements OnboardingFlowRepository {
 
       final result = UserResponseModel.parseResponse(response);
 
-      
       if (result.isSuccess) {
         return RepositoryResponse(
           isSuccess: true,
