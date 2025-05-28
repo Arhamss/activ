@@ -38,7 +38,11 @@ class _SignInScreenState extends State<SignInScreen> {
               } else if (state.signIn.isLoaded ||
                   state.signInWithApple.isLoaded ||
                   state.signInWithGoogle.isLoaded) {
-                context.goNamed(AppRouteNames.homeScreen);
+                if (state.signIn.data?.onboardingComplete == true) {
+                  context.goNamed(AppRouteNames.homeScreen);
+                } else {
+                  context.goNamed(AppRouteNames.profileSetupScreen);
+                }
                 context.read<OnboardingFlowCubit>().resetAllSignIn();
               }
             },

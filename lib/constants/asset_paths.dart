@@ -13,6 +13,7 @@ class AssetPaths {
   static const eye = 'assets/svgs/eye.svg';
   static const eyeOff = 'assets/svgs/eye_slash.svg';
   static const activLogo = 'assets/svgs/logo.svg';
+  static const bottomNavLogo = 'assets/svgs/bottom_nav_logo.svg';
   static const galleryIcon = 'assets/svgs/gallery.svg';
   static const maleSVG = 'assets/svgs/male.svg';
   static const femaleSVG = 'assets/svgs/female.svg';

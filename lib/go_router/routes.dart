@@ -10,6 +10,9 @@ class AppRoutes {
   static const forgotPasswordScreen = '/forgot-password-screen';
   static const profileSetupScreen = '/profile-setup-screen';
   static const homeScreen = '/home-screen';
+  static const chatScreen = '/chat-screen';
+  static const searchScreen = '/search-screen';
+  static const profileScreen = '/profile-screen';
 }
 
 class AppRouteNames {
@@ -22,4 +25,7 @@ class AppRouteNames {
   static const forgotPasswordScreen = 'forgot-password-screen';
   static const profileSetupScreen = 'profile-setup-screen';
   static const homeScreen = 'home-screen';
+  static const chatScreen = 'chat-screen';
+  static const searchScreen = 'search-screen';
+  static const profileScreen = 'profile-screen';
 }
