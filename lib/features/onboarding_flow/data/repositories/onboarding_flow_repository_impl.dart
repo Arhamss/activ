@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:math';
 
@@ -53,7 +52,11 @@ class OnboardingFlowRepositoryImpl implements OnboardingFlowRepository {
           data: isOnboarded,
         );
       } else {
-        final error = response.data['error'] as String?;
+        final error = response.data is Map<String, dynamic> &&
+                response.data['error'] is String
+            ? response.data['error'] as String
+            : 'Unknown error';
+
         return RepositoryResponse(
           isSuccess: false,
           message: error,
@@ -443,7 +446,7 @@ class OnboardingFlowRepositoryImpl implements OnboardingFlowRepository {
       } else {
         AppLogger.info('Complete onboarding JSON request: $payload');
         response = await _apiService.patch(
-          Endpoints.completeOnboarding, 
+          Endpoints.completeOnboarding,
           payload,
         );
       }

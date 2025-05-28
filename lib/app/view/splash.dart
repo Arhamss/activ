@@ -14,23 +14,25 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    context.read<OnboardingFlowCubit>().checkOnboardingStatus();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final userId = Injector.resolve<AppPreferences>().getUserId();
+      if ((userId ?? '').isEmpty) {
+        context.goNamed(AppRouteNames.introScreen);
+      } else {
+        context.read<OnboardingFlowCubit>().checkOnboardingStatus();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
       listener: (context, state) {
-        if (Injector.resolve<AppPreferences>().getUserId() == null &&
-            state.onboarded.isLoaded) {
-          context.goNamed(AppRouteNames.introScreen);
+        if (state.onboarded.isLoaded && state.onboarded.data == true) {
+          context.goNamed(AppRouteNames.homeScreen);
         } else {
-          if (state.onboarded.isLoaded && state.onboarded.data == true) {
-            context.goNamed(AppRouteNames.homeScreen);
-          } else {
-            context.goNamed(AppRouteNames.profileSetupScreen);
-          }
+          context.goNamed(AppRouteNames.profileSetupScreen);
         }
       },
       child: Scaffold(

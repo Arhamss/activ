@@ -23,6 +23,7 @@ class ApiService {
     _dio.interceptors.add(AuthInterceptor(_appPreferences, _dio));
     _dio.interceptors.add(LoggingInterceptor());
   }
+
   static final ApiService _instance = ApiService._internal();
 
   late final Dio _dio;
@@ -56,11 +57,11 @@ class ApiService {
     return _handleRequest(() => _dio.patch(endpoint, data: data));
   }
 
-  Future<Response<dynamic>> patchMultipart(String endpoint, Map<String, dynamic> data) async {
-  final formData = FormData.fromMap(data);
-  return _handleRequest(() => _dio.patch(endpoint, data: formData));
-}
-
+  Future<Response<dynamic>> patchMultipart(
+      String endpoint, Map<String, dynamic> data) async {
+    final formData = FormData.fromMap(data);
+    return _handleRequest(() => _dio.patch(endpoint, data: formData));
+  }
 
   /// DELETE Request
   Future<Response<dynamic>> delete(

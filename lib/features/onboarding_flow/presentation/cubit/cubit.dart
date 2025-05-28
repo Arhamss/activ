@@ -5,10 +5,6 @@ import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 
 class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
   OnboardingFlowCubit({required this.repository})
@@ -234,9 +230,20 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
   }
 
   Future<void> checkOnboardingStatus() async {
+    emit(
+      state.copyWith(
+        onboarded: const DataState.loading(),
+      ),
+    );
+    
     final response = await repository.onboarded();
+
     if (response.isSuccess) {
-      emit(state.copyWith(onboarded: DataState.loaded(data: response.data)));
+      emit(
+        state.copyWith(
+          onboarded: DataState.loaded(data: response.data),
+        ),
+      );
     } else {
       emit(
         state.copyWith(
@@ -294,7 +301,6 @@ class OnboardingFlowCubit extends Cubit<OnboardingFlowState> {
   void setDetailsIndex(int index) {
     emit(state.copyWith(detailsIndex: index));
   }
-
 
   void setUserInfo({
     required String firstName,
