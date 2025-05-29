@@ -29,62 +29,75 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return FocusHandler(
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          backgroundColor: Colors.transparent,
-          leading: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
-            builder: (context, state) {
-              return IconButton(
-                icon: const Icon(
-                  Icons.arrow_back,
-                  color: AppColors.textPrimary,
-                ),
-                onPressed: () {
-                  final currentIndex =
-                      context.read<OnboardingFlowCubit>().state.detailsIndex;
-                  if (currentIndex > 0) {
-                    context
-                        .read<OnboardingFlowCubit>()
-                        .setDetailsIndex(currentIndex - 1);
-                  } else {
-                    context.pop();
-                  }
-                },
-              );
-            },
-          ),
-          actions: [
-            BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+      child: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
+        listenWhen: (previous, current) =>
+            previous.completeOnboarding != current.completeOnboarding,
+        listener: (context, state) {
+          if (state.completeOnboarding.isLoaded) {
+            context.goNamed(AppRouteNames.homeScreen);
+          } else if (state.completeOnboarding.isFailure) {
+            ToastHelper.showErrorToast(
+              state.completeOnboarding.errorMessage ?? 'Unexpected error',
+            );
+          }
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.white,
+          appBar: AppBar(
+            forceMaterialTransparency: true,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            backgroundColor: Colors.transparent,
+            leading: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
               builder: (context, state) {
-                return Container(
-                  width: 100,
-                  height: 10,
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: LinearProgressIndicator(
-                    value: (context
-                                .read<OnboardingFlowCubit>()
-                                .state
-                                .detailsIndex +
-                            1) /
-                        _totalSteps,
-                    backgroundColor: AppColors.inactiveProgressBar,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      AppColors.activeDetailsProgressBar,
-                    ),
-                    minHeight: 8,
-                    borderRadius: BorderRadius.circular(100),
+                return IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: AppColors.textPrimary,
                   ),
+                  onPressed: () {
+                    final currentIndex =
+                        context.read<OnboardingFlowCubit>().state.detailsIndex;
+                    if (currentIndex > 0) {
+                      context
+                          .read<OnboardingFlowCubit>()
+                          .setDetailsIndex(currentIndex - 1);
+                    } else {
+                      context.pop();
+                    }
+                  },
                 );
               },
             ),
-          ],
+            actions: [
+              BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
+                builder: (context, state) {
+                  return Container(
+                    width: 100,
+                    height: 10,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: LinearProgressIndicator(
+                      value: (context
+                                  .read<OnboardingFlowCubit>()
+                                  .state
+                                  .detailsIndex +
+                              1) /
+                          _totalSteps,
+                      backgroundColor: AppColors.inactiveProgressBar,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.activeDetailsProgressBar,
+                      ),
+                      minHeight: 8,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          body: _buildCurrentStepBody(),
+          bottomNavigationBar: _buildBottomNavigation(),
         ),
-        body: _buildCurrentStepBody(),
-        bottomNavigationBar: _buildBottomNavigation(),
       ),
     );
   }

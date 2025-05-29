@@ -9,6 +9,7 @@ class AuthData extends Equatable {
     required this.refreshToken,
     required this.email,
     required this.token,
+    required this.onboardingComplete,
   });
   factory AuthData.fromJson(Map<String, dynamic> json) {
     return AuthData(
@@ -16,6 +17,7 @@ class AuthData extends Equatable {
       refreshToken: json['refreshToken'] as String,
       email: json['email'] as String,
       token: json['accessToken'] as String,
+      onboardingComplete: json['onboardingComplete'] as bool,
     );
   }
 
@@ -32,12 +34,14 @@ class AuthData extends Equatable {
   final String refreshToken;
   final String email;
   final String token;
+  final bool onboardingComplete;
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'refreshToken': refreshToken,
         'email': email,
         'accessToken': token,
+        'onboardingComplete': onboardingComplete,
       };
 
   AuthData copyWith({
@@ -45,15 +49,17 @@ class AuthData extends Equatable {
     String? refreshToken,
     String? email,
     String? token,
+    bool? onboardingComplete,
   }) {
     return AuthData(
       id: id ?? this.id,
       refreshToken: refreshToken ?? this.refreshToken,
       email: email ?? this.email,
       token: token ?? this.token,
+      onboardingComplete: onboardingComplete ?? this.onboardingComplete,
     );
   }
 
   @override
-  List<Object?> get props => [id, refreshToken, email, token];
+  List<Object?> get props => [id, refreshToken, email, token, onboardingComplete];
 }

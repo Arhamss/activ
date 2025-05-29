@@ -1,10 +1,5 @@
 import 'package:activ/core/models/navigation_item.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:activ/constants/app_colors.dart';
-import 'package:activ/constants/app_text_style.dart';
-import 'package:activ/constants/asset_paths.dart';
+import 'package:activ/exports.dart';
 
 class UserNavigation extends StatelessWidget {
   const UserNavigation({required this.shell, super.key});
@@ -17,43 +12,93 @@ class UserNavigation extends StatelessWidget {
       extendBody: true,
       backgroundColor: AppColors.white,
       body: shell,
-      bottomNavigationBar: shell.currentIndex == 1
-          ? null
-          : Container(
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-                border: Border(
-                  top: BorderSide(
-                    color: AppColors.disabled,
-                    width: 0.5,
-                  ),
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  topRight: Radius.circular(24),
-                ),
-              ),
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 24,
-                    right: 24,
-                    top: 4,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(_navBarItems.length, (index) {
-                      return InkWell(
-                        onTap: () {
-                          shell.goBranch(index, initialLocation: true);
-                        },
-                        child: _buildNavItem(context, index),
-                      );
-                    }),
-                  ),
-                ),
-              ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: Container(
+        width: 76,
+        height: 76,
+        margin: const EdgeInsets.only(top: 30),
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: AppColors.fabBackground,
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.12),
+              blurRadius: 8,
+              offset: Offset(0, 4),
             ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            splashFactory: NoSplash.splashFactory,
+            customBorder: const CircleBorder(),
+            onTap: () {
+              // Handle FAB action here
+              // For example, opening chat or any desired index
+            },
+            child: Stack(
+              children: [
+                Center(
+                  child: Container(
+                    width: 65,
+                    height: 65,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: SvgPicture.asset(
+                    AssetPaths
+                        .bottomNavLogo, // Make sure this asset path exists
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: AppColors.white,
+        elevation: 8,
+        padding: EdgeInsets.zero,
+        child: SafeArea(
+          top: false,
+          child: Container(
+            height: 65,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Left side nav items (2 items)
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildNavItem(context, 0),
+                      _buildNavItem(context, 1),
+                    ],
+                  ),
+                ),
+                // Space for FAB in the middle
+                const SizedBox(width: 76), // Same width as FAB
+                // Right side nav items (2 items)
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildNavItem(context, 2),
+                      _buildNavItem(context, 3),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -77,42 +122,36 @@ class UserNavigation extends StatelessWidget {
       ];
 
   Widget _buildNavItem(BuildContext context, int index) {
-    NavItem item;
-    item = _navBarItems[index];
+    final item = _navBarItems[index];
     final isSelected = index == shell.currentIndex;
-    if (isSelected) {
-      return Container(
-        decoration: const BoxDecoration(
-          color: AppColors.white,
-          shape: BoxShape.circle,
-        ),
-        padding: const EdgeInsets.all(20),
-        child: SvgPicture.asset(
-          item.icon,
-          colorFilter: const ColorFilter.mode(
-            AppColors.black,
-            BlendMode.srcIn,
-          ),
-        ),
-      );
-    }
+    final color =
+        isSelected ? AppColors.primaryColor : AppColors.secondaryColor;
+    final iconColor = isSelected ? AppColors.black : null;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(
-            item.icon,
-          ),
-          const SizedBox(height: 6),
-          Text(
-            item.label,
-            style: context.b2.copyWith(
-              fontWeight: FontWeight.w600,
+    return InkWell(
+      splashFactory: NoSplash.splashFactory,
+      onTap: () => shell.goBranch(index, initialLocation: true),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              item.icon,
+              colorFilter: iconColor != null
+                  ? ColorFilter.mode(iconColor, BlendMode.srcIn)
+                  : null,
             ),
-          ),
-        ],
+            const SizedBox(height: 4),
+            Text(
+              item.label,
+              style: context.b2.copyWith(
+                fontWeight: FontWeight.w600,
+                color: color,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

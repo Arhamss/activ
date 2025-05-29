@@ -93,6 +93,40 @@ class AppRouter {
               ),
             ],
           ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            initialLocation: AppRoutes.searchScreen,
+            routes: [
+              GoRoute(
+                path: AppRoutes.searchScreen,
+                name: AppRouteNames.searchScreen,
+                builder: (context, state) =>
+                    const HomeScreen(showSearchBar: true),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            initialLocation: AppRoutes.chatScreen,
+            routes: [
+              GoRoute(
+                path: AppRoutes.chatScreen,
+                name: AppRouteNames.chatScreen,
+                builder: (context, state) => const ChatScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
+            initialLocation: AppRoutes.profileScreen,
+            routes: [
+              GoRoute(
+                path: AppRoutes.profileScreen,
+                name: AppRouteNames.profileScreen,
+                builder: (context, state) => const ProfileScreen(),
+              ),
+            ],
+          ),
         ],
         builder: (context, state, shell) {
           return UserNavigation(shell: shell);

@@ -1,4 +1,5 @@
 import 'package:activ/app/view/splash.dart';
+import 'package:activ/features/chat/presentation/views/chat_screen.dart';
 import 'package:activ/features/home/presentation/views/home_screen.dart';
 import 'package:activ/features/navigation/presentation/views/user_navigation.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/forgot_password_screen.dart';
@@ -8,6 +9,7 @@ import 'package:activ/features/onboarding_flow/presentation/view/profile_setup_s
 import 'package:activ/features/onboarding_flow/presentation/view/reset_password_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/sign_in_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/sign_up_screen.dart';
+import 'package:activ/features/profile/presentation/views/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 

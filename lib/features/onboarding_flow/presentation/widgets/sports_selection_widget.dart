@@ -20,9 +20,7 @@ class SportsSelectionWidget extends StatefulWidget {
 class _SportsSelectionWidgetState extends State<SportsSelectionWidget> {
   final formKey = GlobalKey<FormState>();
 
-  String _encodeSvgUrl(String url) {
-    return url.replaceAll(' ', '%20');
-  }
+
 
   @override
   void initState() {

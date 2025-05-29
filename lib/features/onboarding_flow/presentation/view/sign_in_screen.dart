@@ -1,5 +1,3 @@
-import 'package:activ/core/app_preferences/app_preferences.dart';
-import 'package:activ/core/di/injector.dart';
 import 'package:activ/core/field_validators.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
@@ -19,7 +17,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  final cache = Injector.resolve<AppPreferences>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +38,11 @@ class _SignInScreenState extends State<SignInScreen> {
               } else if (state.signIn.isLoaded ||
                   state.signInWithApple.isLoaded ||
                   state.signInWithGoogle.isLoaded) {
-                context.goNamed(AppRouteNames.profileSetupScreen);
-                ToastHelper.showInfoToast(
-                  Localization.signInSuccess,
-                );
-
+                if (state.signIn.data?.onboardingComplete == true) {
+                  context.goNamed(AppRouteNames.homeScreen);
+                } else {
+                  context.goNamed(AppRouteNames.profileSetupScreen);
+                }
                 context.read<OnboardingFlowCubit>().resetAllSignIn();
               }
             },
