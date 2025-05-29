@@ -27,9 +27,9 @@ class RetryWidget extends StatelessWidget {
           OutlinedButton(
             onPressed: onRetry,
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
               ),
               side: const BorderSide(color: AppColors.primaryBrown),
               foregroundColor: AppColors.primaryBrown,

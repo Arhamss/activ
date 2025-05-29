@@ -132,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 horizontal: 16,
                               ),
                               child: Text(
-                                'OR',
+                                Localization.or,
                                 style: context.b2.copyWith(
                                   color: AppColors.textPrimary,
                                   fontWeight: FontWeight.w800,

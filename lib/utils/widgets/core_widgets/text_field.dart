@@ -1,6 +1,5 @@
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:activ/exports.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 enum ActivTextFieldType {
@@ -77,17 +76,14 @@ class _ActivTextFieldState extends State<ActivTextField> {
   }
 
   String? _validate(String? value) {
-    // First check for custom validation if provided
     final customError = widget.validator?.call(value);
-
-    // If custom validation passes (or isn't provided), check type-based validation
     final typeError = customError;
 
     setState(() {
       _errorText = typeError;
     });
 
-    return typeError; 
+    return typeError;
   }
 
   Future<void> _handleDatePicker() async {
@@ -253,7 +249,7 @@ class _ActivTextFieldState extends State<ActivTextField> {
             const SizedBox(height: 6),
             Text(
               _errorText!,
-              style: GoogleFonts.urbanist(
+              style: context.b2.copyWith(
                 color: AppColors.error,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,

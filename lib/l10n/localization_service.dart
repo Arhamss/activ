@@ -180,6 +180,7 @@ class Localization {
   static String get resetPasswordSubtitle => _instance.resetPasswordSubtitle;
 
   static String get signInSuccess => _instance.signInSuccess;
+
 // --- End of General App Strings ---
 
 // Add other getters from AppLocalizations here if they were intentionally removed
@@ -188,64 +189,102 @@ class Localization {
 
   // Form Validation Messages
   static String get enterPhoneNumber => _instance.enterPhoneNumber;
+
   static String get enterValidPhoneNumber => _instance.enterValidPhoneNumber;
+
   static String get enterCompletePhoneNumber =>
       _instance.enterCompletePhoneNumber;
+
   static String get enterEmail => _instance.enterEmail;
+
   static String get enterValidEmail => _instance.enterValidEmail;
+
   static String get enterPassword => _instance.enterPassword;
+
   static String get passwordTooShortMessage =>
       _instance.passwordTooShortMessage;
+
   static String get passwordTooLongMessage => _instance.passwordTooLongMessage;
+
   static String get confirmYourPassword => _instance.confirmYourPassword;
+
   static String get passwordsDoNotMatch => _instance.passwordsDoNotMatch;
+
   static String get enterName => _instance.enterName;
+
   static String get invalidNameFormat => _instance.invalidNameFormat;
+
   static String get nameTooShort => _instance.nameTooShort;
+
   static String get nameTooLong => _instance.nameTooLong;
+
   static String get enterText => _instance.enterText;
+
   static String get enterNumber => _instance.enterNumber;
+
   static String get enterValidNumber => _instance.enterValidNumber;
+
   static String get enterDate => _instance.enterDate;
+
   static String get enterValidDateFormat => _instance.enterValidDateFormat;
+
   static String get dateMustBeInPast => _instance.dateMustBeInPast;
 
   // Time/Date Related Messages
   static String get today => _instance.today;
+
   static String get yesterday => _instance.yesterday;
 
   // UI Component Labels
   static String get firstName => _instance.firstName;
+
   static String get lastName => _instance.lastName;
+
   static String get dateOfBirth => _instance.dateOfBirth;
+
   static String get viewAll => _instance.viewAll;
 
   // Profile Setup Strings
   static String get profileSetupDetailsTitle =>
       _instance.profileSetupDetailsTitle;
+
   static String get profileSetupDetailsSubtitle =>
       _instance.profileSetupDetailsSubtitle;
+
   static String get profileSetupGenderTitle =>
       _instance.profileSetupGenderTitle;
+
   static String get profileSetupGenderSubtitle =>
       _instance.profileSetupGenderSubtitle;
+
   static String get profileSetupInterestsTitle =>
       _instance.profileSetupInterestsTitle;
+
   static String get profileSetupInterestsSubtitle =>
       _instance.profileSetupInterestsSubtitle;
+
   static String get unexpectedStepIndex => _instance.unexpectedStepIndex;
+
   static String get onboardingCompleted => _instance.onboardingCompleted;
+
   static String get failedToLoadSports => _instance.failedToLoadSports;
+
   static String get male => _instance.male;
+
   static String get female => _instance.female;
+
   static String howDoYouRateYourselfIn(String sportName) =>
       _instance.howDoYouRateYourselfIn(sportName);
+
   static String get thisHelpsUsFindAndConnectYouToRelevantPeople =>
       _instance.thisHelpsUsFindAndConnectYouToRelevantPeople;
 
   // Number Range Messages
   static String numberMustBeGreaterThan(int min) =>
       _instance.numberMustBeGreaterThan(min);
+
   static String numberMustBeLessThan(int max) =>
       _instance.numberMustBeLessThan(max);
+
+  static String get or => _instance.or;
 }

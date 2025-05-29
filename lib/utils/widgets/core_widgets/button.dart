@@ -1,4 +1,3 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:activ/exports.dart';
 
 class ActivButton extends StatelessWidget {
@@ -96,7 +95,7 @@ class ActivButton extends StatelessWidget {
                   ],
                   Text(
                     text.toUpperCase(),
-                    style: GoogleFonts.urbanist(
+                    style: context.b3.copyWith(
                       color: disabled ? disabledTextColor : textColor,
                       fontWeight: fontWeight,
                       fontSize: fontSize,

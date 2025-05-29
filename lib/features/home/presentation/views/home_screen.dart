@@ -2,13 +2,9 @@ import 'package:activ/config/api_environment.dart';
 import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
-import 'package:activ/utils/widgets/core_widgets/button.dart';
-import 'package:flutter/material.dart';
-import 'package:activ/constants/app_colors.dart';
-import 'package:activ/constants/app_text_style.dart';
-import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:activ/exports.dart';
 import 'package:geolocator/geolocator.dart' as geo;
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, this.showSearchBar = false});
@@ -109,6 +105,19 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         backgroundColor: AppColors.white,
         elevation: 0,
+        actions: [
+          ActivIconButton(
+            backgroundColor: AppColors.white,
+            icon: const Icon(
+              Icons.login_outlined,
+              color: AppColors.primaryColor,
+            ),
+            onPressed: () {
+              Injector.resolve<AppPreferences>().clearAll();
+              context.goNamed(AppRouteNames.splash);
+            },
+          ),
+        ],
       ),
       body: Stack(
         children: [

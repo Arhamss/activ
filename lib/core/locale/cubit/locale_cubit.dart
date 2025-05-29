@@ -1,6 +1,5 @@
 import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,14 +24,14 @@ class LocaleCubit extends Cubit<LocaleState> {
     if ((savedLocale ?? '').isNotEmpty) {
       emit(
         state.copyWith(
-          locale: Locale(savedLocale ?? 'en'),
+          locale: Locale(savedLocale ?? 'ar'),
         ),
       );
     } else {
       debugPrint('Saved locale was empty');
       emit(
         state.copyWith(
-          locale: const Locale('en'),
+          locale: const Locale('ar'),
         ),
       );
     }

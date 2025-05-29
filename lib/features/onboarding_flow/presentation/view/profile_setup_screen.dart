@@ -49,6 +49,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             backgroundColor: Colors.transparent,
             leading: BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
               builder: (context, state) {
+                if (state.detailsIndex == 0) {
+                  return const SizedBox.shrink();
+                }
                 return IconButton(
                   icon: const Icon(
                     Icons.arrow_back,

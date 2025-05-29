@@ -12,380 +12,377 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appName => 'Activ';
 
   @override
-  String get intro1Title => 'Explore City and Nearby Sport Clubs';
+  String get intro1Title => 'استكشاف المدينة والأندية الرياضية القريبة';
 
   @override
   String get intro1Description =>
-      'Discover sports clubs and facilities around you to join games, train, and stay active.';
+      'اكتشف الأندية الرياضية والمرافق حولك للانضمام إلى الألعاب والتدريب والحفاظ على نشاطك.';
 
   @override
-  String get intro2Title => 'Choose your sport and Explore Club';
+  String get intro2Title => 'اختر رياضتك واستكشف النادي';
 
   @override
   String get intro2Description =>
-      'Pick your favorite sport and find the best clubs to play and connect.';
+      'اختر رياضتك المفضلة وابحث عن أفضل الأندية للعب والتواصل.';
 
   @override
-  String get intro3Title => 'Select Slot and make a Reservation';
+  String get intro3Title => 'اختر الوقت وأجرِ الحجز';
 
   @override
-  String get intro3Description =>
-      'Pick your preferred time and book your place with ease.';
+  String get intro3Description => 'حدد الوقت المفضل لديك واحجز مكانك بسهولة.';
 
   @override
-  String get skipText => 'Skip';
+  String get skipText => 'تخطي';
 
   @override
-  String get nextText => 'Next';
+  String get nextText => 'التالي';
 
   @override
-  String get getStartedText => 'Get Started';
+  String get getStartedText => 'ابدأ';
 
   @override
-  String get signIn => 'Sign In';
+  String get signIn => 'تسجيل الدخول';
 
   @override
-  String get signUp => 'Sign Up';
+  String get signUp => 'إنشاء حساب';
 
   @override
-  String get email => 'Email';
+  String get email => 'البريد الإلكتروني';
 
   @override
-  String get password => 'Password';
+  String get password => 'كلمة المرور';
 
   @override
-  String get newPassword => 'New Password';
+  String get newPassword => 'كلمة مرور جديدة';
 
   @override
-  String get confirmPassword => 'Confirm Password';
+  String get confirmPassword => 'تأكيد كلمة المرور';
 
   @override
-  String get forgotPassword => 'Forgot Password?';
+  String get forgotPassword => 'نسيت كلمة المرور؟';
 
   @override
-  String get resetPassword => 'Reset Password';
+  String get resetPassword => 'إعادة تعيين كلمة المرور';
 
   @override
-  String get enterResetCode => 'Enter Reset Code';
+  String get enterResetCode => 'أدخل رمز إعادة التعيين';
 
   @override
-  String get continueText => 'Continue';
+  String get continueText => 'متابعة';
 
   @override
-  String get verify => 'Verify';
+  String get verify => 'تحقق';
 
   @override
-  String get submit => 'Submit';
+  String get submit => 'إرسال';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'إلغاء';
 
   @override
-  String get home => 'Home';
+  String get home => 'الرئيسية';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'الإعدادات';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'الملف الشخصي';
 
   @override
-  String get logout => 'Logout';
+  String get logout => 'تسجيل الخروج';
 
   @override
-  String get orConnectWith => 'OR';
+  String get orConnectWith => 'أو';
 
   @override
-  String get createAccount => 'Create Account';
+  String get createAccount => 'إنشاء حساب';
 
   @override
-  String get alreadyHaveAccount => 'Already have an account?';
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟';
 
   @override
-  String get dontHaveAccount => 'Don\'t have an account? Sign Up';
+  String get dontHaveAccount => 'ليس لديك حساب؟ سجل الآن';
 
   @override
-  String get fieldRequired => 'This field is required';
+  String get fieldRequired => 'هذا الحقل مطلوب';
 
   @override
-  String get passwordRequired => 'Password is Required';
+  String get passwordRequired => 'كلمة المرور مطلوبة';
 
   @override
-  String get emailRequired => 'Email is Required';
+  String get emailRequired => 'البريد الإلكتروني مطلوب';
 
   @override
-  String get invalidEmail => 'Please enter a valid email address';
+  String get invalidEmail => 'يرجى إدخال عنوان بريد إلكتروني صالح';
 
   @override
-  String get passwordTooShort => 'Password must be at least 8 characters';
+  String get passwordTooShort => 'يجب أن تكون كلمة المرور 8 أحرف على الأقل';
 
   @override
-  String get passwordMismatch => 'Passwords do not match';
+  String get passwordMismatch => 'كلمتا المرور غير متطابقتين';
 
   @override
-  String get errorOccurred => 'An error occurred';
+  String get errorOccurred => 'حدث خطأ';
 
   @override
-  String get success => 'Success!';
+  String get success => 'نجاح!';
 
   @override
-  String get oops => 'Oops!';
+  String get oops => 'عذرًا!';
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'أعد المحاولة';
 
   @override
-  String get ok => 'OK';
+  String get ok => 'حسنًا';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'نعم';
 
   @override
-  String get no => 'No';
+  String get no => 'لا';
 
   @override
-  String get search => 'Search';
+  String get search => 'بحث';
 
   @override
-  String get loading => 'Loading...';
+  String get loading => 'جارٍ التحميل...';
 
   @override
-  String get pleaseWait => 'Please wait...';
+  String get pleaseWait => 'يرجى الانتظار...';
 
   @override
-  String get noInternetConnection => 'No internet connection';
+  String get noInternetConnection => 'لا يوجد اتصال بالإنترنت';
 
   @override
-  String get timeoutError => 'The request timed out';
+  String get timeoutError => 'انتهت مهلة الطلب';
 
   @override
-  String get unknownError => 'An unknown error occurred';
+  String get unknownError => 'حدث خطأ غير معروف';
 
   @override
-  String get featureComingSoon => 'Feature coming soon';
+  String get featureComingSoon => 'الميزة قادمة قريبًا';
 
   @override
-  String get helloWorld => 'Hello, World!';
+  String get helloWorld => 'مرحبًا بالعالم!';
 
   @override
-  String get dontHaveAnAccount => 'Don\'t have an account? ';
+  String get dontHaveAnAccount => 'ليس لديك حساب؟ ';
 
   @override
-  String get createANewOne => 'Create a new one';
+  String get createANewOne => 'أنشئ واحدًا جديدًا';
 
   @override
-  String get newAccount => 'New account';
+  String get newAccount => 'حساب جديد';
 
   @override
   String get forgotPasswordSubtitle =>
-      'Don\'t worry — it happens to the best of us. Let\'s reset your password.';
+      'لا تقلق — يحدث ذلك لأفضلنا. لنعيد تعيين كلمة المرور الخاصة بك.';
 
   @override
-  String get signInToContinue => 'Sign in to continue & join the action!';
+  String get signInToContinue => 'سجل الدخول للمتابعة والانضمام إلى النشاط!';
 
   @override
-  String get signUpToContinue => 'Sign Up to continue and stay activ';
+  String get signUpToContinue => 'سجل الآن للمتابعة والحفاظ على نشاطك';
 
   @override
-  String get continueWithGoogle => 'Continue with Google';
+  String get continueWithGoogle => 'المتابعة عبر جوجل';
 
   @override
-  String get continueWithApple => 'Continue with Apple';
+  String get continueWithApple => 'المتابعة عبر آبل';
 
   @override
-  String get passwordResetSuccessTitle => 'Password Reset Success!';
+  String get passwordResetSuccessTitle => 'تم إعادة تعيين كلمة المرور بنجاح!';
 
   @override
   String get passwordResetSuccessMessage =>
-      'You now have full access to your account, welcome back.';
+      'لديك الآن وصول كامل إلى حسابك، مرحبًا بعودتك.';
 
   @override
   String get codeSentToEmail =>
-      'We\'ve sent a six-digit code to your email in order to verify your identity.';
+      'أرسلنا رمزًا مكونًا من ستة أرقام إلى بريدك الإلكتروني للتحقق من هويتك.';
 
   @override
   String get failedToSendPasswordRecovery =>
-      'Failed to send password recovery email';
+      'فشل في إرسال بريد استعادة كلمة المرور';
 
   @override
-  String get failedToResetPassword => 'Failed to reset password';
+  String get failedToResetPassword => 'فشل في إعادة تعيين كلمة المرور';
 
   @override
-  String get failedToSignInUser => 'Failed to Sign In User';
+  String get failedToSignInUser => 'فشل تسجيل دخول المستخدم';
 
   @override
-  String get failedToSignUpUser => 'Failed to Sign Up User';
+  String get failedToSignUpUser => 'فشل إنشاء حساب المستخدم';
 
   @override
-  String get successfullySignedInWithGoogle =>
-      'Successfully signed in with Google';
+  String get successfullySignedInWithGoogle => 'تم تسجيل الدخول بنجاح عبر جوجل';
 
   @override
-  String get failedToSignInWithGoogle => 'Failed to sign in with Google';
+  String get failedToSignInWithGoogle => 'فشل تسجيل الدخول عبر جوجل';
 
   @override
-  String get yourName => 'Your Name';
+  String get yourName => 'اسمك';
 
   @override
-  String get resetCodeSet => 'Reset code set';
+  String get resetCodeSet => 'تم تعيين رمز إعادة التعيين';
 
   @override
-  String get codeMustBe6Digits => 'Code must be 6 digits';
+  String get codeMustBe6Digits => 'يجب أن يكون الرمز مكونًا من 6 أرقام';
 
   @override
-  String get pleaseEnterResetCode => 'Please enter the reset code';
+  String get pleaseEnterResetCode => 'يرجى إدخال رمز إعادة التعيين';
 
   @override
-  String get byContinuingYouAgreeToOur => 'By continuing you agree to our ';
+  String get byContinuingYouAgreeToOur => 'بالاستمرار، فإنك توافق على شروطنا ';
 
   @override
-  String get termsOfServiceLink => 'Terms of Service';
+  String get termsOfServiceLink => 'شروط الخدمة';
 
   @override
   String get resetCodeSubtitle =>
-      'We\'ve sent a 6-digit code to your email. Please enter it below to verify your identity.';
+      'أرسلنا رمزًا مكونًا من 6 أرقام إلى بريدك الإلكتروني. يرجى إدخاله أدناه للتحقق من هويتك.';
 
   @override
   String get resetPasswordSubtitle =>
-      'Enter your new password below to reset it.';
+      'أدخل كلمة المرور الجديدة أدناه لإعادة تعيينها.';
 
   @override
-  String get signInSuccess => 'Signed In Successfully';
+  String get signInSuccess => 'تم تسجيل الدخول بنجاح';
 
   @override
-  String get failedToLoadSports => 'Failed to Load Sports';
+  String get failedToLoadSports => 'فشل في تحميل الرياضات';
 
   @override
-  String get enterPhoneNumber => 'Please enter your phone number';
+  String get enterPhoneNumber => 'يرجى إدخال رقم هاتفك';
 
   @override
-  String get enterValidPhoneNumber => 'Please enter a valid phone number';
+  String get enterValidPhoneNumber => 'يرجى إدخال رقم هاتف صالح';
 
   @override
-  String get enterCompletePhoneNumber => 'Please enter a complete phone number';
+  String get enterCompletePhoneNumber => 'يرجى إدخال رقم هاتف كامل';
 
   @override
-  String get enterEmail => 'Please enter your email';
+  String get enterEmail => 'يرجى إدخال بريدك الإلكتروني';
 
   @override
-  String get enterValidEmail => 'Please enter a valid email';
+  String get enterValidEmail => 'يرجى إدخال بريد إلكتروني صالح';
 
   @override
-  String get enterPassword => 'Please enter your password';
+  String get enterPassword => 'يرجى إدخال كلمة المرور';
 
   @override
-  String get passwordTooShortMessage =>
-      'Please enter a password greater than 6 characters';
+  String get passwordTooShortMessage => 'يرجى إدخال كلمة مرور تزيد عن 6 أحرف';
 
   @override
-  String get passwordTooLongMessage =>
-      'Please enter a password less than 100 characters';
+  String get passwordTooLongMessage => 'يرجى إدخال كلمة مرور أقل من 100 حرف';
 
   @override
-  String get confirmYourPassword => 'Please confirm your password';
+  String get confirmYourPassword => 'يرجى تأكيد كلمة المرور';
 
   @override
-  String get passwordsDoNotMatch => 'Passwords do not match';
+  String get passwordsDoNotMatch => 'كلمات المرور غير متطابقة';
 
   @override
-  String get enterName => 'Please enter the name';
+  String get enterName => 'يرجى إدخال الاسم';
 
   @override
   String get invalidNameFormat =>
-      'Name can only contain letters, spaces, hyphens, and apostrophes';
+      'يمكن للاسم أن يحتوي فقط على حروف ومسافات وشرطات ووصلات';
 
   @override
-  String get nameTooShort => 'Name must be at least 2 characters long';
+  String get nameTooShort => 'يجب أن يكون الاسم مكونًا من حرفين على الأقل';
 
   @override
-  String get nameTooLong => 'Name must be less than 30 characters';
+  String get nameTooLong => 'يجب أن يكون الاسم أقل من 30 حرفًا';
 
   @override
-  String get enterText => 'Please enter the text';
+  String get enterText => 'يرجى إدخال النص';
 
   @override
-  String get enterNumber => 'Please enter a number';
+  String get enterNumber => 'يرجى إدخال رقم';
 
   @override
-  String get enterValidNumber => 'Please enter a valid number';
+  String get enterValidNumber => 'يرجى إدخال رقم صالح';
 
   @override
   String numberMustBeGreaterThan(int min) {
-    return 'Number must be greater than or equal to $min';
+    return 'يجب أن يكون الرقم أكبر من أو يساوي $min';
   }
 
   @override
   String numberMustBeLessThan(int max) {
-    return 'Number must be less than or equal to $max';
+    return 'يجب أن يكون الرقم أقل من أو يساوي $max';
   }
 
   @override
-  String get enterDate => 'Please enter a date';
+  String get enterDate => 'يرجى إدخال تاريخ';
 
   @override
-  String get enterValidDateFormat =>
-      'Please enter a valid date in DD/MM/YYYY format';
+  String get enterValidDateFormat => 'يرجى إدخال تاريخ صالح بالصيغة DD/MM/YYYY';
 
   @override
-  String get dateMustBeInPast => 'Date must be in the past';
+  String get dateMustBeInPast => 'يجب أن يكون التاريخ في الماضي';
 
   @override
-  String get today => 'Today';
+  String get today => 'اليوم';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'أمس';
 
   @override
-  String get firstName => 'First Name';
+  String get firstName => 'الاسم الأول';
 
   @override
-  String get lastName => 'Last Name';
+  String get lastName => 'اسم العائلة';
 
   @override
-  String get dateOfBirth => 'Date of Birth';
+  String get dateOfBirth => 'تاريخ الميلاد';
 
   @override
-  String get viewAll => 'View All';
+  String get viewAll => 'عرض الكل';
 
   @override
-  String get profileSetupDetailsTitle => 'Tell me some details please?';
+  String get profileSetupDetailsTitle => 'أخبرني ببعض التفاصيل من فضلك؟';
 
   @override
   String get profileSetupDetailsSubtitle =>
-      'Please provide a few details to help your friend find your activ account';
+      'يرجى تقديم بعض التفاصيل لمساعدة صديقك في العثور على حسابك في activ';
 
   @override
-  String get profileSetupGenderTitle => 'What is your Gender?';
+  String get profileSetupGenderTitle => 'ما هو جنسك؟';
 
   @override
   String get profileSetupGenderSubtitle =>
-      'This helps us find you more relevant content';
+      'هذا يساعدنا في العثور على محتوى أكثر صلة لك';
 
   @override
-  String get profileSetupInterestsTitle => 'What are your interests?';
+  String get profileSetupInterestsTitle => 'ما هي اهتماماتك؟';
 
   @override
-  String get profileSetupInterestsSubtitle =>
-      'Select your interests to personalize your experience';
+  String get profileSetupInterestsSubtitle => 'اختر اهتماماتك لتخصيص تجربتك';
 
   @override
-  String get unexpectedStepIndex => 'Unexpected step index.';
+  String get unexpectedStepIndex => 'مؤشر الخطوة غير متوقع.';
 
   @override
-  String get onboardingCompleted => 'Onboarding Completed!!';
+  String get onboardingCompleted => 'اكتمل الإعداد!!';
 
   @override
-  String get male => 'Male';
+  String get male => 'ذكر';
 
   @override
-  String get female => 'Female';
+  String get female => 'أنثى';
 
   @override
   String howDoYouRateYourselfIn(String sportName) {
-    return 'How do you rate yourself in $sportName?';
+    return 'كيف تقيم نفسك في $sportName؟';
   }
 
   @override
   String get thisHelpsUsFindAndConnectYouToRelevantPeople =>
-      'This helps us find and connect you to relevant people';
+      'هذا يساعدنا في العثور على الأشخاص المناسبين وربطك بهم';
+
+  @override
+  String get or => 'أو';
 }

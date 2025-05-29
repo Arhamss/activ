@@ -1,6 +1,6 @@
+import 'package:activ/core/locale/cubit/locale_cubit.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/l10n/localization_service.dart';
-import 'package:equatable/equatable.dart';
 
 class SportRatingDialog extends StatefulWidget {
   const SportRatingDialog({
@@ -17,17 +17,10 @@ class SportRatingDialog extends StatefulWidget {
 class _SportRatingDialogState extends State<SportRatingDialog> {
   double currentRating = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    currentRating = context.read<SportsDialogCubit>().state.selectedRating;
-  }
-
   void _updateRatingFromDrag(DragUpdateDetails details) {
     final delta = details.delta.dx / 50;
     setState(() {
       currentRating = (currentRating + delta).clamp(0.0, 5.0);
-      context.read<SportsDialogCubit>().selectRating(currentRating);
     });
   }
 
@@ -36,21 +29,29 @@ class _SportRatingDialogState extends State<SportRatingDialog> {
       tween: Tween<double>(begin: 0, end: currentRating),
       duration: const Duration(milliseconds: 300),
       builder: (context, animatedRating, child) {
+        final halfStarIcon =
+            context.read<LocaleCubit>().state.locale.languageCode == 'ar'
+                ? AssetPaths.halfStarArIcon
+                : AssetPaths.halfStarEnIcon;
         final icon = animatedRating >= index + 1
             ? AssetPaths.filledStarIcon
             : animatedRating >= index + 0.5
-                ? AssetPaths.halfStarIcon
+                ? halfStarIcon
                 : AssetPaths.outlinedStarIcon;
 
         return GestureDetector(
           onTapDown: (details) {
             final tapX = details.localPosition.dx;
             const starWidth = 40.0;
-            final isHalf = tapX < (starWidth / 2);
+
+            final localeCubit = context.read<LocaleCubit>();
+            final isRtl = localeCubit.state.locale.languageCode == 'ar';
+
+            final isHalf =
+                isRtl ? tapX > (starWidth / 2) : tapX < (starWidth / 2);
 
             setState(() {
               currentRating = index + (isHalf ? 0.5 : 1.0);
-              context.read<SportsDialogCubit>().selectRating(currentRating);
             });
           },
           child: AnimatedSwitcher(
@@ -113,47 +114,16 @@ class _SportRatingDialogState extends State<SportRatingDialog> {
               ),
             ),
             const SizedBox(height: 48),
-            BlocBuilder<SportsDialogCubit, SportsDialogState>(
-              builder: (context, state) {
-                return ActivButton(
-                  onPressed: () {
-                    context.pop();
-                  },
-                  text: 'Continue',
-                  isLoading: false,
-                );
+            ActivButton(
+              onPressed: () {
+                Navigator.of(context).pop(currentRating);
               },
+              text: Localization.continueText,
+              isLoading: false,
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class SportsDialogState extends Equatable {
-  const SportsDialogState({this.selectedRating = 0.0});
-
-  final double selectedRating;
-
-  @override
-  List<Object> get props => [selectedRating];
-
-  SportsDialogState copyWith({double? selectedRating}) {
-    return SportsDialogState(
-      selectedRating: selectedRating ?? this.selectedRating,
-    );
-  }
-}
-
-class SportsDialogCubit extends Cubit<SportsDialogState> {
-  SportsDialogCubit() : super(const SportsDialogState());
-
-  void selectRating(double rating) {
-    emit(state.copyWith(selectedRating: rating));
-  }
-
-  void resetRating() {
-    emit(const SportsDialogState());
   }
 }

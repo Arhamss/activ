@@ -1,11 +1,9 @@
-import 'package:activ/constants/constants.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/features/onboarding_flow/presentation/widgets/interest_widget.dart';
 import 'package:activ/features/onboarding_flow/presentation/widgets/sports_rating_dialog.dart';
 import 'package:activ/l10n/localization_service.dart';
-import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/retry_widget.dart';
 
 class SportsSelectionWidget extends StatefulWidget {
@@ -19,8 +17,6 @@ class SportsSelectionWidget extends StatefulWidget {
 
 class _SportsSelectionWidgetState extends State<SportsSelectionWidget> {
   final formKey = GlobalKey<FormState>();
-
-
 
   @override
   void initState() {
@@ -59,35 +55,25 @@ class _SportsSelectionWidgetState extends State<SportsSelectionWidget> {
                       svgPath: sport.illustrationUrl,
                       subtitle: sport.name,
                       isSelected: isSelected,
-                      onTap: () {
+                      onTap: () async {
                         if (state.selectedInterests.containsKey(sport.id)) {
-                          // If already selected, remove it
                           context
                               .read<OnboardingFlowCubit>()
                               .removeInterest(sport.id);
                           return;
                         }
-                        showDialog<int>(
+                        final rating = await showDialog<double>(
                           context: context,
                           builder: (context) => SportRatingDialog(
                             sportName: sport.name,
                           ),
                         );
 
-                        final rating = context
-                            .read<SportsDialogCubit>()
-                            .state
-                            .selectedRating;
-
-                        if (rating == 0) {
-                          return;
-                        }
+                        if ((rating ?? 0) == 0) return;
 
                         context
                             .read<OnboardingFlowCubit>()
-                            .addInterest(sport.id, rating);
-
-                        context.read<SportsDialogCubit>().resetRating();
+                            .addInterest(sport.id, rating!.toDouble());
                       },
                     );
                   }).toList() ??

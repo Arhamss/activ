@@ -116,3 +116,7 @@ flutter:
         - asset: assets/fonts/Urbanist-ThinItalic.otf
           weight: 100
           style: italic
+    - family: NotoSansArabic
+      fonts:
+        - asset: assets/fonts/NotoSansArabic.ttf
+

@@ -388,4 +388,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get thisHelpsUsFindAndConnectYouToRelevantPeople =>
       'This helps us find and connect you to relevant people';
+
+  @override
+  String get or => 'OR';
 }

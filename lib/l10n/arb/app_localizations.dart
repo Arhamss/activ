@@ -811,6 +811,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This helps us find and connect you to relevant people'**
   String get thisHelpsUsFindAndConnectYouToRelevantPeople;
+
+  /// No description provided for @or.
+  ///
+  /// In en, this message translates to:
+  /// **'OR'**
+  String get or;
 }
 
 class _AppLocalizationsDelegate

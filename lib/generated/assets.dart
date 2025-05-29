@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String fontsNotosans = 'assets/fonts/notosans.ttf';
   static const String fontsUrbanistBlack = 'assets/fonts/Urbanist-Black.otf';
   static const String fontsUrbanistBlackItalic =
       'assets/fonts/Urbanist-BlackItalic.otf';
@@ -67,6 +68,14 @@ class Assets {
       'assets/svgs/interest_icons/Tennis.svg';
   static const String interestIconsVolleyball =
       'assets/svgs/interest_icons/Volleyball.svg';
+  static const String navigationChat = 'assets/svgs/navigation/chat.svg';
+  static const String navigationHome = 'assets/svgs/navigation/home.svg';
+  static const String navigationNavigationVector =
+      'assets/svgs/sports_icons/navigation/navigation/Vector.svg';
+  static const String navigationProfile = 'assets/svgs/navigation/profile.svg';
+  static const String navigationSearch = 'assets/svgs/navigation/search.svg';
+  static const String navigationVector =
+      'assets/svgs/navigation/navigation/navigation/Vector.svg';
   static const String sportsIconsBadminton =
       'assets/svgs/sports_icons/badminton.svg';
   static const String sportsIconsBasketball =
@@ -98,6 +107,7 @@ class Assets {
       'assets/svgs/sports_icons/volleyball.svg';
   static const String svgsApple = 'assets/svgs/Apple.svg';
   static const String svgsArrowDown = 'assets/svgs/arrow_down.svg';
+  static const String svgsBottomNavLogo = 'assets/svgs/bottom_nav_logo.svg';
   static const String svgsCalendar = 'assets/svgs/calendar.svg';
   static const String svgsCheckmark = 'assets/svgs/checkmark.svg';
   static const String svgsEmail = 'assets/svgs/email.svg';

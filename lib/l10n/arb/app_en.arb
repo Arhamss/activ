@@ -80,8 +80,8 @@
   "termsOfServiceLink": "Terms of Service",
   "resetCodeSubtitle": "We've sent a 6-digit code to your email. Please enter it below to verify your identity.",
   "resetPasswordSubtitle": "Enter your new password below to reset it.",
-  "signInSuccess":"Signed In Successfully",
-  "failedToLoadSports":"Failed to Load Sports",
+  "signInSuccess": "Signed In Successfully",
+  "failedToLoadSports": "Failed to Load Sports",
   "enterPhoneNumber": "Please enter your phone number",
   "enterValidPhoneNumber": "Please enter a valid phone number",
   "enterCompletePhoneNumber": "Please enter a complete phone number",
@@ -136,8 +136,8 @@
   "profileSetupInterestsSubtitle": "Select your interests to personalize your experience",
   "unexpectedStepIndex": "Unexpected step index.",
   "onboardingCompleted": "Onboarding Completed!!",
-  "male":"Male",
-  "female":"Female",
+  "male": "Male",
+  "female": "Female",
   "howDoYouRateYourselfIn": "How do you rate yourself in {sportName}?",
   "@howDoYouRateYourselfIn": {
     "description": "Question asking user to rate their skill in a sport",
@@ -148,5 +148,6 @@
       }
     }
   },
-  "thisHelpsUsFindAndConnectYouToRelevantPeople": "This helps us find and connect you to relevant people"
+  "thisHelpsUsFindAndConnectYouToRelevantPeople": "This helps us find and connect you to relevant people",
+  "or": "OR"
 }

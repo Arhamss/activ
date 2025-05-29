@@ -43,10 +43,6 @@ class _IntroScreenState extends State<IntroScreen> {
         backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         forceMaterialTransparency: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.black),
-          onPressed: () => context.pop(),
-        ),
       ),
       body: Column(
         children: [
