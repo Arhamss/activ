@@ -24,14 +24,14 @@ class LocaleCubit extends Cubit<LocaleState> {
     if ((savedLocale ?? '').isNotEmpty) {
       emit(
         state.copyWith(
-          locale: Locale(savedLocale ?? 'ar'),
+          locale: Locale(savedLocale ?? 'en'),
         ),
       );
     } else {
       debugPrint('Saved locale was empty');
       emit(
         state.copyWith(
-          locale: const Locale('ar'),
+          locale: const Locale('en'),
         ),
       );
     }
