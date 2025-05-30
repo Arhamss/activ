@@ -20,7 +20,8 @@ class _SportRatingDialogState extends State<SportRatingDialog> {
   void _updateRatingFromDrag(DragUpdateDetails details) {
     final delta = details.delta.dx / 50;
     setState(() {
-      currentRating = (currentRating + delta).clamp(0.0, 5.0);
+      final newRating = (currentRating + delta).clamp(0.0, 5.0);
+      currentRating = (newRating * 2).round() / 2;
     });
   }
 

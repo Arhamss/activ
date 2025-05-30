@@ -43,6 +43,15 @@ class _IntroScreenState extends State<IntroScreen> {
         backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         forceMaterialTransparency: true,
+        actions: [
+          ActivIconButton(
+            backgroundColor: AppColors.white,
+            icon: const Icon(
+              Icons.login_outlined,
+              color: AppColors.primaryColor,
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [

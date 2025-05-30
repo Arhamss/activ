@@ -100,8 +100,7 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.searchScreen,
                 name: AppRouteNames.searchScreen,
-                builder: (context, state) =>
-                    const HomeScreen(showSearchBar: true),
+                builder: (context, state) => const HomeScreen(),
               ),
             ],
           ),

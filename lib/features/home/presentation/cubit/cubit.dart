@@ -31,4 +31,12 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
   }
+
+  void setIsSearching(bool value) {
+    emit(state.copyWith(isSearching: value));
+  }
+
+  void setShowSearchBar(bool value) {
+    emit(state.copyWith(showSearchBar: value));
+  }
 }

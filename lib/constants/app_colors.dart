@@ -81,7 +81,9 @@ abstract class AppColors {
   static const greyShade4 = Color(0xFFF9FAFB);
   static const greyShade5 = Color(0xFFC1C7D0);
   static const greyShade6 = Color(0xFFE5E6EB);
+  static const textFieldBackground = Color(0xFFE4DFDF);
   static const fabBackground = Color(0xFF6C8178);
   static const selectedGender = Color(0xFF8B9B74);
   static const unSelectedGender = Color(0xFFE0E0E0);
+  static const bottomSheetCloseIcon = Color(0xFF60635E);
 }

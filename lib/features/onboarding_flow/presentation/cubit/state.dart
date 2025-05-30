@@ -15,7 +15,7 @@ class OnboardingFlowState extends Equatable {
     this.resetCode,
     this.resetPassword = const DataState.initial(),
     this.pinCodeEntered = false,
-    this.detailsIndex = 2,
+    this.detailsIndex = 0,
     this.imagePath,
     this.phoneNumber = '',
     this.firstName = '',

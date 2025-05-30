@@ -5,6 +5,7 @@ import 'package:activ/features/onboarding_flow/presentation/widgets/interest_wid
 import 'package:activ/features/onboarding_flow/presentation/widgets/sports_rating_dialog.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/widgets/core_widgets/retry_widget.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class SportsSelectionWidget extends StatefulWidget {
   const SportsSelectionWidget(this.constraints, {super.key});
@@ -29,7 +30,29 @@ class _SportsSelectionWidgetState extends State<SportsSelectionWidget> {
     return BlocBuilder<OnboardingFlowCubit, OnboardingFlowState>(
       builder: (context, state) {
         if (state.sports.isLoading) {
-          return const LoadingWidget();
+          return Column(
+            children: [
+              Wrap(
+                alignment: WrapAlignment.spaceAround,
+                spacing: 32,
+                runSpacing: 16,
+                children: List.generate(
+                  8,
+                  (index) => Skeletonizer(
+                    child: Container(
+                      width: 160,
+                      height: 160,
+                      decoration: BoxDecoration(
+                        color: AppColors.greyShade5,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          );
         }
 
         if (state.sports.isFailure) {
@@ -73,7 +96,7 @@ class _SportsSelectionWidgetState extends State<SportsSelectionWidget> {
 
                         context
                             .read<OnboardingFlowCubit>()
-                            .addInterest(sport.id, rating!.toDouble());
+                            .addInterest(sport.id, rating!);
                       },
                     );
                   }).toList() ??
