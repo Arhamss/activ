@@ -1,5 +1,7 @@
 import 'package:activ/exports.dart';
 
+enum ButtonBorderStyle { solid, dotted }
+
 class ActivButton extends StatelessWidget {
   const ActivButton({
     required this.text,
@@ -25,6 +27,8 @@ class ActivButton extends StatelessWidget {
     this.loadingColor = AppColors.white,
     this.borderColor,
     this.borderWidth = 1.0,
+    this.borderStyle = ButtonBorderStyle.solid,
+    this.textStyle,
   });
 
   final String text;
@@ -48,13 +52,15 @@ class ActivButton extends StatelessWidget {
   final Color loadingColor;
   final Color? borderColor;
   final double borderWidth;
+  final ButtonBorderStyle borderStyle;
+  final TextStyle? textStyle;
 
   @override
   Widget build(BuildContext context) {
     final effectiveDisabledBackgroundColor =
         disabledBackgroundColor ?? backgroundColor.withValues(alpha: 0.5);
 
-    final button = TextButton(
+    final buttonContent = TextButton(
       onPressed: (isLoading || disabled) ? null : onPressed,
       style: TextButton.styleFrom(
         minimumSize: Size.zero,
@@ -63,7 +69,7 @@ class ActivButton extends StatelessWidget {
             disabled ? effectiveDisabledBackgroundColor : backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
-          side: borderColor != null
+          side: borderColor != null && borderStyle == ButtonBorderStyle.solid
               ? BorderSide(
                   color: disabled
                       ? borderColor!.withValues(alpha: 0.5)
@@ -93,12 +99,18 @@ class ActivButton extends StatelessWidget {
                     prefixIcon!,
                     SizedBox(width: iconSpacing ?? 8),
                   ],
-                  Text(
-                    text.toUpperCase(),
-                    style: context.b3.copyWith(
-                      color: disabled ? disabledTextColor : textColor,
-                      fontWeight: fontWeight,
-                      fontSize: fontSize,
+                  Flexible(
+                    child: Text(
+                      text.toUpperCase(),
+                      style: textStyle ??
+                          context.b3.copyWith(
+                            color: disabled ? disabledTextColor : textColor,
+                            fontWeight: fontWeight,
+                            fontSize: fontSize,
+                          ),
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (suffixIcon != null) ...[
@@ -110,15 +122,114 @@ class ActivButton extends StatelessWidget {
       ),
     );
 
+    Widget finalButton = buttonContent;
+
+    // Add dotted border if specified
+    if (borderColor != null && borderStyle == ButtonBorderStyle.dotted) {
+      finalButton = CustomPaint(
+        painter: DottedBorderPainter(
+          color: disabled ? borderColor!.withValues(alpha: 0.5) : borderColor!,
+          strokeWidth: borderWidth,
+          borderRadius: borderRadius,
+        ),
+        child: buttonContent,
+      );
+    }
+
     return Padding(
       padding: outsidePadding ?? EdgeInsets.zero,
       child: isExpanded
           ? Row(
               children: [
-                Expanded(child: button),
+                Expanded(child: finalButton),
               ],
             )
-          : button,
+          : finalButton,
+    );
+  }
+}
+
+class DottedBorderPainter extends CustomPainter {
+  const DottedBorderPainter({
+    required this.color,
+    required this.strokeWidth,
+    required this.borderRadius,
+    this.dashLength = 4.0,
+    this.gapLength = 4.0,
+  });
+
+  final Color color;
+  final double strokeWidth;
+  final double borderRadius;
+  final double dashLength;
+  final double gapLength;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    final path = Path()
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          Radius.circular(borderRadius),
+        ),
+      );
+
+    final pathMetrics = path.computeMetrics();
+    for (final pathMetric in pathMetrics) {
+      final pathLength = pathMetric.length;
+      var distance = 0.0;
+      var draw = true;
+
+      while (distance < pathLength) {
+        final length = draw ? dashLength : gapLength;
+        if (distance + length > pathLength) {
+          if (draw) {
+            final extractPath = pathMetric.extractPath(distance, pathLength);
+            canvas.drawPath(extractPath, paint);
+          }
+          break;
+        } else {
+          if (draw) {
+            final extractPath =
+                pathMetric.extractPath(distance, distance + length);
+            canvas.drawPath(extractPath, paint);
+          }
+          distance += length;
+          draw = !draw;
+        }
+      }
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return oldDelegate != this;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is DottedBorderPainter &&
+        other.color == color &&
+        other.strokeWidth == strokeWidth &&
+        other.borderRadius == borderRadius &&
+        other.dashLength == dashLength &&
+        other.gapLength == gapLength;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      color,
+      strokeWidth,
+      borderRadius,
+      dashLength,
+      gapLength,
     );
   }
 }

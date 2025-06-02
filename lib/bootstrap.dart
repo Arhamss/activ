@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:activ/config/api_environment.dart';
 import 'package:activ/core/di/injector.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -21,7 +23,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   };
 
   WidgetsFlutterBinding.ensureInitialized();
-  Bloc.observer = const AppBlocObserver();
+  Bloc.observer  = const AppBlocObserver();
+
+  MapboxOptions.setAccessToken(ApiEnvironment.current.mapboxAPIKey);
 
   await Injector.setup();
 

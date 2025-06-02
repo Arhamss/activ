@@ -54,5 +54,10 @@ class AssetPaths {
   static const searchNavbarSelected =
       'assets/svgs/navigation/search_selected.svg';
   static const chatNavbarSelected = 'assets/svgs/navigation/chat_selected.svg';
+  static const gamesNavbarIcon = 'assets/svgs/navigation/games.svg';
+  static const gamesNavbarSelected =
+      'assets/svgs/navigation/games_selected.svg';
+
   static const dropdownArrow = 'assets/svgs/dropdown_icon.svg';
+  static const notificationIcon = 'assets/svgs/notification.svg';
 }

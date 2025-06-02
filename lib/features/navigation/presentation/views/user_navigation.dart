@@ -12,7 +12,7 @@ class UserNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color.fromARGB(255, 222, 212, 212),
       body: shell,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
@@ -91,9 +91,9 @@ class UserNavigation extends StatelessWidget {
           label: 'Home',
         ),
         const NavItem(
-          icon: AssetPaths.searchNavbarIcon,
-          selectedIcon: AssetPaths.searchNavbarSelected,
-          label: 'Search',
+          icon: AssetPaths.gamesNavbarIcon,
+          selectedIcon: AssetPaths.gamesNavbarSelected,
+          label: 'Games',
         ),
         const NavItem(
           icon: AssetPaths.chatNavbarIcon,
@@ -108,41 +108,19 @@ class UserNavigation extends StatelessWidget {
       ];
 
   Widget _buildNavItem(BuildContext context, int index) {
-    final item = _navBarItems[index];
-    final homeState = context.watch<HomeCubit>().state;
-
     // Determine if this item should be selected
     bool isSelected;
-    if (index == 0) {
-      // Home tab
-      // Home is selected if we're on home tab AND search bar is not active
-      isSelected = shell.currentIndex == 0 && !homeState.showSearchBar;
-    } else if (index == 1) {
-      // Search tab
-      // Search is selected if search bar is active OR we're on search tab
-      isSelected = homeState.showSearchBar || shell.currentIndex == 1;
-    } else {
-      // Other tabs are selected normally
-      isSelected = index == shell.currentIndex;
-    }
+
+    final item = _navBarItems[index];
+
+    isSelected = index == shell.currentIndex;
 
     final color =
         isSelected ? AppColors.primaryColor : AppColors.secondaryColor;
 
     return GestureDetector(
       onTap: () {
-        if (index == 1) {
-          // Tapping search: toggle search bar state
-          context.read<HomeCubit>().setShowSearchBar(!homeState.showSearchBar);
-          // Stay on home screen but with search active
-          if (shell.currentIndex != 0) {
-            shell.goBranch(0, initialLocation: true);
-          }
-        } else {
-          // Tapping other tabs: disable search bar and navigate
-          context.read<HomeCubit>().setShowSearchBar(false);
-          shell.goBranch(index, initialLocation: true);
-        }
+        shell.goBranch(index, initialLocation: true);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

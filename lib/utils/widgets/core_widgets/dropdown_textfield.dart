@@ -11,6 +11,7 @@ class DropdownTextField extends StatefulWidget {
     this.onChanged,
     this.borderRadius,
     this.prefixIconPath,
+    this.maxHeight,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class DropdownTextField extends StatefulWidget {
   final void Function(String)? onChanged;
   final double? borderRadius;
   final String? prefixIconPath;
+  final double? maxHeight;
 
   @override
   State<DropdownTextField> createState() => _DropdownTextFieldState();
@@ -163,41 +165,58 @@ class _DropdownTextFieldState extends State<DropdownTextField> {
                 ],
               ),
             ),
-            itemBuilder: (context) => widget.options.map((option) {
-              final isSelected = widget.controller.text == option;
-              return PopupMenuItem<String>(
-                value: option,
-                child: Container(
+            itemBuilder: (context) => [
+              // Single PopupMenuItem containing all options
+              PopupMenuItem<String>(
+                enabled: false, // Disable the outer container
+                height: widget.maxHeight ?? 200, // Fixed height
+                padding: EdgeInsets.zero,
+                child: SizedBox(
                   width: double.infinity,
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  decoration: isSelected
-                      ? BoxDecoration(
-                          color: AppColors.primaryColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        )
-                      : null,
-                  child: Text(
-                    option,
-                    style: baseTextStyle.copyWith(
-                      color: isSelected
-                          ? AppColors.primaryColor
-                          : AppColors.textDark,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: widget.options.map((option) {
+                        final isSelected = widget.controller.text == option;
+                        return InkWell(
+                          onTap: () {
+                            widget.controller.text = option;
+                            widget.onChanged?.call(option);
+                            _validate(option);
+                            setState(() => _isMenuOpen = false);
+                            _focusNode.unfocus();
+                            Navigator.of(context).pop();
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsetsDirectional.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            decoration: isSelected
+                                ? BoxDecoration(
+                                    color:
+                                        AppColors.primaryColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(8),
+                                  )
+                                : null,
+                            child: Text(
+                              option,
+                              style: baseTextStyle.copyWith(
+                                color: isSelected
+                                    ? AppColors.primaryColor
+                                    : AppColors.textDark,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                     ),
-                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-              );
-            }).toList(),
-            onSelected: (value) {
-              widget.controller.text = value;
-              widget.onChanged?.call(value);
-              _validate(value);
-              setState(() => _isMenuOpen = false);
-              _focusNode.unfocus();
-            },
+              ),
+            ],
           ),
           if (_errorText != null) ...[
             const SizedBox(height: 6),
