@@ -1,6 +1,7 @@
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/features/home/presentation/cubit/cubit.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/dialog.dart';
 import 'package:geocoding/geocoding.dart';
@@ -17,24 +18,17 @@ class LocationPickerScreen extends StatefulWidget {
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
   MapboxMap? mapboxMap;
   PointAnnotationManager? _pointAnnotationManager;
-  LocationModel? _selectedLocation;
 
   static CameraOptions? _initialCameraPosition;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
+    // _initializeCamera();
   }
 
-  void _initializeCamera() {
-    // Set initial camera position to Dubai if not set
-    _initialCameraPosition ??= CameraOptions(
-      center: Point(
-        coordinates: Position(55.2708, 25.2048), // Dubai coordinates (lng, lat)
-      ),
-      zoom: 13,
-    );
+  Future<void> _initializeCamera() async {
+    await _getCurrentLocation();
   }
 
   @override
@@ -59,7 +53,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               this.mapboxMap = mapboxMap;
               _pointAnnotationManager =
                   await mapboxMap.annotations.createPointAnnotationManager();
-              _getCurrentLocation();
+              await _getCurrentLocation();
             },
             onTapListener: (MapContentGestureContext context) async {
               await _onMapTap(context.point);
@@ -81,7 +75,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           ),
 
           // Address Display Card
-          if (_selectedLocation != null)
+          if (context.watch<HomeCubit>().state.selectedLocation != null)
             Positioned(
               bottom: 140,
               left: 20,
@@ -112,15 +106,24 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      _selectedLocation!.address,
+                      context
+                          .watch<HomeCubit>()
+                          .state
+                          .selectedLocation!
+                          .address,
                       style: context.b2.copyWith(
                         color: AppColors.textDark,
                       ),
                     ),
-                    if (_selectedLocation!.city != null) ...[
+                    if (context
+                            .watch<HomeCubit>()
+                            .state
+                            .selectedLocation!
+                            .city !=
+                        null) ...[
                       const SizedBox(height: 4),
                       Text(
-                        '${_selectedLocation!.city}, ${_selectedLocation!.country}',
+                        '${context.watch<HomeCubit>().state.selectedLocation!.city}, ${context.watch<HomeCubit>().state.selectedLocation!.country}',
                         style: context.b3.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -132,7 +135,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             ),
 
           // Confirm Button
-          if (_selectedLocation != null)
+          if (context.watch<HomeCubit>().state.selectedLocation != null)
             Positioned(
               bottom: 20,
               left: 20,
@@ -141,7 +144,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 text: 'Confirm Location',
                 isLoading: false,
                 onPressed: () {
-                  context.pop(_selectedLocation);
+                  context.pop();
                 },
               ),
             ),
@@ -215,30 +218,21 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             ? addressComponents.join(', ')
             : 'Selected Location';
 
-        setState(() {
-          _selectedLocation = LocationModel(
-            latitude: latitude,
-            longitude: longitude,
-            address: address,
-            city: placemark.locality,
-            state: placemark.administrativeArea,
-            country: placemark.country,
-            postalCode: placemark.postalCode,
-            placeName: placemark.name,
-          );
-        });
+        context.read<HomeCubit>().setSelectedLocation(
+              LocationModel(
+                latitude: latitude,
+                longitude: longitude,
+                address: address,
+                city: placemark.locality,
+                country: placemark.country,
+                postalCode: placemark.postalCode,
+                placeName: placemark.name,
+              ),
+            );
       }
     } catch (e) {
       AppLogger.error('Error getting address:', e);
-      // Fallback to coordinates
-      setState(() {
-        _selectedLocation = LocationModel(
-          latitude: latitude,
-          longitude: longitude,
-          address:
-              'Lat: ${latitude.toStringAsFixed(6)}, Lng: ${longitude.toStringAsFixed(6)}',
-        );
-      });
+      context.read<HomeCubit>().clearSelectedLocation();
     }
   }
 
@@ -247,6 +241,13 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       grantedCallback: () async {
         try {
           final position = await geo.Geolocator.getCurrentPosition();
+
+          _initialCameraPosition = CameraOptions(
+            center: Point(
+              coordinates: Position(position.longitude, position.latitude),
+            ),
+            zoom: 15,
+          );
 
           if (mapboxMap != null) {
             // Move camera to current location

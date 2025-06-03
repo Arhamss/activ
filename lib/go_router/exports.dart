@@ -2,6 +2,7 @@ import 'package:activ/app/view/splash.dart';
 import 'package:activ/features/chat/presentation/views/chat_screen.dart';
 import 'package:activ/features/games/presentation/views/games_screen.dart';
 import 'package:activ/features/home/presentation/views/home_screen.dart';
+import 'package:activ/features/home/presentation/views/location_picker_screen.dart';
 import 'package:activ/features/navigation/presentation/views/user_navigation.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/forgot_password_screen.dart';
 import 'package:activ/features/onboarding_flow/presentation/view/intro_screen.dart';

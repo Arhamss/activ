@@ -18,4 +18,10 @@ class Endpoints {
   static const String getAllSports = 'sports';
   static const String onboarded = 'user/me/onboarded';
   static const String completeOnboarding = 'user/me/onboarding';
+
+  /// Home Endpoints
+  static const String getUser = 'user/me';
+
+  // Games Endpoints
+  static const String addGame = 'game/create-game';
 }

@@ -1,6 +1,7 @@
 import 'package:activ/core/models/api_response/api_response_model.dart';
 import 'package:activ/core/models/api_response/base_api_response.dart';
 import 'package:activ/core/models/user_model/user_model.dart';
+import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -10,6 +11,7 @@ class UserResponseModel extends Equatable {
   });
 
   factory UserResponseModel.fromJson(Map<String, dynamic> json) {
+    AppLogger.info('UserResponseModel: $json');
     return UserResponseModel(
       user: UserModel.fromJson(json),
     );

@@ -56,12 +56,17 @@ class _SportsSelectionWidgetState extends State<SportsSelectionWidget> {
         }
 
         if (state.sports.isFailure) {
-          return RetryWidget(
-            message:
-                state.sports.errorMessage ?? Localization.failedToLoadSports,
-            onRetry: () {
-              context.read<OnboardingFlowCubit>().getAllSports();
-            },
+          return SizedBox(
+            height: widget.constraints.maxHeight - 200,
+            child: Center(
+              child: RetryWidget(
+                message: state.sports.errorMessage ??
+                    Localization.failedToLoadSports,
+                onRetry: () {
+                  context.read<OnboardingFlowCubit>().getAllSports();
+                },
+              ),
+            ),
           );
         }
 

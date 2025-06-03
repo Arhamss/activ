@@ -169,50 +169,99 @@ class _DropdownTextFieldState extends State<DropdownTextField> {
               // Single PopupMenuItem containing all options
               PopupMenuItem<String>(
                 enabled: false, // Disable the outer container
-                height: widget.maxHeight ?? 200, // Fixed height
                 padding: EdgeInsets.zero,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: widget.options.map((option) {
-                        final isSelected = widget.controller.text == option;
-                        return InkWell(
-                          onTap: () {
-                            widget.controller.text = option;
-                            widget.onChanged?.call(option);
-                            _validate(option);
-                            setState(() => _isMenuOpen = false);
-                            _focusNode.unfocus();
-                            Navigator.of(context).pop();
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsetsDirectional.symmetric(
-                              horizontal: 16,
-                              vertical: 12,
-                            ),
-                            decoration: isSelected
-                                ? BoxDecoration(
-                                    color:
-                                        AppColors.primaryColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(8),
-                                  )
-                                : null,
-                            child: Text(
-                              option,
-                              style: baseTextStyle.copyWith(
-                                color: isSelected
-                                    ? AppColors.primaryColor
-                                    : AppColors.textDark,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: widget.maxHeight ?? 200,
+                  ),
+                  child: IntrinsicHeight(
+                    child: widget.options.length <= 4
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: widget.options.map((option) {
+                              final isSelected =
+                                  widget.controller.text == option;
+                              return InkWell(
+                                onTap: () {
+                                  widget.controller.text = option;
+                                  widget.onChanged?.call(option);
+                                  _validate(option);
+                                  setState(() => _isMenuOpen = false);
+                                  _focusNode.unfocus();
+                                  Navigator.of(context).pop();
+                                },
+                                child: Container(
+                                  width: double.infinity,
+                                  padding:
+                                      const EdgeInsetsDirectional.symmetric(
+                                    horizontal: 16,
+                                    vertical: 12,
+                                  ),
+                                  decoration: isSelected
+                                      ? BoxDecoration(
+                                          color: AppColors.primaryColor
+                                              .withOpacity(0.1),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        )
+                                      : null,
+                                  child: Text(
+                                    option,
+                                    style: baseTextStyle.copyWith(
+                                      color: isSelected
+                                          ? AppColors.primaryColor
+                                          : AppColors.textDark,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          )
+                        : SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: widget.options.map((option) {
+                                final isSelected =
+                                    widget.controller.text == option;
+                                return InkWell(
+                                  onTap: () {
+                                    widget.controller.text = option;
+                                    widget.onChanged?.call(option);
+                                    _validate(option);
+                                    setState(() => _isMenuOpen = false);
+                                    _focusNode.unfocus();
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    padding:
+                                        const EdgeInsetsDirectional.symmetric(
+                                      horizontal: 16,
+                                      vertical: 12,
+                                    ),
+                                    decoration: isSelected
+                                        ? BoxDecoration(
+                                            color: AppColors.primaryColor
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          )
+                                        : null,
+                                    child: Text(
+                                      option,
+                                      style: baseTextStyle.copyWith(
+                                        color: isSelected
+                                            ? AppColors.primaryColor
+                                            : AppColors.textDark,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
                             ),
                           ),
-                        );
-                      }).toList(),
-                    ),
                   ),
                 ),
               ),

@@ -80,6 +80,11 @@ class AppRouter {
         path: AppRoutes.profileSetupScreen,
         builder: (context, state) => const ProfileSetupScreen(),
       ),
+      GoRoute(
+        name: AppRouteNames.locationPickerScreen,
+        path: AppRoutes.locationPickerScreen,
+        builder: (context, state) => const LocationPickerScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
