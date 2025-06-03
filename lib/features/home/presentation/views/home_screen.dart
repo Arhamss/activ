@@ -3,13 +3,16 @@ import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/features/home/presentation/cubit/cubit.dart';
+import 'package:activ/utils/helpers/focus_handler.dart';
+import 'package:activ/utils/helpers/logger_helper.dart';
+import 'package:activ/utils/widgets/core_widgets/dialog.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, this.showSearchBar = false});
-
-  final bool showSearchBar;
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -20,125 +23,119 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   List<String> _searchResults = [];
-  bool _isSearching = false;
+
+  static CameraOptions? _currentCameraPosition;
 
   @override
   void initState() {
     super.initState();
-    // Set the access token
-    MapboxOptions.setAccessToken(
-      ApiEnvironment.current.mapboxAPIKey,
+    _getCurrentLocationAndNotificationPermissions();
+
+    // Set initial camera position only if not already set
+    // _currentCameraPosition ??= CameraOptions(
+    //   center: Point(
+    //     coordinates: Position(
+    //       55.2708,
+    //       25.2048,
+    //     ),
+    //   ), // Dubai coordinates (lng, lat)
+    //   zoom: 13,
+    // );
+  }
+
+  Future<void> _getCurrentLocationAndNotificationPermissions() async {
+    await PermissionManager.requestMultiplePermissions(
+      [
+        Permission.location,
+        Permission.notification,
+      ],
     );
   }
 
   @override
   void didUpdateWidget(HomeScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Auto-focus search when it becomes visible
-    if (widget.showSearchBar && !oldWidget.showSearchBar) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _searchFocusNode.requestFocus();
-      });
-    }
-    // Clear search when hiding
-    if (!widget.showSearchBar && oldWidget.showSearchBar) {
-      _searchController.clear();
-      _searchResults.clear();
-    }
   }
 
   @override
   void dispose() {
+    _saveCurrentCameraPosition();
     _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
 
   void _performSearch(String query) {
-    setState(() {
-      _isSearching = true;
-    });
+    context.read<HomeCubit>().setIsSearching(true);
 
     // Simulate search delay
     Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        _isSearching = false;
-        if (query.isNotEmpty) {
-          // Mock search results - replace with actual search logic
-          _searchResults = [
-            'Football match at Central Park',
-            'Tennis court booking',
-            'Swimming pool session',
-            'Basketball game tonight',
-            'Yoga class downtown',
-            'Running group meetup',
-          ]
-              .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-              .toList();
-        } else {
-          _searchResults = [];
-        }
-      });
+      context.read<HomeCubit>().setIsSearching(false);
+      if (query.isNotEmpty) {
+        // Mock search results - replace with actual search logic
+        _searchResults = [
+          'Football match at Central Park',
+          'Tennis court booking',
+          'Swimming pool session',
+          'Basketball game tonight',
+          'Yoga class downtown',
+          'Running group meetup',
+        ]
+            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      } else {
+        _searchResults = [];
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // bottomNavigationBar: SafeArea(
-      //   child: ActivButton(
-      //     text: 'Clear',
-      //     onPressed: () {
-      //       Injector.resolve<AppPreferences>().clearAll();
-      //     },
-      //     isLoading: false,
-      //   ),
-      // ),
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        title: Text(
-          widget.showSearchBar ? 'Search Activities' : 'Home',
-          style: context.b2.copyWith(
-            fontWeight: FontWeight.w600,
+      appBar: activAppBar(
+        title: 'Home',
+        context: context,
+        backgroundColor: AppColors.primaryColor,
+        height: 80,
+        actionWidget: ActivIconButton(
+          backgroundColor: Colors.transparent,
+          icon: SvgPicture.asset(
+            AssetPaths.notificationIcon,
           ),
+          onPressed: () {
+            Injector.resolve<AppPreferences>().clearAll();
+            context.goNamed(AppRouteNames.splash);
+          },
         ),
-        centerTitle: true,
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        actions: [
-          ActivIconButton(
-            backgroundColor: AppColors.white,
-            icon: const Icon(
-              Icons.login_outlined,
-              color: AppColors.primaryColor,
-            ),
-            onPressed: () {
-              Injector.resolve<AppPreferences>().clearAll();
-              context.goNamed(AppRouteNames.splash);
-            },
-          ),
-        ],
       ),
-      body: Stack(
-        children: [
-          MapWidget(
-            key: const ValueKey('mapWidget'),
-            cameraOptions: CameraOptions(
-              center: Point(
-                coordinates: Position(
-                  55.2708,
-                  25.2048,
-                ),
-              ), // Dubai coordinates (lng, lat)
-              zoom: 13,
+      body: FocusHandler(
+        child: Stack(
+          children: [
+            MapWidget(
+              mapOptions: MapOptions(
+                pixelRatio: 1,
+              ),
+              key: const ValueKey('mapWidget'),
+              cameraOptions: _currentCameraPosition,
+              onMapCreated: (MapboxMap mapboxMap) {
+                this.mapboxMap = mapboxMap;
+                _getCurrentLocationPermissions();
+              },
+              onMapLoadedListener: (mapboxMap) {
+                _getCurrentLocationPermissions();
+              },
+              onMapIdleListener: (cameraState) {
+                _saveCurrentCameraPosition();
+              },
+              onTapListener: (cameraState) {
+                _saveCurrentCameraPosition();
+              },
+              onZoomListener: (cameraState) {
+                _saveCurrentCameraPosition();
+              },
             ),
-            onMapCreated: (MapboxMap mapboxMap) {
-              this.mapboxMap = mapboxMap;
-            },
-          ),
 
-          // Search bar overlay (only show when search tab is active)
-          if (widget.showSearchBar) ...[
             // Search Bar
             Positioned(
               top: 20,
@@ -156,42 +153,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                child: TextField(
+                child: ActivSearchField(
                   controller: _searchController,
                   focusNode: _searchFocusNode,
                   onChanged: _performSearch,
-                  decoration: InputDecoration(
-                    hintText: 'Search for activities, sports, locations...',
-                    hintStyle: context.b2.copyWith(
-                      color: AppColors.secondaryColor,
-                    ),
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: AppColors.primaryColor,
-                    ),
-                    suffixIcon: _searchController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.clear,
-                              color: AppColors.secondaryColor,
-                            ),
-                            onPressed: () {
-                              _searchController.clear();
-                              _performSearch('');
-                            },
-                          )
-                        : null,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(25),
-                      borderSide: BorderSide.none,
-                    ),
-                    filled: true,
-                    fillColor: AppColors.white,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 16,
-                    ),
-                  ),
+                  hintText: 'Search for activities, sports, locations...',
                 ),
               ),
             ),
@@ -215,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  child: _isSearching
+                  child: context.watch<HomeCubit>().state.isSearching
                       ? const Center(child: CircularProgressIndicator())
                       : _searchResults.isEmpty
                           ? Center(
@@ -277,17 +243,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                 ),
               ),
-          ],
 
-          // Current location button (only show when not searching)
-          if (!widget.showSearchBar)
             Positioned(
               bottom: 120,
               right: 20,
               child: FloatingActionButton(
                 backgroundColor: AppColors.white,
                 onPressed: () async {
-                  await _getCurrentLocation();
+                  await _getCurrentLocationPermissions();
                 },
                 child: const Icon(
                   Icons.my_location,
@@ -295,12 +258,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Future<void> _getCurrentLocation() async {
+  Future<void> _getCurrentLocationPermissions() async {
     await PermissionManager.requestLocationPermission(
       grantedCallback: () async {
         try {
@@ -316,15 +280,39 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               MapAnimationOptions(duration: 2000),
             );
+
+            // Save the new camera position after moving
+            await _saveCurrentCameraPosition();
           }
         } catch (e) {
-          print('Error getting location: $e');
+          AppLogger.error('Error getting location:', e);
         }
       },
-      deniedCallback: () {
-        print('Location permission denied');
-        // You could show a snackbar or dialog here
+      deniedCallback: (message) {
+        AppLogger.info(
+          'Location permission is required. Please enable it in settings. $message',
+        );
+        CustomDialog.showOpenSettingsDialog(
+          context: context,
+          title: 'Location permission is required',
+        );
       },
     );
+  }
+
+  Future<void> _saveCurrentCameraPosition() async {
+    if (mapboxMap != null) {
+      try {
+        final cameraState = await mapboxMap!.getCameraState();
+        _currentCameraPosition = CameraOptions(
+          center: cameraState.center,
+          zoom: 11,
+          bearing: cameraState.bearing,
+          pitch: cameraState.pitch,
+        );
+      } catch (e) {
+        print('Error saving camera position: $e');
+      }
+    }
   }
 }

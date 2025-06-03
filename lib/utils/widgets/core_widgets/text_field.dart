@@ -9,7 +9,8 @@ enum ActivTextFieldType {
   number,
   text,
   confirmPassword,
-  datePicker
+  datePicker,
+  timePicker
 }
 
 class ActivTextField extends StatefulWidget {
@@ -31,6 +32,8 @@ class ActivTextField extends StatefulWidget {
     this.onChanged,
     this.borderRadius,
     this.passwordToMatch,
+    this.backgroundColor,
+    this.showSuffixIcon,
     super.key,
   });
 
@@ -51,6 +54,8 @@ class ActivTextField extends StatefulWidget {
   final void Function(String)? onChanged;
   final double? borderRadius;
   final String? passwordToMatch;
+  final Color? backgroundColor;
+  final bool? showSuffixIcon;
 
   @override
   State<ActivTextField> createState() => _ActivTextFieldState();
@@ -97,11 +102,55 @@ class _ActivTextFieldState extends State<ActivTextField> {
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
               primary: AppColors.primaryColor,
-              onSurface: AppColors.primaryBrown,
+              onSurface: AppColors.textDark,
             ),
             textButtonTheme: TextButtonThemeData(
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.primaryColor,
+                textStyle: context.b2.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            datePickerTheme: DatePickerThemeData(
+              backgroundColor: AppColors.white,
+              headerBackgroundColor: AppColors.primaryColor,
+              headerForegroundColor: AppColors.white,
+              weekdayStyle: context.b2.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+              dayStyle: context.b2.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+              ),
+              yearStyle: context.b2.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+              headerHeadlineStyle: context.b2.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 24,
+              ),
+              headerHelpStyle: context.b2.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+              rangePickerHeaderHeadlineStyle: context.b2.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 24,
+              ),
+              rangePickerHeaderHelpStyle: context.b2.copyWith(
+                color: AppColors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
               ),
             ),
           ),
@@ -117,6 +166,89 @@ class _ActivTextFieldState extends State<ActivTextField> {
     }
   }
 
+  Future<void> _handleTimePicker() async {
+    TimeOfDay initialTime;
+
+    // Try to parse existing time from controller
+    if (widget.controller.text.isNotEmpty) {
+      try {
+        final parts = widget.controller.text.split(':');
+        if (parts.length == 2) {
+          final hour = int.parse(parts[0]);
+          final minute = int.parse(parts[1]);
+          initialTime = TimeOfDay(hour: hour, minute: minute);
+        } else {
+          initialTime = TimeOfDay.now();
+        }
+      } catch (e) {
+        // If parsing fails, use current time
+        initialTime = TimeOfDay.now();
+      }
+    } else {
+      initialTime = TimeOfDay.now();
+    }
+
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: initialTime,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primaryColor,
+              onSurface: AppColors.textDark,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primaryColor,
+                textStyle: context.b2.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
+              ),
+            ),
+            timePickerTheme: TimePickerThemeData(
+              backgroundColor: AppColors.white,
+              hourMinuteTextColor: AppColors.textDark,
+              hourMinuteColor: AppColors.greyShade6.withOpacity(0.3),
+              dayPeriodTextColor: AppColors.textDark,
+              dayPeriodColor: AppColors.greyShade6.withOpacity(0.3),
+              dayPeriodBorderSide: const BorderSide(
+                color: AppColors.greyShade6,
+              ),
+              dialHandColor: AppColors.primaryColor,
+              dialBackgroundColor: AppColors.greyShade5,
+              dialTextColor: AppColors.white,
+              entryModeIconColor: AppColors.primaryColor,
+              helpTextStyle: context.b2.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+              hourMinuteTextStyle: context.b2.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w700,
+                fontSize: 32,
+              ),
+              dayPeriodTextStyle: context.b2.copyWith(
+                color: AppColors.textDark,
+                fontWeight: FontWeight.w600,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      final formattedTime = picked.format(context);
+      widget.controller.text = formattedTime;
+      widget.onChanged?.call(formattedTime);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isPassword = widget.type == ActivTextFieldType.password ||
@@ -124,6 +256,7 @@ class _ActivTextFieldState extends State<ActivTextField> {
     final isDescription = widget.type == ActivTextFieldType.description;
     final isNumber = widget.type == ActivTextFieldType.number;
     final isDatePicker = widget.type == ActivTextFieldType.datePicker;
+    final isTimePicker = widget.type == ActivTextFieldType.timePicker;
 
     final borderColor = _errorText != null
         ? AppColors.error
@@ -160,9 +293,13 @@ class _ActivTextFieldState extends State<ActivTextField> {
             const SizedBox(height: 8),
           ],
           GestureDetector(
-            onTap: isDatePicker ? _handleDatePicker : null,
+            onTap: isDatePicker
+                ? _handleDatePicker
+                : isTimePicker
+                    ? _handleTimePicker
+                    : null,
             child: AbsorbPointer(
-              absorbing: isDatePicker,
+              absorbing: isDatePicker || isTimePicker,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(
@@ -173,7 +310,7 @@ class _ActivTextFieldState extends State<ActivTextField> {
                   focusNode: _focusNode,
                   controller: widget.controller,
                   obscureText: isPassword ? _obscureText : false,
-                  readOnly: widget.readOnly ?? isDatePicker,
+                  readOnly: widget.readOnly ?? isDatePicker || isTimePicker,
                   keyboardType: isPassword
                       ? TextInputType.visiblePassword
                       : isNumber
@@ -198,7 +335,7 @@ class _ActivTextFieldState extends State<ActivTextField> {
                   cursorColor: AppColors.primaryBrown,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: AppColors.white,
+                    fillColor: widget.backgroundColor ?? AppColors.white,
                     counterText: '',
                     hintText: widget.hintText,
                     hintStyle: context.b2.copyWith(
@@ -225,14 +362,53 @@ class _ActivTextFieldState extends State<ActivTextField> {
                             ),
                           )
                         : null,
-                    suffixIcon: isDatePicker
-                        ? Padding(
-                            padding: const EdgeInsetsDirectional.only(end: 12),
-                            child: SvgPicture.asset(
-                              AssetPaths.calenderIcon,
-                            ),
-                          )
-                        : buildSuffixIcon(iconColor, isPassword),
+                    suffixIcon: widget.showSuffixIcon == false
+                        ? null
+                        : widget.showSuffixIcon == null
+                            ? (isDatePicker
+                                ? Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                      end: 12,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AssetPaths.calenderIcon,
+                                    ),
+                                  )
+                                : isTimePicker
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                          end: 12,
+                                        ),
+                                        child: Icon(
+                                          Icons.access_time,
+                                          color: iconColor,
+                                          size: 20,
+                                        ),
+                                      )
+                                    : buildSuffixIcon(iconColor, isPassword))
+                            : (isDatePicker
+                                ? Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                      end: 12,
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AssetPaths.calenderIcon,
+                                    ),
+                                  )
+                                : isTimePicker
+                                    ? Padding(
+                                        padding:
+                                            const EdgeInsetsDirectional.only(
+                                          end: 12,
+                                        ),
+                                        child: Icon(
+                                          Icons.access_time,
+                                          color: iconColor,
+                                          size: 20,
+                                        ),
+                                      )
+                                    : buildSuffixIcon(iconColor, isPassword)),
                     contentPadding: isDescription
                         ? const EdgeInsetsDirectional.only(start: 16, top: 24)
                         : widget.contentPadding ??

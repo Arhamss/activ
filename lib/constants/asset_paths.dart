@@ -48,4 +48,16 @@ class AssetPaths {
   static const searchNavbarIcon = 'assets/svgs/navigation/search.svg';
   static const chatNavbarIcon = 'assets/svgs/navigation/chat.svg';
   static const profileNavbarIcon = 'assets/svgs/navigation/profile.svg';
+  static const profileNavbarSelected =
+      'assets/svgs/navigation/profile_selected.svg';
+  static const homeNavbarSelected = 'assets/svgs/navigation/home_selected.svg';
+  static const searchNavbarSelected =
+      'assets/svgs/navigation/search_selected.svg';
+  static const chatNavbarSelected = 'assets/svgs/navigation/chat_selected.svg';
+  static const gamesNavbarIcon = 'assets/svgs/navigation/games.svg';
+  static const gamesNavbarSelected =
+      'assets/svgs/navigation/games_selected.svg';
+
+  static const dropdownArrow = 'assets/svgs/dropdown_icon.svg';
+  static const notificationIcon = 'assets/svgs/notification.svg';
 }

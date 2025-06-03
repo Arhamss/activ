@@ -11,7 +11,7 @@ class AppRoutes {
   static const profileSetupScreen = '/profile-setup-screen';
   static const homeScreen = '/home-screen';
   static const chatScreen = '/chat-screen';
-  static const searchScreen = '/search-screen';
+  static const gamesScreen = '/games-screen';
   static const profileScreen = '/profile-screen';
 }
 
@@ -26,6 +26,6 @@ class AppRouteNames {
   static const profileSetupScreen = 'profile-setup-screen';
   static const homeScreen = 'home-screen';
   static const chatScreen = 'chat-screen';
-  static const searchScreen = 'search-screen';
+  static const gamesScreen = 'games-screen';
   static const profileScreen = 'profile-screen';
 }

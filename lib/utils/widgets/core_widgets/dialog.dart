@@ -49,6 +49,21 @@ class CustomDialog {
     );
   }
 
+  static void showPermissionDialog({
+    required BuildContext context,
+    required String title,
+    required String message,
+  }) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+      ),
+    );
+  }
+
   static void showFullImage({
     required BuildContext context,
     required File imageFile,
@@ -209,7 +224,6 @@ class CustomDialog {
                     backgroundColor: isDanger
                         ? AppColors.redPrimary
                         : AppColors.primaryColor,
-                    borderRadius: 16,
                   ),
                 ),
               ],

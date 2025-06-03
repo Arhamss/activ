@@ -4,6 +4,7 @@ class ActivSearchField extends StatelessWidget {
   const ActivSearchField({
     required this.controller,
     required this.hintText,
+    this.focusNode,
     super.key,
     this.onChanged,
   });
@@ -11,10 +12,11 @@ class ActivSearchField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final ValueChanged<String>? onChanged;
-
+  final FocusNode? focusNode;
   @override
   Widget build(BuildContext context) {
     return TextField(
+      focusNode: focusNode,
       controller: controller,
       onChanged: onChanged,
       decoration: InputDecoration(

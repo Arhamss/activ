@@ -1,6 +1,10 @@
+import 'package:activ/constants/asset_paths.dart';
+import 'package:activ/utils/widgets/core_widgets/app_bar.dart';
+import 'package:activ/utils/widgets/core_widgets/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:activ/constants/app_colors.dart';
 import 'package:activ/constants/app_text_style.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -9,16 +13,16 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        title: Text(
-          'Chat',
-          style: context.b2.copyWith(
-            fontWeight: FontWeight.w600,
+      appBar: activAppBar(
+        title: 'Chat',
+        context: context,
+        backgroundColor: AppColors.primaryColor,
+        actionWidget: ActivIconButton(
+          backgroundColor: Colors.transparent,
+          icon: SvgPicture.asset(
+            AssetPaths.notificationIcon,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: AppColors.white,
-        elevation: 0,
       ),
       body: Center(
         child: Column(

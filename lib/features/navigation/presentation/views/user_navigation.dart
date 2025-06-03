@@ -1,5 +1,7 @@
 import 'package:activ/core/models/navigation_item.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/features/home/presentation/cubit/cubit.dart';
+import 'package:activ/features/home/presentation/widgets/add_game_bottomsheet.dart';
 
 class UserNavigation extends StatelessWidget {
   const UserNavigation({required this.shell, super.key});
@@ -10,7 +12,7 @@ class UserNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color.fromARGB(255, 222, 212, 212),
       body: shell,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Container(
@@ -34,8 +36,12 @@ class UserNavigation extends StatelessWidget {
             splashFactory: NoSplash.splashFactory,
             customBorder: const CircleBorder(),
             onTap: () {
-              // Handle FAB action here
-              // For example, opening chat or any desired index
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => const AddGameBottomSheet(),
+                isScrollControlled: true,
+                backgroundColor: AppColors.white,
+              );
             },
             child: Stack(
               children: [
@@ -60,43 +66,19 @@ class UserNavigation extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: AppColors.white,
-        elevation: 8,
-        padding: EdgeInsets.zero,
-        child: SafeArea(
-          top: false,
-          child: Container(
-            height: 65,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Left side nav items (2 items)
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildNavItem(context, 0),
-                      _buildNavItem(context, 1),
-                    ],
-                  ),
-                ),
-                // Space for FAB in the middle
-                const SizedBox(width: 76), // Same width as FAB
-                // Right side nav items (2 items)
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildNavItem(context, 2),
-                      _buildNavItem(context, 3),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+      bottomNavigationBar: Container(
+        height: 80,
+        decoration: const BoxDecoration(
+          color: AppColors.white,
+        ),
+        child: Row(
+          children: [
+            Expanded(child: _buildNavItem(context, 0)), // Home
+            Expanded(child: _buildNavItem(context, 1)), // Search
+            const SizedBox(width: 76), // Space for FAB
+            Expanded(child: _buildNavItem(context, 2)), // Chat
+            Expanded(child: _buildNavItem(context, 3)), // Profile
+          ],
         ),
       ),
     );
@@ -105,42 +87,48 @@ class UserNavigation extends StatelessWidget {
   List<NavItem> get _navBarItems => [
         const NavItem(
           icon: AssetPaths.homeNavbarIcon,
+          selectedIcon: AssetPaths.homeNavbarSelected,
           label: 'Home',
         ),
         const NavItem(
-          icon: AssetPaths.searchNavbarIcon,
-          label: 'Search',
+          icon: AssetPaths.gamesNavbarIcon,
+          selectedIcon: AssetPaths.gamesNavbarSelected,
+          label: 'Games',
         ),
         const NavItem(
           icon: AssetPaths.chatNavbarIcon,
+          selectedIcon: AssetPaths.chatNavbarSelected,
           label: 'Chat',
         ),
         const NavItem(
           icon: AssetPaths.profileNavbarIcon,
+          selectedIcon: AssetPaths.profileNavbarSelected,
           label: 'Profile',
         ),
       ];
 
   Widget _buildNavItem(BuildContext context, int index) {
+    // Determine if this item should be selected
+    bool isSelected;
+
     final item = _navBarItems[index];
-    final isSelected = index == shell.currentIndex;
+
+    isSelected = index == shell.currentIndex;
+
     final color =
         isSelected ? AppColors.primaryColor : AppColors.secondaryColor;
-    final iconColor = isSelected ? AppColors.black : null;
 
-    return InkWell(
-      splashFactory: NoSplash.splashFactory,
-      onTap: () => shell.goBranch(index, initialLocation: true),
+    return GestureDetector(
+      onTap: () {
+        shell.goBranch(index, initialLocation: true);
+      },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             SvgPicture.asset(
-              item.icon,
-              colorFilter: iconColor != null
-                  ? ColorFilter.mode(iconColor, BlendMode.srcIn)
-                  : null,
+              isSelected ? item.selectedIcon : item.icon,
             ),
             const SizedBox(height: 4),
             Text(
