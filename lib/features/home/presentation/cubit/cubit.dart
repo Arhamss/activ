@@ -34,17 +34,34 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> pickLocation() async {
-    final result = await Navigator.of(
-      AppRouter.appContext!,
-    ).push<LocationModel>(
-      MaterialPageRoute(
-        builder: (context) => const LocationPickerScreen(),
-      ),
+
+  Future<void> addGame(
+    LocationModel location,
+    String gameId,
+    String fee,
+    String gameLevel,
+    int maxNumberOfPlayers,
+    String? dateTime,
+  ) async {
+    emit(state.copyWith(addGame: const DataState.loading()));
+
+    final response = await repository.addGame(
+      location,
+      gameId,
+      fee,
+      gameLevel,
+      maxNumberOfPlayers,
+      dateTime,
     );
 
-    if (result != null) {
-      setSelectedLocation(result);
+    if (response.isSuccess) {
+      emit(state.copyWith(addGame: const DataState.loaded()));
+    } else {
+      emit(
+        state.copyWith(
+          addGame: DataState.failure(error: response.message),
+        ),
+      );
     }
   }
 

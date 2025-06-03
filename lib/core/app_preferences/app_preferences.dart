@@ -1,4 +1,5 @@
 import 'package:activ/core/app_preferences/base_storage.dart';
+import 'package:activ/core/models/user_model/user_model.dart';
 
 class AppPreferences extends BaseStorage {
   AppPreferences() {
@@ -45,6 +46,14 @@ class AppPreferences extends BaseStorage {
 
   String? getRefreshToken() {
     return retrieve<String>(_refreshTokenKey);
+  }
+
+  void setUserModel(UserModel? userModel) {
+    store<UserModel?>(_userModelKey, userModel);
+  }
+
+  UserModel? getUserModel() {
+    return retrieve<UserModel>(_userModelKey);
   }
 
   void removeUserModel() {

@@ -13,6 +13,7 @@ class AppRoutes {
   static const chatScreen = '/chat-screen';
   static const gamesScreen = '/games-screen';
   static const profileScreen = '/profile-screen';
+  static const locationPickerScreen = '/location-picker-screen';
 }
 
 class AppRouteNames {
@@ -28,4 +29,5 @@ class AppRouteNames {
   static const chatScreen = 'chat-screen';
   static const gamesScreen = 'games-screen';
   static const profileScreen = 'profile-screen';
+  static const locationPickerScreen = 'location-picker-screen';
 }

@@ -30,7 +30,7 @@ abstract class OnboardingFlowRepository {
 
   Future<RepositoryResponse<List<SportModel>>> getAllSports();
 
-  Future<RepositoryResponse<UserModel>> completeOnboarding(
+  Future<RepositoryResponse<bool>> completeOnboarding(
     String firstName,
     String lastName,
     String? dateOfBirth,

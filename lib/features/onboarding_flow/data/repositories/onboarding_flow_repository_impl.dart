@@ -12,6 +12,7 @@ import 'package:activ/core/models/auth_data_model.dart';
 import 'package:activ/core/models/sport_model.dart';
 import 'package:activ/core/models/sport_response_model.dart';
 import 'package:activ/core/models/user_model/user_model.dart';
+import 'package:activ/core/models/user_model/user_model.dart';
 import 'package:activ/core/models/user_model/user_response_model.dart';
 import 'package:activ/features/onboarding_flow/domain/repositories/onboarding_flow_repository.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
@@ -398,7 +399,7 @@ class OnboardingFlowRepositoryImpl implements OnboardingFlowRepository {
   }
 
   @override
-  Future<RepositoryResponse<UserModel>> completeOnboarding(
+  Future<RepositoryResponse<bool>> completeOnboarding(
     String firstName,
     String lastName,
     String? dateOfBirth,
@@ -451,17 +452,15 @@ class OnboardingFlowRepositoryImpl implements OnboardingFlowRepository {
         );
       }
 
-      final result = UserResponseModel.parseResponse(response);
-
-      if (result.isSuccess) {
+      if (response.statusCode == 200) {
         return RepositoryResponse(
           isSuccess: true,
-          data: result.response?.data?.user,
+          data: true,
         );
       } else {
         return RepositoryResponse(
           isSuccess: false,
-          message: result.error,
+          message: response.data['message'] as String,
         );
       }
     } catch (e, s) {
