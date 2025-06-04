@@ -1,24 +1,35 @@
-import 'package:activ/core/models/user_model/user_model.dart';
+import 'package:activ/core/models/location_model.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:equatable/equatable.dart';
 
 class GamesState extends Equatable {
   const GamesState({
-    this.user = const DataState.initial(),
+    this.levels = const [],
+    this.selectedLocation,
+    this.addGame = const DataState.initial(),
   });
 
-  final DataState<UserModel> user;
+  
+  final List<String> levels;
+  final LocationModel? selectedLocation;
+  final DataState<void> addGame;
 
   GamesState copyWith({
-    DataState<UserModel>? user,
+    List<String>? levels,
+    LocationModel? selectedLocation,
+    DataState<void>? addGame,
   }) {
     return GamesState(
-      user: user ?? this.user,
+      levels: levels ?? this.levels,
+      selectedLocation: selectedLocation ?? this.selectedLocation,
+      addGame: addGame ?? this.addGame,
     );
   }
 
   @override
   List<Object?> get props => [
-        user,
+        levels,
+        selectedLocation,
+        addGame,
       ];
 }

@@ -13,7 +13,7 @@ class ActivIconButton extends StatelessWidget {
     this.borderColor = Colors.transparent,
     this.iconSize = 24.0,
     this.splashColor = Colors.black12,
-    this.outsidePadding = const EdgeInsetsDirectional.all(8),
+    this.outsidePadding = EdgeInsetsDirectional.zero,
     this.iconPadding,
     this.borderWidth = 1,
     this.isLoading = false,

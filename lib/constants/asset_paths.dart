@@ -58,6 +58,8 @@ class AssetPaths {
   static const gamesNavbarSelected =
       'assets/svgs/navigation/games_selected.svg';
 
+  // Icons
   static const dropdownArrow = 'assets/svgs/dropdown_icon.svg';
   static const notificationIcon = 'assets/svgs/notification.svg';
+  static const addIcon = 'assets/svgs/add_icon.svg';
 }

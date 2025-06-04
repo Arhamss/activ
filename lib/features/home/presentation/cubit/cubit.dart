@@ -2,7 +2,7 @@ import 'package:activ/core/models/location_model.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/home/domain/home_repository.dart';
 import 'package:activ/features/home/presentation/cubit/state.dart';
-import 'package:activ/features/home/presentation/views/location_picker_screen.dart';
+import 'package:activ/features/games/presentation/views/location_picker_screen.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -33,63 +33,7 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
   }
-
-
-  Future<void> addGame(
-    LocationModel location,
-    String gameId,
-    String fee,
-    String gameLevel,
-    int maxNumberOfPlayers,
-    String? dateTime,
-  ) async {
-    emit(state.copyWith(addGame: const DataState.loading()));
-
-    final response = await repository.addGame(
-      location,
-      gameId,
-      fee,
-      gameLevel,
-      maxNumberOfPlayers,
-      dateTime,
-    );
-
-    if (response.isSuccess) {
-      emit(state.copyWith(addGame: const DataState.loaded()));
-    } else {
-      emit(
-        state.copyWith(
-          addGame: DataState.failure(error: response.message),
-        ),
-      );
-    }
-  }
-
-  void setSelectedLocation(LocationModel location) {
-    emit(state.copyWith(selectedLocation: location));
-  }
-
-  void clearSelectedLocation() {
-    emit(state.copyWith());
-  }
-
   void setIsSearching(bool value) {
     emit(state.copyWith(isSearching: value));
-  }
-
-  void setLevels(List<String> levels) {
-    emit(state.copyWith(levels: levels));
-  }
-
-  void addLevel(String level) {
-    emit(state.copyWith(levels: [...state.levels, level]));
-  }
-
-  void removeLevel(String level) {
-    emit(
-      state.copyWith(
-        levels: state.levels.where((e) => e != level).toList(),
-      ),
-    );
   }
 }

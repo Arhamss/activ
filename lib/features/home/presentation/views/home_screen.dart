@@ -114,17 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           body: BlocListener<HomeCubit, HomeState>(
-            listenWhen: (previous, current) =>
-                previous.addGame != current.addGame,
-            listener: (context, state) {
-              if (state.addGame.isLoaded) {
-                ToastHelper.showSuccessToast('Game added successfully');
-              } else if (state.addGame.isFailure) {
-                ToastHelper.showErrorToast(
-                  state.addGame.errorMessage ?? 'Error while adding game',
-                );
-              }
-            },
+            listenWhen: (previous, current) => previous.user != current.user,
+            listener: (context, state) {},
             child: FocusHandler(
               child: Stack(
                 children: [

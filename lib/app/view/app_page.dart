@@ -1,5 +1,7 @@
 import 'package:activ/app/view/app_view.dart';
 import 'package:activ/core/locale/cubit/locale_cubit.dart';
+import 'package:activ/features/games/data/games_repository_implementation.dart';
+import 'package:activ/features/games/presentation/cubit/cubit.dart';
 import 'package:activ/features/home/data/home_repository_implementation.dart';
 import 'package:activ/features/home/presentation/cubit/cubit.dart';
 import 'package:activ/features/onboarding_flow/data/repositories/onboarding_flow_repository_impl.dart';
@@ -28,6 +30,11 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => PhoneFieldCubit(),
+        ),
+        BlocProvider(
+          create: (context) => GamesCubit(
+            repository: GamesRepositoryImplementation(),
+          ),
         ),
       ],
       child: const AppView(),

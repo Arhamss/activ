@@ -86,4 +86,5 @@ abstract class AppColors {
   static const selectedGender = Color(0xFF8B9B74);
   static const unSelectedGender = Color(0xFFE0E0E0);
   static const bottomSheetCloseIcon = Color(0xFF60635E);
+  static const chatTime = Color(0xFF3B3E46);
 }

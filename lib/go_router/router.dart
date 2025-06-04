@@ -111,6 +111,17 @@ class AppRouter {
           ),
           StatefulShellBranch(
             navigatorKey: GlobalKey<NavigatorState>(),
+            initialLocation: AppRoutes.myGamesScreen,
+            routes: [
+              GoRoute(
+                path: AppRoutes.myGamesScreen,
+                name: AppRouteNames.myGamesScreen,
+                builder: (context, state) => const MyGamesScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: GlobalKey<NavigatorState>(),
             initialLocation: AppRoutes.chatScreen,
             routes: [
               GoRoute(
