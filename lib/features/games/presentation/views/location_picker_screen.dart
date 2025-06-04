@@ -1,7 +1,7 @@
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
 import 'package:activ/exports.dart';
-import 'package:activ/features/home/presentation/cubit/cubit.dart';
+import 'package:activ/features/games/presentation/cubit/cubit.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/dialog.dart';
 import 'package:geocoding/geocoding.dart';
@@ -53,6 +53,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               this.mapboxMap = mapboxMap;
               _pointAnnotationManager =
                   await mapboxMap.annotations.createPointAnnotationManager();
+              // await _getCurrentLocation();
+            },
+            onMapLoadedListener: (mapLoadedEventData) async {
               await _getCurrentLocation();
             },
             onTapListener: (MapContentGestureContext context) async {
@@ -62,7 +65,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
           // Current Location Button
           Positioned(
-            bottom: 200,
+            bottom: 250,
             right: 20,
             child: FloatingActionButton(
               backgroundColor: AppColors.white,
@@ -75,7 +78,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           ),
 
           // Address Display Card
-          if (context.watch<HomeCubit>().state.selectedLocation != null)
+          if (context.watch<GamesCubit>().state.selectedLocation != null)
             Positioned(
               bottom: 140,
               left: 20,
@@ -107,7 +110,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     const SizedBox(height: 8),
                     Text(
                       context
-                          .watch<HomeCubit>()
+                          .watch<GamesCubit>()
                           .state
                           .selectedLocation!
                           .address,
@@ -116,14 +119,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                       ),
                     ),
                     if (context
-                            .watch<HomeCubit>()
+                            .watch<GamesCubit>()
                             .state
                             .selectedLocation!
                             .city !=
                         null) ...[
                       const SizedBox(height: 4),
                       Text(
-                        '${context.watch<HomeCubit>().state.selectedLocation!.city}, ${context.watch<HomeCubit>().state.selectedLocation!.country}',
+                        '${context.watch<GamesCubit>().state.selectedLocation!.city}, ${context.watch<GamesCubit>().state.selectedLocation!.country}',
                         style: context.b3.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -135,7 +138,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             ),
 
           // Confirm Button
-          if (context.watch<HomeCubit>().state.selectedLocation != null)
+          if (context.watch<GamesCubit>().state.selectedLocation != null)
             Positioned(
               bottom: 20,
               left: 20,
@@ -218,7 +221,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             ? addressComponents.join(', ')
             : 'Selected Location';
 
-        context.read<HomeCubit>().setSelectedLocation(
+        context.read<GamesCubit>().setSelectedLocation(
               LocationModel(
                 latitude: latitude,
                 longitude: longitude,
@@ -232,7 +235,7 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       }
     } catch (e) {
       AppLogger.error('Error getting address:', e);
-      context.read<HomeCubit>().clearSelectedLocation();
+      context.read<GamesCubit>().clearSelectedLocation();
     }
   }
 
@@ -261,10 +264,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               MapAnimationOptions(duration: 2000),
             );
 
-            // Add marker at current location
             await _addMarker(position.latitude, position.longitude);
 
-            // Get address for current location
             await _getAddressFromCoordinates(
               position.latitude,
               position.longitude,

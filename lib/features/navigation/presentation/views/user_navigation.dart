@@ -1,7 +1,7 @@
 import 'package:activ/core/models/navigation_item.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/home/presentation/cubit/cubit.dart';
-import 'package:activ/features/home/presentation/widgets/add_game_bottomsheet.dart';
+import 'package:activ/features/games/presentation/widgets/add_game_bottomsheet.dart';
 
 class UserNavigation extends StatelessWidget {
   const UserNavigation({required this.shell, super.key});
@@ -36,12 +36,8 @@ class UserNavigation extends StatelessWidget {
             splashFactory: NoSplash.splashFactory,
             customBorder: const CircleBorder(),
             onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) => const AddGameBottomSheet(),
-                isScrollControlled: true,
-                backgroundColor: AppColors.white,
-              );
+              // Go to shell index 2 when FAB is pressed
+              shell.goBranch(2, initialLocation: true);
             },
             child: Stack(
               children: [
@@ -57,8 +53,7 @@ class UserNavigation extends StatelessWidget {
                 ),
                 Center(
                   child: SvgPicture.asset(
-                    AssetPaths
-                        .bottomNavLogo, // Make sure this asset path exists
+                    AssetPaths.bottomNavLogo,
                   ),
                 ),
               ],
@@ -74,7 +69,7 @@ class UserNavigation extends StatelessWidget {
         child: Row(
           children: [
             Expanded(child: _buildNavItem(context, 0)), // Home
-            Expanded(child: _buildNavItem(context, 1)), // Search
+            Expanded(child: _buildNavItem(context, 1)), // Games
             const SizedBox(width: 76), // Space for FAB
             Expanded(child: _buildNavItem(context, 2)), // Chat
             Expanded(child: _buildNavItem(context, 3)), // Profile
@@ -108,19 +103,27 @@ class UserNavigation extends StatelessWidget {
       ];
 
   Widget _buildNavItem(BuildContext context, int index) {
-    // Determine if this item should be selected
-    bool isSelected;
-
     final item = _navBarItems[index];
 
-    isSelected = index == shell.currentIndex;
+    // Determine the actual shell index based on position relative to FAB
+    int shellIndex;
+    if (index <= 1) {
+      // Items before FAB (Home, Games): use same index
+      shellIndex = index;
+    } else {
+      // Items after FAB (Chat, Profile): use index + 1
+      shellIndex = index + 1;
+    }
+
+    // Check if this item should be selected
+    final isSelected = shellIndex == shell.currentIndex;
 
     final color =
         isSelected ? AppColors.primaryColor : AppColors.secondaryColor;
 
     return GestureDetector(
       onTap: () {
-        shell.goBranch(index, initialLocation: true);
+        shell.goBranch(shellIndex, initialLocation: true);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

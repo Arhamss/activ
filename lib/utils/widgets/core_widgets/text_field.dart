@@ -1,5 +1,6 @@
 import 'package:activ/exports.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 
 enum ActivTextFieldType {
@@ -167,86 +168,93 @@ class _ActivTextFieldState extends State<ActivTextField> {
   }
 
   Future<void> _handleTimePicker() async {
-    TimeOfDay initialTime;
+    var initialTime = DateTime.now();
 
     // Try to parse existing time from controller
     if (widget.controller.text.isNotEmpty) {
       try {
-        final parts = widget.controller.text.split(':');
-        if (parts.length == 2) {
-          final hour = int.parse(parts[0]);
-          final minute = int.parse(parts[1]);
-          initialTime = TimeOfDay(hour: hour, minute: minute);
-        } else {
-          initialTime = TimeOfDay.now();
-        }
+        final timeFormat = DateFormat('hh:mm a');
+        final parsedTime = timeFormat.parse(widget.controller.text);
+        final now = DateTime.now();
+        initialTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          parsedTime.hour,
+          parsedTime.minute,
+        );
       } catch (e) {
         // If parsing fails, use current time
-        initialTime = TimeOfDay.now();
+        initialTime = DateTime.now();
       }
-    } else {
-      initialTime = TimeOfDay.now();
     }
 
-    final picked = await showTimePicker(
+    showCupertinoModalPopup<void>(
       context: context,
-      initialTime: initialTime,
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primaryColor,
-              onSurface: AppColors.textDark,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.primaryColor,
-                textStyle: context.b2.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
+      barrierColor: Colors.black.withOpacity(0.3),
+      builder: (BuildContext context) {
+        var tempPickedTime = initialTime;
+
+        return Container(
+          decoration: const BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          height: 300,
+          child: Column(
+            children: [
+              // Header with cancel and done buttons
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CupertinoButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(
+                        'Cancel',
+                        style: context.b2.copyWith(
+                          color: AppColors.secondaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    CupertinoButton(
+                      onPressed: () {
+                        final formattedTime =
+                            DateFormat('hh:mm a').format(tempPickedTime);
+                        widget.controller.text = formattedTime;
+                        widget.onChanged?.call(formattedTime);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Done',
+                        style: context.b2.copyWith(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            timePickerTheme: TimePickerThemeData(
-              backgroundColor: AppColors.white,
-              hourMinuteTextColor: AppColors.textDark,
-              hourMinuteColor: AppColors.greyShade6.withOpacity(0.3),
-              dayPeriodTextColor: AppColors.textDark,
-              dayPeriodColor: AppColors.greyShade6.withOpacity(0.3),
-              dayPeriodBorderSide: const BorderSide(
-                color: AppColors.greyShade6,
+              const Divider(height: 1),
+              // Time picker
+              Expanded(
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.time,
+                  initialDateTime: initialTime,
+                  onDateTimeChanged: (DateTime newTime) {
+                    tempPickedTime = newTime;
+                  },
+                ),
               ),
-              dialHandColor: AppColors.primaryColor,
-              dialBackgroundColor: AppColors.greyShade5,
-              dialTextColor: AppColors.white,
-              entryModeIconColor: AppColors.primaryColor,
-              helpTextStyle: context.b2.copyWith(
-                color: AppColors.textDark,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
-              hourMinuteTextStyle: context.b2.copyWith(
-                color: AppColors.textDark,
-                fontWeight: FontWeight.w700,
-                fontSize: 32,
-              ),
-              dayPeriodTextStyle: context.b2.copyWith(
-                color: AppColors.textDark,
-                fontWeight: FontWeight.w600,
-                fontSize: 14,
-              ),
-            ),
+            ],
           ),
-          child: child!,
         );
       },
     );
-
-    if (picked != null) {
-      final formattedTime = picked.format(context);
-      widget.controller.text = formattedTime;
-      widget.onChanged?.call(formattedTime);
-    }
   }
 
   @override

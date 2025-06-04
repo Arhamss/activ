@@ -42,7 +42,7 @@ class _FeesSliderState extends State<FeesSlider> {
             ),
             const Spacer(),
             Text(
-              'Max: \$ ${_value.toInt()}',
+              'Amount: \$ ${_value.toInt()}',
               style: context.t1.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w800,
@@ -66,7 +66,7 @@ class _FeesSliderState extends State<FeesSlider> {
               year2023: false,
               value: _value,
               min: 1,
-              max: 60,
+              max: 500,
               onChanged: (value) {
                 setState(() => _value = value);
                 widget.onChanged?.call(value);

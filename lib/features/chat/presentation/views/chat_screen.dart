@@ -1,4 +1,6 @@
 import 'package:activ/constants/asset_paths.dart';
+import 'package:activ/core/models/chats/chat_model.dart';
+import 'package:activ/features/chat/presentation/widgets/chat_tile.dart';
 import 'package:activ/utils/widgets/core_widgets/app_bar.dart';
 import 'package:activ/utils/widgets/core_widgets/icon_button.dart';
 import 'package:flutter/material.dart';
@@ -24,23 +26,49 @@ class ChatScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Welcome to Activ Chat',
-              style: context.h3.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SizedBox(
+            height: constraints.maxHeight,
+            width: constraints.maxWidth,
+            child: ListView(
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              children: [
+                ChatTile(
+                  chat: ChatModel(
+                    id: 'game-683f6319efedb5ee31de55e6',
+                    name: 'Basketball with A C on Wednesday',
+                    gameId: '683f6319efedb5ee31de55e6',
+                    gameAddress:
+                        '555 California St, Financial District, San Francisco',
+                    gameSport: 'Basketball',
+                    gameDatetime: DateTime.parse('2025-06-11T04:01:00.000Z'),
+                    memberCount: 1,
+                    unreadCount: 4,
+                  ),
+                  onTap: () {},
+                  lastMessage: 'Hello, how are you?',
+                ),
+                ChatTile(
+                  chat: ChatModel(
+                    id: 'game-683f6319efedb5ee31de55e6',
+                    name: 'Volleyball with A C on Wednesday',
+                    gameId: '683f6319efedb5ee31de55e6',
+                    gameAddress:
+                        '555 California St, Financial District, San Francisco',
+                    gameSport: 'Basketball',
+                    gameDatetime: DateTime.parse('2025-06-11T04:01:00.000Z'),
+                    memberCount: 1,
+                    unreadCount: 0,
+                  ),
+                  onTap: () {},
+                  lastMessage: 'On?',
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Your chat journey starts here',
-              style: context.b1,
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

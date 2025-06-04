@@ -7,31 +7,19 @@ class HomeState extends Equatable {
   const HomeState({
     this.user = const DataState.initial(),
     this.isSearching = false,
-    this.levels = const [],
-    this.selectedLocation,
-    this.addGame = const DataState.initial(),
   });
 
   final DataState<UserModel> user;
-  final bool isSearching;
-  final List<String> levels;
-  final LocationModel? selectedLocation;
-  final DataState<void> addGame;
+  final bool isSearching; 
 
   HomeState copyWith({
     DataState<UserModel>? user,
     bool? isSearching,
     bool? showSearchBar,
-    List<String>? levels,
-    LocationModel? selectedLocation,
-    DataState<void>? addGame,
   }) {
     return HomeState(
       user: user ?? this.user,
       isSearching: isSearching ?? this.isSearching,
-      levels: levels ?? this.levels,
-      selectedLocation: selectedLocation ?? this.selectedLocation,
-      addGame: addGame ?? this.addGame,
     );
   }
 
@@ -39,8 +27,5 @@ class HomeState extends Equatable {
   List<Object?> get props => [
         user,
         isSearching,
-        levels,
-        selectedLocation,
-        addGame,
       ];
 }

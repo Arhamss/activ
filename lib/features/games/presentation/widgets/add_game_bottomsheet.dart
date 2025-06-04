@@ -1,8 +1,8 @@
-import 'package:activ/core/enums/sports_enums.dart';
 import 'package:activ/core/field_validators.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/features/games/presentation/cubit/cubit.dart';
+import 'package:activ/features/games/presentation/cubit/state.dart';
 import 'package:activ/features/home/presentation/cubit/cubit.dart';
-import 'package:activ/features/home/presentation/cubit/state.dart';
 import 'package:activ/utils/extensions/null_check.dart';
 import 'package:activ/utils/helpers/datetime_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/dropdown_textfield.dart';
@@ -50,7 +50,7 @@ class AddGameBottomSheet extends StatelessWidget {
             ),
 
             // Scrollable content
-            BlocBuilder<HomeCubit, HomeState>(
+            BlocBuilder<GamesCubit, GamesState>(
               builder: (context, state) {
                 return Expanded(
                   child: SingleChildScrollView(
@@ -62,7 +62,12 @@ class AddGameBottomSheet extends StatelessWidget {
                           controller: gameNameController,
                           hintText: 'Select Game',
                           validator: FieldValidators.textValidator,
-                          options: state.user.data?.sports
+                          options: context
+                                  .read<HomeCubit>()
+                                  .state
+                                  .user
+                                  .data
+                                  ?.sports
                                   .map((e) => e.name)
                                   .toList() ??
                               [],
@@ -113,7 +118,7 @@ class AddGameBottomSheet extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        BlocBuilder<HomeCubit, HomeState>(
+                        BlocBuilder<GamesCubit, GamesState>(
                           builder: (context, state) {
                             return Wrap(
                               spacing: 8,
@@ -125,11 +130,11 @@ class AddGameBottomSheet extends StatelessWidget {
                                   onTap: () {
                                     if (state.levels.contains('Beginner')) {
                                       context
-                                          .read<HomeCubit>()
+                                          .read<GamesCubit>()
                                           .removeLevel('Beginner');
                                     } else {
                                       context
-                                          .read<HomeCubit>()
+                                          .read<GamesCubit>()
                                           .addLevel('Beginner');
                                     }
                                   },
@@ -141,11 +146,11 @@ class AddGameBottomSheet extends StatelessWidget {
                                   onTap: () {
                                     if (state.levels.contains('Intermediate')) {
                                       context
-                                          .read<HomeCubit>()
+                                          .read<GamesCubit>()
                                           .removeLevel('Intermediate');
                                     } else {
                                       context
-                                          .read<HomeCubit>()
+                                          .read<GamesCubit>()
                                           .addLevel('Intermediate');
                                     }
                                   },
@@ -164,21 +169,29 @@ class AddGameBottomSheet extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        BlocBuilder<HomeCubit, HomeState>(
+                        BlocBuilder<GamesCubit, GamesState>(
                           builder: (context, state) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 ActivButton(
                                   isLoading: false,
-                                  text: state.selectedLocation != null
-                                      ? '${state.selectedLocation?.address}'
+                                  text: context
+                                              .read<GamesCubit>()
+                                              .state
+                                              .selectedLocation !=
+                                          null
+                                      ? '${context.read<GamesCubit>().state.selectedLocation?.address}'
                                       : 'Select Location',
                                   backgroundColor: AppColors.white,
                                   textColor: AppColors.primaryColor,
                                   borderColor:
                                       AppColors.activeDetailsProgressBar,
-                                  borderStyle: state.selectedLocation != null
+                                  borderStyle: context
+                                              .read<GamesCubit>()
+                                              .state
+                                              .selectedLocation !=
+                                          null
                                       ? ButtonBorderStyle.solid
                                       : ButtonBorderStyle.dotted,
                                   textStyle: context.b3.copyWith(
@@ -186,7 +199,11 @@ class AddGameBottomSheet extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.lightText,
                                   ),
-                                  onPressed: state.selectedLocation.isNotNull
+                                  onPressed: context
+                                          .read<GamesCubit>()
+                                          .state
+                                          .selectedLocation
+                                          .isNotNull
                                       ? null
                                       : () {
                                           context.pushNamed(
@@ -194,7 +211,11 @@ class AddGameBottomSheet extends StatelessWidget {
                                           );
                                         },
                                 ),
-                                if (state.selectedLocation.isNotNull)
+                                if (context
+                                    .read<GamesCubit>()
+                                    .state
+                                    .selectedLocation
+                                    .isNotNull)
                                   ActivTextButton(
                                     onPressed: () {
                                       context.pushNamed(
@@ -213,7 +234,7 @@ class AddGameBottomSheet extends StatelessWidget {
                           },
                         ),
                         const SizedBox(height: 24),
-                        BlocBuilder<HomeCubit, HomeState>(
+                        BlocBuilder<GamesCubit, GamesState>(
                           builder: (context, state) {
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 24),
@@ -228,13 +249,19 @@ class AddGameBottomSheet extends StatelessWidget {
                                       timeController: timeController,
                                     );
 
-                                    final selectedGame =
-                                        state.user.data?.sports.firstWhere(
-                                      (sport) =>
-                                          sport.name == gameNameController.text,
-                                    );
+                                    final selectedGame = context
+                                        .read<HomeCubit>()
+                                        .state
+                                        .user
+                                        .data
+                                        ?.sports
+                                        .firstWhere(
+                                          (sport) =>
+                                              sport.name ==
+                                              gameNameController.text,
+                                        );
 
-                                    context.read<HomeCubit>().addGame(
+                                    context.read<GamesCubit>().addGame(
                                           state.selectedLocation!,
                                           selectedGame?.id ?? '',
                                           limitPlayersController.text,
