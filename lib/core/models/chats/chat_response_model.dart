@@ -13,7 +13,7 @@ class ChatResponseModel extends Equatable {
   factory ChatResponseModel.fromJson(Map<String, dynamic> json) {
     AppLogger.info('ChatResponseModel: $json');
     return ChatResponseModel(
-      chats: (json['chats'] as List<dynamic>?)
+      chats: (json['channels'] as List<dynamic>?)
               ?.map(
                 (chatJson) =>
                     ChatModel.fromJson(chatJson as Map<String, dynamic>),

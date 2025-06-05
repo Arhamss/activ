@@ -1,21 +1,22 @@
 import 'package:activ/exports.dart';
-import 'package:activ/core/models/chats/chat_model.dart';
 import 'package:activ/constants/time_duration_formatter.dart';
+import 'package:activ/utils/helpers/logger_helper.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class ChatTile extends StatelessWidget {
   const ChatTile({
-    required this.chat,
+    required this.channel,
     required this.onTap,
-    this.lastMessage,
     super.key,
   });
 
-  final ChatModel chat;
+  final Channel channel;
   final VoidCallback onTap;
-  final String? lastMessage;
 
   @override
   Widget build(BuildContext context) {
+    AppLogger.info('Channel: ${channel.cid}');
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -34,7 +35,7 @@ class ChatTile extends StatelessWidget {
               radius: 25,
               backgroundColor: AppColors.primaryColor,
               child: Text(
-                _getInitials(chat.name),
+                _getInitials(channel.name ?? 'Chat'),
                 style: context.b1.copyWith(
                   color: AppColors.white,
                   fontWeight: FontWeight.w700,
@@ -48,7 +49,7 @@ class ChatTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    chat.name,
+                    channel.name ?? 'Chat',
                     style: context.b1.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,
@@ -58,7 +59,7 @@ class ChatTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    lastMessage ?? '${chat.gameSport} at ${chat.gameAddress}',
+                    _getLastMessageText(),
                     style: context.b2.copyWith(
                       color: AppColors.chatTime,
                       fontWeight: FontWeight.w400,
@@ -77,7 +78,7 @@ class ChatTile extends StatelessWidget {
             Column(
               children: [
                 // Unread count (optional)
-                if (chat.unreadCount > 0)
+                if ((channel.state?.unreadCount ?? 0) > 0)
                   Container(
                     height: 17,
                     width: 17,
@@ -87,9 +88,9 @@ class ChatTile extends StatelessWidget {
                     ),
                     child: Text(
                       textAlign: TextAlign.center,
-                      chat.unreadCount > 99
+                      (channel.state?.unreadCount ?? 0) > 99
                           ? '99+'
-                          : chat.unreadCount.toString(),
+                          : (channel.state?.unreadCount ?? 0).toString(),
                       style: context.b2.copyWith(
                         color: AppColors.white,
                         fontWeight: FontWeight.w700,
@@ -100,7 +101,7 @@ class ChatTile extends StatelessWidget {
 
                 // Formatted time
                 Text(
-                  _formatMessageTime(chat.gameDatetime),
+                  _formatMessageTime(),
                   style: context.l3.copyWith(
                     color: AppColors.chatTime,
                     fontSize: 14,
@@ -124,14 +125,46 @@ class ChatTile extends StatelessWidget {
     return 'C';
   }
 
-  String _formatMessageTime(DateTime dateTime) {
+  String _getLastMessageText() {
+    final lastMessage = channel.state?.messages.isNotEmpty == true
+        ? channel.state!.messages.first
+        : null;
+
+    if (lastMessage != null) {
+      return lastMessage.text ?? 'No message';
+    }
+
+    // Fallback to custom data if available
+    final extraData = channel.extraData;
+    final sport = extraData['gameSport'] as String?;
+    final address = extraData['gameAddress'] as String?;
+
+    if (sport != null && address != null) {
+      return '$sport at $address';
+    }
+
+    return 'New chat';
+  }
+
+  String _formatMessageTime() {
+    final lastMessage = channel.state?.messages.isNotEmpty == true
+        ? channel.state!.messages.first
+        : null;
+
+    var messageTime = lastMessage?.createdAt;
+
+    // Fallback to channel creation time
+    messageTime ??= channel.createdAt;
+
+    if (messageTime == null) return '';
+
     final now = DateTime.now();
-    final localDateTime = dateTime.toLocal();
+    final localDateTime = messageTime.toLocal();
     final difference = now.difference(localDateTime);
 
     if (difference.inDays == 0) {
       // Today - show time
-      return TimeZoneHelper.formatTimeToHours(dateTime);
+      return TimeZoneHelper.formatTimeToHours(messageTime);
     } else if (difference.inDays == 1) {
       // Yesterday
       return 'Yesterday';
@@ -151,4 +184,19 @@ class ChatTile extends StatelessWidget {
       return formatDateShort(localDateTime);
     }
   }
+}
+
+// Helper function to create the builder
+Widget chatTileBuilder(
+  BuildContext context,
+  List<Channel> channels,
+  int index,
+  VoidCallback onTap,
+) {
+  if (index >= channels.length) return const SizedBox.shrink();
+
+  return ChatTile(
+    channel: channels[index],
+    onTap: onTap,
+  );
 }

@@ -6,10 +6,16 @@ import 'package:activ/l10n/l10n.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 import 'package:toastification/toastification.dart';
 
 class AppView extends StatelessWidget {
-  const AppView({super.key});
+  AppView({super.key});
+
+  late final client = StreamChatClient(
+    'xuumnwwzkpnh',
+    logLevel: Level.OFF,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,7 @@ class AppView extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 builder: (context, child) {
                   Localization.init(context);
-                  return child!;
+                  return StreamChat(client: client, child: child);
                 },
               ),
             );

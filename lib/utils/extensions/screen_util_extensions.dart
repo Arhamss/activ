@@ -24,7 +24,7 @@
 // }
 //
 // /// Extension for responsive EdgeInsets with multiple parameters
-// extension EdgeInsetsDirectionalExtension on EdgeInsets {
+// extension EdgeInsetsDirectional.symmetricExtension on EdgeInsets {
 //   static EdgeInsets fromLTRB(
 //       double left, double top, double right, double bottom) {
 //     return EdgeInsets.fromLTRB(left.w, top.h, right.w, bottom.h);

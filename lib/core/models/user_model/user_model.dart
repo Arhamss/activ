@@ -1,5 +1,7 @@
+import 'package:activ/constants/constants.dart';
 import 'package:equatable/equatable.dart';
 import 'package:activ/core/models/user_model/user_sport.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class NotificationPreferences extends Equatable {
   const NotificationPreferences({
@@ -198,6 +200,19 @@ class UserModel extends Equatable {
       getstreamUserId: getstreamUserId ?? this.getstreamUserId,
       gender: gender ?? this.gender,
       sports: sports ?? this.sports,
+    );
+  }
+}
+
+extension UserModelMapper on UserModel {
+  User toStreamChatUser() {
+    return User(
+      id: id,
+      extraData: {
+        'name': '$firstName $lastName',
+        'email': email,
+        'image': imageUrl ?? AppConstants.placeholderUserAvatar,
+      },
     );
   }
 }

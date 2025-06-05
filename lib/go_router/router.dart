@@ -85,6 +85,13 @@ class AppRouter {
         path: AppRoutes.locationPickerScreen,
         builder: (context, state) => const LocationPickerScreen(),
       ),
+      GoRoute(
+        name: AppRouteNames.chatDetailScreen,
+        path: AppRoutes.chatDetailScreen,
+        builder: (context, state) => ChatDetailScreen(
+          chatModel: state.extra! as ChatModel,
+        ),
+      ),
       StatefulShellRoute.indexedStack(
         branches: <StatefulShellBranch>[
           StatefulShellBranch(
@@ -116,7 +123,7 @@ class AppRouter {
               GoRoute(
                 path: AppRoutes.myGamesScreen,
                 name: AppRouteNames.myGamesScreen,
-                builder: (context, state) => const MyGamesScreen(),
+                builder: (context, state) => const NewGameScreen(),
               ),
             ],
           ),

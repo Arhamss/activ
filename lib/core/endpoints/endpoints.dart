@@ -24,4 +24,9 @@ class Endpoints {
 
   // Games Endpoints
   static const String addGame = 'game/create-game';
+  static const String getUpcomingGames = 'game/upcoming';
+
+  // Chat Endpoints
+  static const String getChats = 'chat/user-channels';
+  static const String getStreamChatAuth = 'chat/token';
 }

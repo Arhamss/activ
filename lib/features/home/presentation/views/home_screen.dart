@@ -1,8 +1,10 @@
 import 'package:activ/config/api_environment.dart';
 import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
+import 'package:activ/core/models/user_model/user_model.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/features/chat/presentation/cubit/cubit.dart';
 import 'package:activ/features/home/presentation/cubit/cubit.dart';
 import 'package:activ/features/home/presentation/cubit/state.dart';
 import 'package:activ/utils/helpers/focus_handler.dart';
@@ -12,6 +14,7 @@ import 'package:activ/utils/widgets/core_widgets/dialog.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -32,8 +35,38 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _getCurrentLocationAndNotificationPermissions();
+    _initializeUser();
+  }
 
-    context.read<HomeCubit>().getUser();
+  Future<void> _initializeUser() async {
+    await context.read<ChatCubit>().getStreamChatAuth();
+    await context.read<HomeCubit>().getUser();
+  }
+
+  Future<void> _connectStreamUser() async {
+    try {
+      final user = context.read<HomeCubit>().state.user.data;
+      if (user != null) {
+        await StreamChat.of(context).client.disconnectUser();
+
+        AppLogger.info(
+          'Connecting user with ID: ${user.id}, Stream ID: ${user.getstreamUserId}',
+        );
+        // Connect with actual user data and proper Stream token
+        await StreamChat.of(context).client.connectUser(
+              user.toStreamChatUser(),
+              context.read<ChatCubit>().state.streamChatAuth.data?.token ?? '',
+            );
+      } else {
+        AppLogger.error(
+          'No user data available - cannot connect to Stream Chat',
+        );
+        throw Exception('User data not available');
+      }
+    } catch (e) {
+      AppLogger.error('Error connecting Stream user: $e');
+      rethrow; // Don't fallback to anonymous - this causes permission issues
+    }
   }
 
   Future<void> _getCurrentLocationAndNotificationPermissions() async {
@@ -95,91 +128,69 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
 
-        return Scaffold(
-          backgroundColor: AppColors.white,
-          appBar: activAppBar(
-            title: 'Home',
-            context: context,
-            backgroundColor: AppColors.primaryColor,
-            height: 80,
-            actionWidget: ActivIconButton(
-              backgroundColor: Colors.transparent,
-              icon: SvgPicture.asset(
-                AssetPaths.notificationIcon,
+        if (state.user.isLoaded) {
+          _connectStreamUser();
+        }
+
+        if (state.user.isLoaded &&
+            context.watch<ChatCubit>().state.streamChatAuth.isLoaded) {
+          return Scaffold(
+            backgroundColor: AppColors.white,
+            appBar: activAppBar(
+              title: 'Home',
+              context: context,
+              backgroundColor: AppColors.primaryColor,
+              height: 80,
+              actionWidget: ActivIconButton(
+                backgroundColor: Colors.transparent,
+                icon: SvgPicture.asset(
+                  AssetPaths.notificationIcon,
+                ),
+                onPressed: () {
+                  Injector.resolve<AppPreferences>().clearAll();
+                  context.goNamed(AppRouteNames.splash);
+                },
               ),
-              onPressed: () {
-                Injector.resolve<AppPreferences>().clearAll();
-                context.goNamed(AppRouteNames.splash);
-              },
             ),
-          ),
-          body: BlocListener<HomeCubit, HomeState>(
-            listenWhen: (previous, current) => previous.user != current.user,
-            listener: (context, state) {},
-            child: FocusHandler(
-              child: Stack(
-                children: [
-                  MapWidget(
-                    mapOptions: MapOptions(
-                      pixelRatio: 1,
-                    ),
-                    key: const ValueKey('mapWidget'),
-                    cameraOptions: _currentCameraPosition,
-                    onMapCreated: (MapboxMap mapboxMap) {
-                      this.mapboxMap = mapboxMap;
-                      _getCurrentLocationPermissions();
-                    },
-                    onMapLoadedListener: (mapboxMap) {
-                      _getCurrentLocationPermissions();
-                    },
-                    onMapIdleListener: (cameraState) {
-                      _saveCurrentCameraPosition();
-                    },
-                    onTapListener: (cameraState) {
-                      _saveCurrentCameraPosition();
-                    },
-                    onZoomListener: (cameraState) {
-                      _saveCurrentCameraPosition();
-                    },
-                  ),
-
-                  // Search Bar
-                  Positioned(
-                    top: 20,
-                    left: 20,
-                    right: 20,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
+            body: BlocListener<HomeCubit, HomeState>(
+              listenWhen: (previous, current) => previous.user != current.user,
+              listener: (context, state) {},
+              child: FocusHandler(
+                child: Stack(
+                  children: [
+                    MapWidget(
+                      mapOptions: MapOptions(
+                        pixelRatio: 1,
                       ),
-                      child: ActivSearchField(
-                        controller: _searchController,
-                        focusNode: _searchFocusNode,
-                        onChanged: _performSearch,
-                        hintText: 'Search for activities, sports, locations...',
-                      ),
+                      key: const ValueKey('mapWidget'),
+                      cameraOptions: _currentCameraPosition,
+                      onMapCreated: (MapboxMap mapboxMap) {
+                        this.mapboxMap = mapboxMap;
+                        _getCurrentLocationPermissions();
+                      },
+                      onMapLoadedListener: (mapboxMap) {
+                        _getCurrentLocationPermissions();
+                      },
+                      onMapIdleListener: (cameraState) {
+                        _saveCurrentCameraPosition();
+                      },
+                      onTapListener: (cameraState) {
+                        _saveCurrentCameraPosition();
+                      },
+                      onZoomListener: (cameraState) {
+                        _saveCurrentCameraPosition();
+                      },
                     ),
-                  ),
 
-                  // Search Results Overlay
-                  if (_searchController.text.isNotEmpty)
+                    // Search Bar
                     Positioned(
-                      top: 90,
+                      top: 20,
                       left: 20,
                       right: 20,
-                      bottom: 100,
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(25),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.1),
@@ -188,88 +199,125 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        child: context.watch<HomeCubit>().state.isSearching
-                            ? const Center(child: CircularProgressIndicator())
-                            : _searchResults.isEmpty
-                                ? Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.search_off,
-                                          size: 48,
-                                          color: AppColors.secondaryColor
-                                              .withOpacity(0.5),
-                                        ),
-                                        const SizedBox(height: 16),
-                                        Text(
-                                          'No results found',
-                                          style: context.h3.copyWith(
-                                            color: AppColors.secondaryColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : ListView.builder(
-                                    padding: const EdgeInsets.all(16),
-                                    itemCount: _searchResults.length,
-                                    itemBuilder: (context, index) {
-                                      return Card(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 8),
-                                        child: ListTile(
-                                          leading: const Icon(
-                                            Icons.sports_soccer,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                          title: Text(
-                                            _searchResults[index],
-                                            style: context.b1.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                          subtitle: Text(
-                                            'Tap to view details',
-                                            style: context.b3.copyWith(
-                                              color: AppColors.secondaryColor,
-                                            ),
-                                          ),
-                                          onTap: () {
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'Selected: ${_searchResults[index]}',
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    },
-                                  ),
+                        child: ActivSearchField(
+                          controller: _searchController,
+                          focusNode: _searchFocusNode,
+                          onChanged: _performSearch,
+                          hintText:
+                              'Search for activities, sports, locations...',
+                        ),
                       ),
                     ),
 
-                  Positioned(
-                    bottom: 120,
-                    right: 20,
-                    child: FloatingActionButton(
-                      backgroundColor: AppColors.white,
-                      onPressed: () async {
-                        await _getCurrentLocationPermissions();
-                      },
-                      child: const Icon(
-                        Icons.my_location,
-                        color: AppColors.black,
+                    // Search Results Overlay
+                    if (_searchController.text.isNotEmpty)
+                      Positioned(
+                        top: 90,
+                        left: 20,
+                        right: 20,
+                        bottom: 100,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: context.watch<HomeCubit>().state.isSearching
+                              ? const Center(child: CircularProgressIndicator())
+                              : _searchResults.isEmpty
+                                  ? Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.search_off,
+                                            size: 48,
+                                            color: AppColors.secondaryColor
+                                                .withOpacity(0.5),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            'No results found',
+                                            style: context.h3.copyWith(
+                                              color: AppColors.secondaryColor,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      padding: const EdgeInsets.all(16),
+                                      itemCount: _searchResults.length,
+                                      itemBuilder: (context, index) {
+                                        return Card(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 8),
+                                          child: ListTile(
+                                            leading: const Icon(
+                                              Icons.sports_soccer,
+                                              color: AppColors.primaryColor,
+                                            ),
+                                            title: Text(
+                                              _searchResults[index],
+                                              style: context.b1.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                            subtitle: Text(
+                                              'Tap to view details',
+                                              style: context.b3.copyWith(
+                                                color: AppColors.secondaryColor,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Text(
+                                                    'Selected: ${_searchResults[index]}',
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                        ),
+                      ),
+
+                    Positioned(
+                      bottom: 120,
+                      right: 20,
+                      child: FloatingActionButton(
+                        backgroundColor: AppColors.white,
+                        onPressed: () async {
+                          await _getCurrentLocationPermissions();
+                        },
+                        child: const Icon(
+                          Icons.my_location,
+                          color: AppColors.black,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
+          );
+        }
+
+        return const Scaffold(
+          backgroundColor: AppColors.white,
+          body: Center(
+            child: LoadingWidget(),
           ),
         );
       },
