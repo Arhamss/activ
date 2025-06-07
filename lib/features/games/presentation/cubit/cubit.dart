@@ -39,6 +39,26 @@ class GamesCubit extends Cubit<GamesState> {
     }
   }
 
+  Future<void> getUpcomingGames() async {
+    emit(state.copyWith(upcomingGames: const DataState.loading()));
+
+    final response = await repository.getUpcomingGames();
+
+    if (response.isSuccess) {
+      emit(
+        state.copyWith(
+          upcomingGames: DataState.loaded(data: response.data),
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          upcomingGames: DataState.failure(error: response.message),
+        ),
+      );
+    }
+  }
+
   void setSelectedLocation(LocationModel location) {
     emit(state.copyWith(selectedLocation: location));
   }

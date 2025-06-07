@@ -62,4 +62,11 @@ class AssetPaths {
   static const dropdownArrow = 'assets/svgs/dropdown_icon.svg';
   static const notificationIcon = 'assets/svgs/notification.svg';
   static const addIcon = 'assets/svgs/add_icon.svg';
+
+  // Game Icons
+  static const chatGroupIcon = 'assets/svgs/chat_group.svg';
+  static const calendarIcon = 'assets/svgs/calendar.svg';
+  static const feesIcon = 'assets/svgs/fees.svg';
+  static const levelIcon = 'assets/svgs/level.svg';
+  static const locationIcon = 'assets/svgs/location.svg';
 }

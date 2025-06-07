@@ -87,4 +87,7 @@ abstract class AppColors {
   static const unSelectedGender = Color(0xFFE0E0E0);
   static const bottomSheetCloseIcon = Color(0xFF60635E);
   static const chatTime = Color(0xFF3B3E46);
+  static const upcomingGameBorder = Color(0xFFE5E5E5);
+  static const upcomingGameDivider = Color(0xFFE6E6E6);
+  static const seePlayersButton = Color(0xFF8B9A76);
 }

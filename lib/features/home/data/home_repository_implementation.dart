@@ -5,8 +5,11 @@ import 'package:activ/core/endpoints/endpoints.dart';
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/core/models/user_model/user_model.dart';
 import 'package:activ/core/models/user_model/user_response_model.dart';
+import 'package:activ/exports.dart';
 import 'package:activ/features/home/domain/home_repository.dart';
+import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/helpers/repository_response.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class HomeRepositoryImplementation implements HomeRepository {
   HomeRepositoryImplementation({
@@ -47,6 +50,8 @@ class HomeRepositoryImplementation implements HomeRepository {
         //_cache.setUserModel(result.response?.data?.user);
         _cache.setUserId(result.response?.data?.user.id ?? '');
 
+        
+
         return RepositoryResponse(
           isSuccess: true,
           data: result.response?.data?.user,
@@ -62,6 +67,25 @@ class HomeRepositoryImplementation implements HomeRepository {
         isSuccess: false,
         message: e.toString(),
       );
+    }
+  }
+
+  Future<void> createAndConnectStreamUser({
+    required BuildContext context,
+    required UserModel userModel,
+  }) async {
+    try {
+      final client = StreamChatCore.of(context).client;
+
+      await client.disconnectUser();
+
+      await client.connectUser(
+        userModel.toStreamChatUser(),
+        userModel.getstreamUserId,
+      );
+    } catch (e, s) {
+      AppLogger.error('Error connecting or creating user in Stream', e, s);
+      rethrow;
     }
   }
 }

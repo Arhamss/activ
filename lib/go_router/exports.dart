@@ -1,7 +1,9 @@
 import 'package:activ/app/view/splash.dart';
+import 'package:activ/core/models/chats/chat_model.dart';
+import 'package:activ/features/chat/presentation/views/chat_details_screen.dart';
 import 'package:activ/features/chat/presentation/views/chat_screen.dart';
 import 'package:activ/features/games/presentation/views/games_screen.dart';
-import 'package:activ/features/games/presentation/views/my_games_screen.dart';
+import 'package:activ/features/games/presentation/views/new_games_screen.dart';
 import 'package:activ/features/home/presentation/views/home_screen.dart';
 import 'package:activ/features/games/presentation/views/location_picker_screen.dart';
 import 'package:activ/features/navigation/presentation/views/user_navigation.dart';
@@ -15,6 +17,7 @@ import 'package:activ/features/onboarding_flow/presentation/view/sign_up_screen.
 import 'package:activ/features/profile/presentation/views/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 part 'router.dart';
 part 'routes.dart';

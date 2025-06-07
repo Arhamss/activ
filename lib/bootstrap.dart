@@ -6,6 +6,7 @@ import 'package:activ/core/di/injector.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
+import 'package:stream_chat_flutter/stream_chat_flutter.dart';
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -29,7 +30,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   await Injector.setup();
 
-  // Add cross-flavor configuration here
+  
 
   runApp(await builder());
 }

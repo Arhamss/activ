@@ -361,8 +361,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
                     suffixIconConstraints: const BoxConstraints(minWidth: 40),
                     prefixIcon: widget.prefixPath != null
                         ? Padding(
-                            padding:
-                                const EdgeInsetsDirectional.only(start: 12),
+                            padding: const EdgeInsetsDirectional.only(
+                                start: 12),
                             child: SvgPicture.asset(
                               widget.prefixPath!,
                               colorFilter:
@@ -375,7 +375,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
                         : widget.showSuffixIcon == null
                             ? (isDatePicker
                                 ? Padding(
-                                    padding: const EdgeInsetsDirectional.only(
+                                    padding: const EdgeInsetsDirectional
+                                        .only(
                                       end: 12,
                                     ),
                                     child: SvgPicture.asset(
@@ -384,8 +385,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
                                   )
                                 : isTimePicker
                                     ? Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional.only(
+                                        padding: const EdgeInsetsDirectional
+                                            .only(
                                           end: 12,
                                         ),
                                         child: Icon(
@@ -397,7 +398,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
                                     : buildSuffixIcon(iconColor, isPassword))
                             : (isDatePicker
                                 ? Padding(
-                                    padding: const EdgeInsetsDirectional.only(
+                                    padding: const EdgeInsetsDirectional
+                                        .only(
                                       end: 12,
                                     ),
                                     child: SvgPicture.asset(
@@ -406,8 +408,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
                                   )
                                 : isTimePicker
                                     ? Padding(
-                                        padding:
-                                            const EdgeInsetsDirectional.only(
+                                        padding: const EdgeInsetsDirectional
+                                            .only(
                                           end: 12,
                                         ),
                                         child: Icon(
@@ -418,7 +420,8 @@ class _ActivTextFieldState extends State<ActivTextField> {
                                       )
                                     : buildSuffixIcon(iconColor, isPassword)),
                     contentPadding: isDescription
-                        ? const EdgeInsetsDirectional.only(start: 16, top: 24)
+                        ? const EdgeInsetsDirectional.only(
+                            start: 16, top: 24)
                         : widget.contentPadding ??
                             const EdgeInsetsDirectional.symmetric(
                               horizontal: 16,

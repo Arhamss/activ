@@ -19,4 +19,16 @@ class ChatCubit extends Cubit<ChatState> {
       emit(state.copyWith(chats: DataState.failure(error: response.message)));
     }
   }
+
+  Future<void> getStreamChatAuth() async {
+    emit(state.copyWith(streamChatAuth: const DataState.loading()));
+
+    final response = await repository.getStreamChatAuth();
+
+    if (response.isSuccess) {
+      emit(state.copyWith(streamChatAuth: DataState.loaded(data: response.data)));
+    } else {
+      emit(state.copyWith(streamChatAuth: DataState.failure(error: response.message)));
+    }
+  }
 }

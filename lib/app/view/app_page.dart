@@ -1,5 +1,7 @@
 import 'package:activ/app/view/app_view.dart';
 import 'package:activ/core/locale/cubit/locale_cubit.dart';
+import 'package:activ/features/chat/data/chat_repository_implementation.dart';
+import 'package:activ/features/chat/presentation/cubit/cubit.dart';
 import 'package:activ/features/games/data/games_repository_implementation.dart';
 import 'package:activ/features/games/presentation/cubit/cubit.dart';
 import 'package:activ/features/home/data/home_repository_implementation.dart';
@@ -36,8 +38,15 @@ class App extends StatelessWidget {
             repository: GamesRepositoryImplementation(),
           ),
         ),
+        BlocProvider(
+          create: (context) => ChatCubit(
+            repository: ChatRepositoryImplementation(),
+          ),
+        ),
       ],
-      child: const AppView(),
+      child: AppView(
+        
+      ),
     );
   }
 }

@@ -131,7 +131,8 @@ class _DropdownTextFieldState extends State<DropdownTextField> {
                   // Prefix icon
                   if (widget.prefixIconPath != null) ...[
                     Padding(
-                      padding: const EdgeInsetsDirectional.only(end: 12),
+                      padding:
+                          const EdgeInsetsDirectional.only(end: 12),
                       child: SvgPicture.asset(
                         widget.prefixIconPath!,
                         colorFilter:
@@ -157,7 +158,8 @@ class _DropdownTextFieldState extends State<DropdownTextField> {
 
                   // Dropdown arrow
                   Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 12),
+                    padding:
+                        const EdgeInsetsDirectional.only(start: 12),
                     child: SvgPicture.asset(
                       AssetPaths.dropdownArrow,
                     ),
@@ -192,8 +194,8 @@ class _DropdownTextFieldState extends State<DropdownTextField> {
                                 },
                                 child: Container(
                                   width: double.infinity,
-                                  padding:
-                                      const EdgeInsetsDirectional.symmetric(
+                                  padding: const EdgeInsetsDirectional
+                                      .symmetric(
                                     horizontal: 16,
                                     vertical: 12,
                                   ),
@@ -235,8 +237,8 @@ class _DropdownTextFieldState extends State<DropdownTextField> {
                                   },
                                   child: Container(
                                     width: double.infinity,
-                                    padding:
-                                        const EdgeInsetsDirectional.symmetric(
+                                    padding: const EdgeInsetsDirectional
+                                        .symmetric(
                                       horizontal: 16,
                                       vertical: 12,
                                     ),

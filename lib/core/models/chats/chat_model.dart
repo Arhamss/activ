@@ -32,6 +32,7 @@ class ChatModel extends Equatable {
   final DateTime gameDatetime;
   final int memberCount;
   final int unreadCount;
+  
 
   Map<String, dynamic> toJson() {
     return {

@@ -17,7 +17,7 @@ class LocationPickerScreen extends StatefulWidget {
 
 class _LocationPickerScreenState extends State<LocationPickerScreen> {
   MapboxMap? mapboxMap;
-  PointAnnotationManager? _pointAnnotationManager;
+  CircleAnnotationManager? _circleAnnotationManager;
 
   static CameraOptions? _initialCameraPosition;
 
@@ -51,11 +51,13 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             cameraOptions: _initialCameraPosition,
             onMapCreated: (MapboxMap mapboxMap) async {
               this.mapboxMap = mapboxMap;
-              _pointAnnotationManager =
-                  await mapboxMap.annotations.createPointAnnotationManager();
               // await _getCurrentLocation();
             },
             onMapLoadedListener: (mapLoadedEventData) async {
+              AppLogger.info('Map loaded, creating annotation managers...');
+              _circleAnnotationManager =
+                  await mapboxMap!.annotations.createCircleAnnotationManager();
+              AppLogger.info('Annotation managers created');
               await _getCurrentLocation();
             },
             onTapListener: (MapContentGestureContext context) async {
@@ -157,7 +159,14 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   }
 
   Future<void> _onMapTap(Point point) async {
-    if (mapboxMap == null) return;
+    AppLogger.info(
+      'Map tapped at: ${point.coordinates.lat}, ${point.coordinates.lng}',
+    );
+
+    if (mapboxMap == null) {
+      AppLogger.error('MapboxMap is null!');
+      return;
+    }
 
     try {
       final latitude = point.coordinates.lat.toDouble();
@@ -174,22 +183,32 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   }
 
   Future<void> _addMarker(double latitude, double longitude) async {
-    if (_pointAnnotationManager == null) return;
+    if (_circleAnnotationManager == null) {
+      AppLogger.error('CircleAnnotationManager is null!');
+      return;
+    }
 
     try {
-      // Clear existing annotations
-      await _pointAnnotationManager!.deleteAll();
+      AppLogger.info('Adding circle marker at $latitude, $longitude');
 
-      // Create new marker
-      final pointAnnotationOptions = PointAnnotationOptions(
+      // Clear existing annotations
+      await _circleAnnotationManager!.deleteAll();
+
+      // Create a visible circle marker
+      final circleAnnotationOptions = CircleAnnotationOptions(
         geometry: Point(coordinates: Position(longitude, latitude)),
-        iconSize: 1.5,
-        iconImage: 'pin', // Default Mapbox pin icon
+        circleRadius: 8,
+        circleColor: AppColors.seePlayersButton.value,
+        circleStrokeColor: Colors.white.value,
+        circleStrokeWidth: 3,
+        circleOpacity: 0.6,
       );
 
-      await _pointAnnotationManager!.create(pointAnnotationOptions);
+      final annotation =
+          await _circleAnnotationManager!.create(circleAnnotationOptions);
+      AppLogger.info('Circle marker created successfully');
     } catch (e) {
-      AppLogger.error('Error adding marker:', e);
+      AppLogger.error('Error adding circle marker:', e);
     }
   }
 
