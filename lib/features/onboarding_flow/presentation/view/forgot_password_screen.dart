@@ -36,6 +36,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           forceMaterialTransparency: true,
         ),
         body: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
+          listenWhen: (previous, current) =>
+              previous.forgotPassword != current.forgotPassword,
           listener: (context, state) {
             if (state.forgotPassword.isFailure) {
               ToastHelper.showErrorToast(
