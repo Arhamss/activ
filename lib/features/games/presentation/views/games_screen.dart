@@ -39,8 +39,8 @@ class GamesScreen extends StatelessWidget {
                 ActivSlidingTab(
                   height: 50,
                   shortenWidth: true,
-                  textOne: 'My Games',
-                  textTwo: 'All Games',
+                  textOne: 'Upcoming Games',
+                  textTwo: 'Past Games',
                   onTapOne: () {
                     context.read<GamesCubit>().setSelectedTab(0);
                   },
