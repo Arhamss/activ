@@ -4,6 +4,8 @@ import 'package:activ/core/di/injector.dart';
 import 'package:activ/core/endpoints/endpoints.dart';
 import 'package:activ/core/models/games/game_model.dart';
 import 'package:activ/core/models/games/game_response_model.dart';
+import 'package:activ/core/models/games/past_game_model.dart';
+import 'package:activ/core/models/games/past_game_response_model.dart';
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/core/models/user_model/user_model.dart';
 import 'package:activ/features/games/domain/games_repository.dart';
@@ -68,7 +70,57 @@ class GamesRepositoryImplementation implements GamesRepository {
   }
 
   @override
-  Future<RepositoryResponse<List<GameModel>>> getUpcomingGames() async {
+  Future<RepositoryResponse<List<GameModel>>> getMyGames() async {
+    try {
+      final response = await _apiService.get(Endpoints.getUpcomingGames);
+
+      if (response.statusCode == 200) {
+        final result = GameResponseModel.parseResponse(response);
+        return RepositoryResponse(
+          isSuccess: true,
+          data: result.response?.data?.games,
+        );
+      }
+
+      return RepositoryResponse(
+        isSuccess: false,
+        message: response.data['message'] as String,
+      );
+    } catch (e) {
+      return RepositoryResponse(
+        isSuccess: false,
+        message: e.toString(),
+      );
+    }
+  }
+ 
+  @override
+  Future<RepositoryResponse<List<PastGameModel>>> getMyPastGames() async {
+    try {
+      final response = await _apiService.get(Endpoints.getPastGames);
+
+      if (response.statusCode == 200) {
+        final result = PastGameResponseModel.parseResponse(response);
+        return RepositoryResponse(
+          isSuccess: true,
+          data: result.response?.data?.games,
+        );
+      }
+
+      return RepositoryResponse(
+        isSuccess: false,
+        message: response.data['message'] as String,
+      );
+    } catch (e) {
+      return RepositoryResponse(
+        isSuccess: false,
+        message: e.toString(),
+      );
+    }
+  }
+
+  @override
+  Future<RepositoryResponse<List<GameModel>>> getMyUpcomingGames() async {
     try {
       final response = await _apiService.get(Endpoints.getUpcomingGames);
 

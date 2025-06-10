@@ -1,5 +1,6 @@
 import 'package:activ/exports.dart';
 import 'package:activ/features/onboarding_flow/presentation/widgets/intro_widget.dart';
+import 'package:activ/features/onboarding_flow/presentation/widgets/language_dropdown.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:flutter/services.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -43,14 +44,8 @@ class _IntroScreenState extends State<IntroScreen> {
         backgroundColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         forceMaterialTransparency: true,
-        actions: [
-          ActivIconButton(
-            backgroundColor: AppColors.white,
-            icon: const Icon(
-              Icons.login_outlined,
-              color: AppColors.primaryColor,
-            ),
-          ),
+        actions: const [
+          LanguageDropdown(),
         ],
       ),
       body: Column(

@@ -48,12 +48,8 @@ class _ActivSlidingTabState extends State<ActivSlidingTab> {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(50),
-        border: Border.all(
-          color: AppColors.greenSecondary,
-          width: 0.75,
-        ),
+        color: AppColors.slidingTabBackground,
+        borderRadius: BorderRadius.circular(12),
       ),
       width: widget.width ?? double.infinity,
       height: widget.height ?? 40,
@@ -67,9 +63,10 @@ class _ActivSlidingTabState extends State<ActivSlidingTab> {
             child: Container(
               width: widget.shortenWidth ? width / 2.2 : width / 2,
               padding: const EdgeInsets.all(20),
+              margin: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                 color: widget.selectedColor ?? AppColors.primaryBlue,
-                borderRadius: BorderRadius.circular(25),
+                borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: AppColors.greenSecondary,
                   width: 0.75,
@@ -91,8 +88,13 @@ class _ActivSlidingTabState extends State<ActivSlidingTab> {
                   },
                   child: Center(
                     child: Text(
+                      textAlign: TextAlign.center,
                       widget.textOne,
-                      style: widget.textStyle ?? context.b3,
+                      style: selectedIndex == 0
+                          ? widget.textStyle?.copyWith(
+                              color: AppColors.white,
+                            )
+                          : widget.textStyle ?? context.b3,
                     ),
                   ),
                 ),
@@ -109,8 +111,13 @@ class _ActivSlidingTabState extends State<ActivSlidingTab> {
                   },
                   child: Center(
                     child: Text(
+                      textAlign: TextAlign.center,
                       widget.textTwo,
-                      style: widget.textStyle ?? context.b3,
+                      style: selectedIndex == 1
+                          ? widget.textStyle?.copyWith(
+                              color: AppColors.white,
+                            )
+                          : widget.textStyle ?? context.b3,
                     ),
                   ),
                 ),
