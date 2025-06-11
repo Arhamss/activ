@@ -88,9 +88,13 @@ class AppRouter {
       GoRoute(
         name: AppRouteNames.chatDetailScreen,
         path: AppRoutes.chatDetailScreen,
-        builder: (context, state) => ChatDetailScreen(
-          chatModel: state.extra! as ChatModel,
-        ),
+        builder: (context, state) {
+          final extras = state.extra! as Map<String, dynamic>;
+          return ChatDetailScreen(
+            chatModel: extras['chatModel'] as ChatModel,
+            channel: extras['channel'] as Channel,
+          );
+        },
       ),
       StatefulShellRoute.indexedStack(
         branches: <StatefulShellBranch>[

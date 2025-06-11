@@ -72,4 +72,10 @@ class AssetPaths {
   static const feesIcon = 'assets/svgs/fees.svg';
   static const levelIcon = 'assets/svgs/level.svg';
   static const locationIcon = 'assets/svgs/location.svg';
+
+  //Empty State Icons
+  static const emptyStateIcon = 'assets/svgs/empty_state.svg';
+
+  //Chat Icons
+  static const sendIcon = 'assets/svgs/send.svg';
 }

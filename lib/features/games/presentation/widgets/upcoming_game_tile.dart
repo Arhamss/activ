@@ -1,6 +1,7 @@
 import 'package:activ/constants/app_colors.dart';
 import 'package:activ/core/models/games/game_model.dart';
 import 'package:activ/exports.dart';
+import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -56,17 +57,60 @@ class UpcomingGameTile extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  '${game.sport} Match',
-                  style: context.b1.copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20,
-                    color: AppColors.textPrimary,
-                  ),
+                Row(
+                  children: [
+                    if (game.owner.imageUrl != null)
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(game.owner.imageUrl!),
+                      )
+                    else
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: AppColors.primaryColor,
+                        child: Text(
+                          game.owner.firstName.characters.first,
+                          style: context.b1.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${game.sport} Match',
+                          style: context.b1.copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                            color: AppColors.activeDetailsProgressBar,
+                          ),
+                        ),
+                        Text(
+                          '${game.owner.firstName} ${game.owner.lastName}',
+                          style: context.b1.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 const Spacer(),
-                SvgPicture.asset(
-                  AssetPaths.chatGroupIcon,
+                GestureDetector(
+                  onTap: () {
+                    AppLogger.info('Chat tapped');
+                    //context.pushNamed(AppRouteNames.chatDetailScreen, extra: game.id);
+                  },
+                  child: SvgPicture.asset(
+                    AssetPaths.chatGroupIcon,
+                  ),
                 ),
               ],
             ),

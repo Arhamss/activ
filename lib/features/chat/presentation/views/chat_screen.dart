@@ -196,7 +196,13 @@ class _ChatScreenState extends State<ChatScreen> {
   void _navigateToChat(Channel channel, ChatModel chatModel) {
     AppLogger.info('Navigating to chat: ${channel.cid} - ${chatModel.name}');
 
-    // context.pushNamed(AppRouteNames.chatDetailScreen, extra: chatModel);
+    context.pushNamed(
+      AppRouteNames.chatDetailScreen,
+      extra: {
+        'chatModel': chatModel,
+        'channel': channel,
+      },
+    );
   }
 }
 

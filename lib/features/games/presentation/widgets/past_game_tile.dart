@@ -56,18 +56,60 @@ class PastGameTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  '${game.sport} Match',
-                  style: context.b1.copyWith(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20,
-                    color: AppColors.textPrimary,
-                  ),
+                Row(
+                  children: [
+                    if (game.owner.imageUrl != null)
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundImage: NetworkImage(game.owner.imageUrl!),
+                      )
+                    else
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: AppColors.primaryColor,
+                        child: Text(
+                          game.owner.firstName.characters.first,
+                          style: context.b1.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            color: AppColors.white,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${game.sport} Match',
+                          style: context.b1.copyWith(
+                            fontWeight: FontWeight.w800,
+                            fontSize: 16,
+                            color: AppColors.activeDetailsProgressBar,
+                          ),
+                        ),
+                        Text(
+                          '${game.owner.firstName} ${game.owner.lastName}',
+                          style: context.b1.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 const Spacer(),
-                SvgPicture.asset(
-                  AssetPaths.chatGroupIcon,
+                Text(
+                  '\$${(game.feeCents / 100).toInt()}',
+                  style: context.b1.copyWith(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
@@ -79,10 +121,6 @@ class PastGameTile extends StatelessWidget {
               ),
             ),
             _GameDetails(
-              icon: AssetPaths.calendarIcon,
-              text: _formatGameDateTime(game.datetime),
-            ),
-            _GameDetails(
               icon: AssetPaths.levelIcon,
               text: 'Level - ${game.level}',
             ),
@@ -90,8 +128,13 @@ class PastGameTile extends StatelessWidget {
               icon: AssetPaths.locationIcon,
               text: game.address.split(',').first,
             ),
+            _GameDetails(
+              icon: AssetPaths.calendarIcon,
+              text: _formatGameDateTime(game.datetime),
+              textColor: AppColors.error,
+            ),
             const SizedBox(height: 16),
-            if (!game.hasRatedUsers)
+            if (!game.ownerHasRatedUsers)
               ActivButton(
                 textStyle: context.b1.copyWith(
                   fontWeight: FontWeight.w700,
@@ -102,7 +145,7 @@ class PastGameTile extends StatelessWidget {
                 backgroundColor: AppColors.seePlayersButton,
                 isLoading: false,
                 onPressed: () {},
-                text: 'Rate Players',
+                text: "Rate ${game.owner.firstName}'s game",
               ),
           ],
         ),
@@ -112,9 +155,10 @@ class PastGameTile extends StatelessWidget {
 }
 
 class _GameDetails extends StatelessWidget {
-  const _GameDetails({required this.icon, required this.text, super.key});
+  const _GameDetails({required this.icon, required this.text, this.textColor});
   final String icon;
   final String text;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +183,7 @@ class _GameDetails extends StatelessWidget {
               style: context.b1.copyWith(
                 fontWeight: FontWeight.w600,
                 fontSize: 15,
-                color: AppColors.textSecondary,
+                color: textColor ?? AppColors.textSecondary,
               ),
             ),
           ),

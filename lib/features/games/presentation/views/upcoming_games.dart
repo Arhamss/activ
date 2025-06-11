@@ -37,6 +37,19 @@ class _UpcomingGamesState extends State<UpcomingGames> {
           );
         }
 
+        if (state.myUpcomingGames.data?.isEmpty ?? true) {
+          return const Padding(
+            padding: EdgeInsets.all(24),
+            child: EmptyStateWidget(
+              image: AssetPaths.emptyStateIcon,
+              spacing: 32,
+              text: 'No games found at the moment!',
+              subtitle:
+                  'Check back later or try exploring a different location.',
+            ),
+          );
+        }
+
         return ListView.builder(
           itemBuilder: (context, index) {
             return UpcomingGameTile(game: state.myUpcomingGames.data![index]);
