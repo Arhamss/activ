@@ -1,6 +1,9 @@
 class AssetPaths {
   const AssetPaths._();
 
+  //intro svgs
+  static const filledArrowDownIcon = 'assets/svgs/filled_arrow_down.svg';
+  static const worldIcon = 'assets/svgs/world.svg';
   static const googleIcon = 'assets/svgs/Google.svg';
   static const appleIcon = 'assets/svgs/Apple.svg';
   static const smallLogo = 'assets/svgs/logo_small.svg';

@@ -25,7 +25,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<GamesCubit>().getUpcomingGames();
+    context.read<GamesCubit>().getMyGames();
   }
 
   @override
@@ -84,17 +84,16 @@ class _NewGameScreenState extends State<NewGameScreen> {
               color: AppColors.white,
               child: BlocBuilder<GamesCubit, GamesState>(
                 builder: (context, state) {
-                  if (state.upcomingGames.isLoading) {
+                  if (state.myGames.isLoading) {
                     return const LoadingWidget();
                   }
 
-                  if (state.upcomingGames.isFailure) {
+                  if (state.myGames.isFailure) {
                     return Center(
                       child: RetryWidget(
-                        message: state.upcomingGames.errorMessage ??
+                        message: state.myGames.errorMessage ??
                             'Error while fetching upcoming games',
-                        onRetry: () =>
-                            context.read<GamesCubit>().getUpcomingGames(),
+                        onRetry: () => context.read<GamesCubit>().getMyGames(),
                       ),
                     );
                   }
@@ -122,9 +121,9 @@ class _NewGameScreenState extends State<NewGameScreen> {
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
                             (context, index) => UpcomingGameTile(
-                              game: state.upcomingGames.data![index],
+                              game: state.myGames.data![index],
                             ),
-                            childCount: state.upcomingGames.data?.length ?? 0,
+                            childCount: state.myGames.data?.length ?? 0,
                           ),
                         ),
                         const SliverToBoxAdapter(

@@ -90,4 +90,6 @@ abstract class AppColors {
   static const upcomingGameBorder = Color(0xFFE5E5E5);
   static const upcomingGameDivider = Color(0xFFE6E6E6);
   static const seePlayersButton = Color(0xFF8B9A76);
+  static const dropdownText = Color(0xFF192126);
+  static const slidingTabBackground = Color(0xFFEAEAEA);
 }

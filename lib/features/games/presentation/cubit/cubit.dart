@@ -39,22 +39,57 @@ class GamesCubit extends Cubit<GamesState> {
     }
   }
 
-  Future<void> getUpcomingGames() async {
-    emit(state.copyWith(upcomingGames: const DataState.loading()));
+  Future<void> getMyGames() async {
+    emit(state.copyWith(myGames: const DataState.loading()));
 
-    final response = await repository.getUpcomingGames();
+    final response = await repository.getMyGames();
 
     if (response.isSuccess) {
       emit(
         state.copyWith(
-          upcomingGames: DataState.loaded(data: response.data),
+          myGames: DataState.loaded(data: response.data),
         ),
       );
     } else {
       emit(
         state.copyWith(
-          upcomingGames: DataState.failure(error: response.message),
+          myGames: DataState.failure(error: response.message),
         ),
+      );
+    }
+  }
+
+  Future<void> getMyUpcomingGames() async {
+    emit(state.copyWith(myUpcomingGames: const DataState.loading()));
+
+    final response = await repository.getMyUpcomingGames();
+
+    if (response.isSuccess) {
+      emit(
+        state.copyWith(
+          myUpcomingGames: DataState.loaded(data: response.data),
+        ),
+      );
+    } else {
+      emit(state.copyWith(
+          myUpcomingGames: DataState.failure(error: response.message)));
+    }
+  }
+
+  Future<void> getMyPastGames() async {
+    emit(state.copyWith(myPastGames: const DataState.loading()));
+
+    final response = await repository.getMyPastGames();
+
+    if (response.isSuccess) {
+      emit(
+        state.copyWith(
+          myPastGames: DataState.loaded(data: response.data),
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(myPastGames: DataState.failure(error: response.message)),
       );
     }
   }
@@ -81,5 +116,9 @@ class GamesCubit extends Cubit<GamesState> {
         levels: state.levels.where((e) => e != level).toList(),
       ),
     );
+  }
+
+  void setSelectedTab(int tab) {
+    emit(state.copyWith(selectedTab: tab));
   }
 }

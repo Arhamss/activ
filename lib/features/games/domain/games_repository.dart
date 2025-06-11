@@ -1,4 +1,5 @@
 import 'package:activ/core/models/games/game_model.dart';
+import 'package:activ/core/models/games/past_game_model.dart';
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/core/models/user_model/user_model.dart';
 import 'package:activ/utils/helpers/repository_response.dart';
@@ -10,8 +11,12 @@ abstract class GamesRepository {
     String fee,
     String gameLevel,
     int maxNumberOfPlayers,
-    String? dateTime
+    String? dateTime,
   );
 
-  Future<RepositoryResponse<List<GameModel>>> getUpcomingGames();
+  Future<RepositoryResponse<List<GameModel>>> getMyGames();
+
+  Future<RepositoryResponse<List<PastGameModel>>> getMyPastGames();
+
+  Future<RepositoryResponse<List<GameModel>>> getMyUpcomingGames();
 }

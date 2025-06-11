@@ -1,4 +1,5 @@
 import 'package:activ/core/models/games/game_model.dart';
+import 'package:activ/core/models/games/past_game_model.dart';
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 import 'package:equatable/equatable.dart';
@@ -8,26 +9,36 @@ class GamesState extends Equatable {
     this.levels = const [],
     this.selectedLocation,
     this.addGame = const DataState.initial(),
-    this.upcomingGames = const DataState.initial(),
+    this.myGames = const DataState.initial(),
+    this.myUpcomingGames = const DataState.initial(),
+    this.myPastGames = const DataState.initial(),
+    this.selectedTab = 0,
   });
-
 
   final List<String> levels;
   final LocationModel? selectedLocation;
   final DataState<void> addGame;
-  final DataState<List<GameModel>> upcomingGames;
-
+  final DataState<List<GameModel>> myGames;
+  final DataState<List<GameModel>> myUpcomingGames;
+  final DataState<List<PastGameModel>> myPastGames;
+  final int selectedTab;
   GamesState copyWith({
     List<String>? levels,
     LocationModel? selectedLocation,
     DataState<void>? addGame,
-    DataState<List<GameModel>>? upcomingGames,
+    DataState<List<GameModel>>? myGames,
+    DataState<List<GameModel>>? myUpcomingGames,
+    DataState<List<PastGameModel>>? myPastGames,
+    int? selectedTab,
   }) {
     return GamesState(
       levels: levels ?? this.levels,
       selectedLocation: selectedLocation ?? this.selectedLocation,
       addGame: addGame ?? this.addGame,
-      upcomingGames: upcomingGames ?? this.upcomingGames,
+      myGames: myGames ?? this.myGames,
+      myUpcomingGames: myUpcomingGames ?? this.myUpcomingGames,
+      myPastGames: myPastGames ?? this.myPastGames,
+      selectedTab: selectedTab ?? this.selectedTab,
     );
   }
 
@@ -36,6 +47,9 @@ class GamesState extends Equatable {
         levels,
         selectedLocation,
         addGame,
-        upcomingGames,
+        myGames,
+        myUpcomingGames,
+        myPastGames,
+        selectedTab,
       ];
 }
