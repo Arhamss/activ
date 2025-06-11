@@ -98,6 +98,18 @@ class _NewGameScreenState extends State<NewGameScreen> {
                     );
                   }
 
+                  if (state.myGames.data?.isEmpty ?? true) {
+                    return const Padding(
+                      padding: EdgeInsets.all(24),
+                      child: EmptyStateWidget(
+                        image: AssetPaths.emptyStateIcon,
+                        spacing: 32,
+                        text: 'No games found at the moment!',
+                        subtitle:
+                            'Check back later or try exploring a different location.',
+                      ),
+                    );
+                  }
                   return Padding(
                     padding:
                         const EdgeInsetsDirectional.symmetric(horizontal: 16),

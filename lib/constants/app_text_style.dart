@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 extension AppTextStyle on BuildContext {
-  bool get _isArabic => select<LocaleCubit, bool>(
-        (cubit) => cubit.state.locale.languageCode.toLowerCase() == 'ar',
-      );
+  bool get _isArabic {
+    final locale = watch<LocaleCubit>().state.locale.languageCode.toLowerCase();
+    return locale == 'ar';
+  }
 
   String get _fontFamily => _isArabic ? 'NotoSansArabic' : 'Urbanist';
 

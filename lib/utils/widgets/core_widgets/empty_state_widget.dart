@@ -4,7 +4,7 @@ class EmptyStateWidget extends StatelessWidget {
   const EmptyStateWidget({
     required this.image,
     required this.text,
-    this.buttonText,
+    this.subtitle,
     this.onButtonPressed,
     this.imageSize,
     this.spacing = 24.0,
@@ -17,7 +17,7 @@ class EmptyStateWidget extends StatelessWidget {
   final String? image; // Image asset path
   final Widget? imageWidget; // Alternative to using asset path
   final String text;
-  final String? buttonText;
+  final String? subtitle;
   final VoidCallback? onButtonPressed;
   final double? imageSize; // Made nullable to calculate dynamically
   final double spacing;
@@ -53,19 +53,21 @@ class EmptyStateWidget extends StatelessWidget {
         Text(
           text,
           style: context.b1.copyWith(
-            fontWeight: FontWeight.w500,
-            fontSize: 32,
+            fontWeight: FontWeight.w800,
+            fontSize: 22,
+            color: AppColors.textPrimary,
           ),
           textAlign: TextAlign.center,
         ),
-        if (buttonText != null) ...[
+        if (subtitle != null) ...[
           const SizedBox(height: 16),
-          ActivButton(
-            text: buttonText!,
-            onPressed: onButtonPressed,
-            backgroundColor: buttonColor ?? AppColors.primaryBlue,
-            isLoading: false,
-            isExpanded: false,
+          Text(
+            subtitle!,
+            style: context.b1.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 15,
+              color: AppColors.textPrimary,
+            ),
           ),
         ],
       ],

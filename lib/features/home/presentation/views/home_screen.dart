@@ -147,8 +147,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   AssetPaths.notificationIcon,
                 ),
                 onPressed: () {
-                  Injector.resolve<AppPreferences>().clearAll();
-                  context.goNamed(AppRouteNames.splash);
+                  // Injector.resolve<AppPreferences>().clearAll();
+                  // context.goNamed(AppRouteNames.splash);
                 },
               ),
             ),

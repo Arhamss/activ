@@ -1,3 +1,4 @@
+import 'package:activ/core/models/games/game_model.dart';
 import 'package:equatable/equatable.dart';
 
 class PastGameModel extends Equatable {
@@ -7,7 +8,10 @@ class PastGameModel extends Equatable {
     required this.sport,
     required this.datetime,
     required this.level,
-    required this.hasRatedUsers,
+    required this.ownerHasRatedUsers,
+    required this.owner,
+    required this.name,
+    required this.feeCents,
   });
 
   factory PastGameModel.fromJson(Map<String, dynamic> json) {
@@ -17,7 +21,10 @@ class PastGameModel extends Equatable {
       sport: json['sport'] as String,
       datetime: DateTime.parse(json['datetime'] as String),
       level: json['level'] as String,
-      hasRatedUsers: json['ownerHasRatedUsers'] as bool,
+      ownerHasRatedUsers: json['ownerHasRatedUsers'] as bool,
+      owner: GameOwner.fromJson(json['owner'] as Map<String, dynamic>),
+      name: json['name'] as String,
+      feeCents: json['feeCents'] as int,
     );
   }
 
@@ -26,7 +33,10 @@ class PastGameModel extends Equatable {
   final String sport;
   final DateTime datetime;
   final String level;
-  final bool hasRatedUsers;
+  final bool ownerHasRatedUsers;
+  final GameOwner owner;
+  final String name;
+  final int feeCents;
 
   Map<String, dynamic> toJson() {
     return {
@@ -35,6 +45,10 @@ class PastGameModel extends Equatable {
       'sport': sport,
       'datetime': datetime.toIso8601String(),
       'level': level,
+      'ownerHasRatedUsers': ownerHasRatedUsers,
+      'owner': owner.toJson(),
+      'name': name,
+      'feeCents': feeCents,
     };
   }
 
@@ -44,7 +58,10 @@ class PastGameModel extends Equatable {
     String? sport,
     DateTime? datetime,
     String? level,
-    bool? hasRastedUsers,
+    bool? ownerHasRatedUsers,
+    GameOwner? owner,
+    String? name,
+    int? feeCents,
   }) {
     return PastGameModel(
       id: id ?? this.id,
@@ -52,7 +69,10 @@ class PastGameModel extends Equatable {
       sport: sport ?? this.sport,
       datetime: datetime ?? this.datetime,
       level: level ?? this.level,
-      hasRatedUsers: hasRastedUsers ?? this.hasRatedUsers,
+      ownerHasRatedUsers: ownerHasRatedUsers ?? this.ownerHasRatedUsers,
+      owner: owner ?? this.owner,
+      name: name ?? this.name,
+      feeCents: feeCents ?? this.feeCents,
     );
   }
 
@@ -63,6 +83,9 @@ class PastGameModel extends Equatable {
         sport,
         datetime,
         level,
-        hasRatedUsers,
+        ownerHasRatedUsers,
+        owner,
+        name,
+        feeCents,
       ];
 }
