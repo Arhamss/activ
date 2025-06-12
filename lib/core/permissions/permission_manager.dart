@@ -4,6 +4,8 @@ import 'package:geolocator/geolocator.dart' as geo;
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionManager {
+  static bool _isRequestingPermissions = false;
+
   // Platform-specific messages
   static String get _locationSettingsMessage => Platform.isIOS
       ? 'Location permission is required. Please enable it in Settings > Privacy & Security > Location Services.'
@@ -180,8 +182,18 @@ class PermissionManager {
   static Future<Map<Permission, PermissionStatus>> requestMultiplePermissions(
     List<Permission> permissions,
   ) async {
-    final statusMap = await permissions.request();
-    return statusMap;
+    if (_isRequestingPermissions) {
+      debugPrint('Another permission request is already in progress');
+      return {};
+    }
+
+    try {
+      _isRequestingPermissions = true;
+      final statusMap = await permissions.request();
+      return statusMap;
+    } finally {
+      _isRequestingPermissions = false;
+    }
   }
 
   // Check multiple permissions

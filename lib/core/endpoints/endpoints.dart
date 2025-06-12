@@ -30,4 +30,7 @@ class Endpoints {
   // Chat Endpoints
   static const String getChats = 'chat/user-channels';
   static const String getStreamChatAuth = 'chat/token';
+
+  // Location Endpoints
+  static const String updateUserLocation = 'user/me/location';
 }

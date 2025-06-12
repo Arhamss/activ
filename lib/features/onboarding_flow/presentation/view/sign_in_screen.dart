@@ -5,6 +5,8 @@ import 'package:activ/features/onboarding_flow/presentation/cubit/state.dart';
 import 'package:activ/features/onboarding_flow/presentation/widgets/social_button.dart';
 import 'package:activ/l10n/localization_service.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
+import 'package:activ/core/permissions/permission_manager.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -27,7 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
         backgroundColor: AppColors.white,
         body: SafeArea(
           child: BlocListener<OnboardingFlowCubit, OnboardingFlowState>(
-            listener: (context, state) {
+            listener: (context, state) async {
               if (state.signIn.isFailure ||
                   state.signInWithApple.isFailure ||
                   state.signInWithGoogle.isFailure) {

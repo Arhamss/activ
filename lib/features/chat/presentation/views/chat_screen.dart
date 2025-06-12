@@ -121,8 +121,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 // No setState needed - BLoC handles state!
                 if (state.chats.data?.isEmpty ?? true) {
-                  return const Center(
-                    child: Text('No chats available'),
+                  return const EmptyStateWidget(
+                    image: AssetPaths.emptyStateIcon,
+                    text: 'No active chats',
                   );
                 }
 

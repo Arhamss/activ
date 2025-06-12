@@ -7,19 +7,23 @@ class HomeState extends Equatable {
   const HomeState({
     this.user = const DataState.initial(),
     this.isSearching = false,
+    this.location = const DataState.initial(),
   });
 
   final DataState<UserModel> user;
-  final bool isSearching; 
+  final bool isSearching;
+  final DataState<LocationModel> location;
 
   HomeState copyWith({
     DataState<UserModel>? user,
+    DataState<LocationModel>? location,
     bool? isSearching,
     bool? showSearchBar,
   }) {
     return HomeState(
       user: user ?? this.user,
       isSearching: isSearching ?? this.isSearching,
+      location: location ?? this.location,
     );
   }
 
@@ -27,5 +31,6 @@ class HomeState extends Equatable {
   List<Object?> get props => [
         user,
         isSearching,
+        location,
       ];
 }

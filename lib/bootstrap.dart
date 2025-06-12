@@ -29,8 +29,5 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   MapboxOptions.setAccessToken(ApiEnvironment.current.mapboxAPIKey);
 
   await Injector.setup();
-
-  
-
   runApp(await builder());
 }

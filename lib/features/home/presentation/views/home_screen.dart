@@ -3,6 +3,7 @@ import 'package:activ/core/app_preferences/app_preferences.dart';
 import 'package:activ/core/di/injector.dart';
 import 'package:activ/core/models/user_model/user_model.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
+import 'package:activ/core/services/location_service.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/chat/presentation/cubit/cubit.dart';
 import 'package:activ/features/home/presentation/cubit/cubit.dart';
@@ -34,13 +35,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _getCurrentLocationAndNotificationPermissions();
-    _initializeUser();
+    _initialize();
+  }
+
+  Future<void> _initialize() async {
+    await _requestInitialPermissions();
+    await _initializeUser();
+  }
+
+  Future<void> _requestInitialPermissions() async {
+    await PermissionManager.requestLocationPermission(
+      grantedCallback: () async {},
+    );
+
+    await PermissionManager.requestPermission(
+      Permission.notification,
+    );
   }
 
   Future<void> _initializeUser() async {
-    await context.read<ChatCubit>().getStreamChatAuth();
     await context.read<HomeCubit>().getUser();
+    await context.read<ChatCubit>().getStreamChatAuth();
+    await _connectStreamUser();
   }
 
   Future<void> _connectStreamUser() async {
@@ -65,17 +81,34 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } catch (e) {
       AppLogger.error('Error connecting Stream user: $e');
-      rethrow; // Don't fallback to anonymous - this causes permission issues
     }
   }
 
-  Future<void> _getCurrentLocationAndNotificationPermissions() async {
-    await PermissionManager.requestMultiplePermissions(
-      [
-        Permission.location,
-        Permission.notification,
-      ],
-    );
+  Future<void> _getCurrentLocation() async {
+    try {
+      final position = await geo.Geolocator.getCurrentPosition();
+
+      if (mapboxMap != null) {
+        await mapboxMap!.flyTo(
+          CameraOptions(
+            center: Point(
+              coordinates: Position(position.longitude, position.latitude),
+            ),
+            zoom: 15,
+          ),
+          MapAnimationOptions(duration: 2000),
+        );
+
+        // Save the new camera position after moving
+        await _saveCurrentCameraPosition();
+      }
+    } catch (e) {
+      AppLogger.error('Error getting location:', e);
+      CustomDialog.showOpenSettingsDialog(
+        context: context,
+        title: 'Location permission is required',
+      );
+    }
   }
 
   @override
@@ -115,6 +148,18 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _setCurrentUserLocation() async {
+    final position = await geo.Geolocator.getCurrentPosition();
+    final location = await LocationService.getCurrentLocation(
+      position.latitude,
+      position.longitude,
+    );
+
+    if (location != null) {
+      await context.read<HomeCubit>().updateUserLocation(location);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -126,10 +171,6 @@ class _HomeScreenState extends State<HomeScreen> {
               child: LoadingWidget(),
             ),
           );
-        }
-
-        if (state.user.isLoaded) {
-          _connectStreamUser();
         }
 
         if (state.user.isLoaded &&
@@ -147,8 +188,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   AssetPaths.notificationIcon,
                 ),
                 onPressed: () {
-                  // Injector.resolve<AppPreferences>().clearAll();
-                  // context.goNamed(AppRouteNames.splash);
+                  Injector.resolve<AppPreferences>().clearAll();
+                  context.goNamed(AppRouteNames.splash);
                 },
               ),
             ),
@@ -166,13 +207,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       cameraOptions: _currentCameraPosition,
                       onMapCreated: (MapboxMap mapboxMap) {
                         this.mapboxMap = mapboxMap;
-                        _getCurrentLocationPermissions();
                       },
                       onMapLoadedListener: (mapboxMap) {
-                        _getCurrentLocationPermissions();
+                        _getCurrentLocation();
+                        _setCurrentUserLocation();
+                        //_saveCurrentCameraPosition();
                       },
                       onMapIdleListener: (cameraState) {
-                        _saveCurrentCameraPosition();
+                        _getCurrentLocation();
+                        //_saveCurrentCameraPosition();
                       },
                       onTapListener: (cameraState) {
                         _saveCurrentCameraPosition();
@@ -299,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: FloatingActionButton(
                         backgroundColor: AppColors.white,
                         onPressed: () async {
-                          await _getCurrentLocationPermissions();
+                          await _getCurrentLocation();
                         },
                         child: const Icon(
                           Icons.my_location,
@@ -319,42 +362,6 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Center(
             child: LoadingWidget(),
           ),
-        );
-      },
-    );
-  }
-
-  Future<void> _getCurrentLocationPermissions() async {
-    await PermissionManager.requestLocationPermission(
-      grantedCallback: () async {
-        try {
-          final position = await geo.Geolocator.getCurrentPosition();
-
-          if (mapboxMap != null) {
-            await mapboxMap!.flyTo(
-              CameraOptions(
-                center: Point(
-                  coordinates: Position(position.longitude, position.latitude),
-                ),
-                zoom: 15,
-              ),
-              MapAnimationOptions(duration: 2000),
-            );
-
-            // Save the new camera position after moving
-            await _saveCurrentCameraPosition();
-          }
-        } catch (e) {
-          AppLogger.error('Error getting location:', e);
-        }
-      },
-      deniedCallback: (message) {
-        AppLogger.info(
-          'Location permission is required. Please enable it in settings. $message',
-        );
-        CustomDialog.showOpenSettingsDialog(
-          context: context,
-          title: 'Location permission is required',
         );
       },
     );

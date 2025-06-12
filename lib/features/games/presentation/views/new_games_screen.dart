@@ -69,7 +69,7 @@ class _NewGameScreenState extends State<NewGameScreen> {
                 onPressed: () => showModalBottomSheet(
                   useRootNavigator: true,
                   context: context,
-                  builder: (context) => const AddGameBottomSheet(),
+                  builder: (context) =>  AddGameBottomSheet(),
                   isScrollControlled: true,
                 ),
               ),

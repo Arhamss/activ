@@ -2,7 +2,6 @@ import 'package:activ/core/models/location_model.dart';
 import 'package:activ/exports.dart';
 import 'package:activ/features/home/domain/home_repository.dart';
 import 'package:activ/features/home/presentation/cubit/state.dart';
-import 'package:activ/features/games/presentation/views/location_picker_screen.dart';
 import 'package:activ/utils/helpers/data_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
@@ -34,8 +33,28 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  Future<void> updateUserLocation(LocationModel location) async {
+    emit(state.copyWith(location: const DataState.loading()));
 
-  
+    final response = await repository.updateUserLocationFromPoints(location);
+
+    if (response.isSuccess) {
+      emit(
+        state.copyWith(
+          location: const DataState.loaded(),
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          location: DataState.failure(
+            error: response.message,
+          ),
+        ),
+      );
+    }
+  }
+
   void setIsSearching(bool value) {
     emit(state.copyWith(isSearching: value));
   }
