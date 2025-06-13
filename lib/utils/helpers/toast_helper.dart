@@ -13,7 +13,7 @@ class ToastHelper {
       ),
       type: ToastificationType.error,
       style: ToastificationStyle.flat,
-      autoCloseDuration: const Duration(seconds: 2),
+      autoCloseDuration: const Duration(seconds: 4),
       alignment: Alignment.topCenter,
       showProgressBar: true,
       closeButton: const ToastCloseButton(

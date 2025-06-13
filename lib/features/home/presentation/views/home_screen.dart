@@ -12,6 +12,8 @@ import 'package:activ/utils/helpers/focus_handler.dart';
 import 'package:activ/utils/helpers/logger_helper.dart';
 import 'package:activ/utils/helpers/toast_helper.dart';
 import 'package:activ/utils/widgets/core_widgets/dialog.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:geolocator/geolocator.dart' as geo;
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -207,15 +209,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       cameraOptions: _currentCameraPosition,
                       onMapCreated: (MapboxMap mapboxMap) {
                         this.mapboxMap = mapboxMap;
+                        mapboxMap.gestures.updateSettings(
+                          GesturesSettings(
+                            doubleTapToZoomInEnabled: false,
+                            pinchToZoomEnabled: true,
+                            doubleTouchToZoomOutEnabled: false,
+                          ),
+                        );
                       },
                       onMapLoadedListener: (mapboxMap) {
                         _getCurrentLocation();
-                        _setCurrentUserLocation();
-                        //_saveCurrentCameraPosition();
                       },
                       onMapIdleListener: (cameraState) {
-                        _getCurrentLocation();
-                        //_saveCurrentCameraPosition();
+                        _saveCurrentCameraPosition();
                       },
                       onTapListener: (cameraState) {
                         _saveCurrentCameraPosition();
@@ -246,8 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           controller: _searchController,
                           focusNode: _searchFocusNode,
                           onChanged: _performSearch,
-                          hintText:
-                              'Search for activities, sports, locations...',
+                          hintText: 'Search for activities',
                         ),
                       ),
                     ),

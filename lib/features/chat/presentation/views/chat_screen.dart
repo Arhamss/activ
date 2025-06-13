@@ -141,49 +141,55 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 final controller = _createController(chatIds);
 
-                return RefreshIndicator(
-                  onRefresh: () async {
-                    context.read<ChatCubit>().getChats();
-                  },
-                  child: StreamChannelListView(
-                    controller: controller,
-                    errorBuilder: (context, error) {
-                      AppLogger.error('StreamChannelListView Error: $error');
-                      return RetryWidget(
-                        message: 'Unable to load chats',
-                        onRetry: () {
-                          context.read<ChatCubit>().getChats();
-                        },
-                      );
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<ChatCubit>().getChats();
                     },
-                    emptyBuilder: (context) {
-                      return const EmptyStateWidget(
-                        image: AssetPaths.activLogo,
-                        text: 'No active chats',
-                      );
-                    },
-                    loadingBuilder: (context) {
-                      return const LoadingWidget();
-                    },
-                    itemBuilder: (context, channels, index, defaultWidget) {
-                      final channel = channels[index];
+                    child: StreamChannelListView(
+                      controller: controller,
+                      errorBuilder: (context, error) {
+                        AppLogger.error('StreamChannelListView Error: $error');
+                        return RetryWidget(
+                          message: 'Unable to load chats',
+                          onRetry: () {
+                            context.read<ChatCubit>().getChats();
+                          },
+                        );
+                      },
+                      emptyBuilder: (context) {
+                        return const EmptyStateWidget(
+                          image: AssetPaths.activLogo,
+                          text: 'No active chats',
+                        );
+                      },
+                      loadingBuilder: (context) {
+                        return const LoadingWidget();
+                      },
+                      itemBuilder: (context, channels, index, defaultWidget) {
+                        final channel = channels[index];
 
-                      // Find matching ChatModel for this channel
-                      final chatModel = state.chats.data!.firstWhere(
-                        (chat) => channel.cid == 'messaging:${chat.id}',
-                        orElse: () => state.chats.data!.first, // fallback
-                      );
+                        // Find matching ChatModel for this channel
+                        final chatModel = state.chats.data!.firstWhere(
+                          (chat) => channel.cid == 'messaging:${chat.id}',
+                          orElse: () => state.chats.data!.first, // fallback
+                        );
 
-                      return ChatTile(
-                        channel: channel,
-                        onTap: () {
-                          _navigateToChat(channel, chatModel);
-                        },
-                      );
-                    },
-                    onChannelTap: (channel) {
-                      AppLogger.info('Channel tapped: ${channel.cid}');
-                    },
+                        return ChatTile(
+                          channel: channel,
+                          onTap: () {
+                            _navigateToChat(channel, chatModel);
+                          },
+                        );
+                      },
+                      onChannelTap: (channel) {
+                        AppLogger.info('Channel tapped: ${channel.cid}');
+                      },
+                    ),
                   ),
                 );
               },
