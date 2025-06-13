@@ -92,4 +92,6 @@ abstract class AppColors {
   static const seePlayersButton = Color(0xFF8B9A76);
   static const dropdownText = Color(0xFF192126);
   static const slidingTabBackground = Color(0xFFEAEAEA);
+  static const chatTimeText = Color(0xFFD0D1DB);
+  static const chatText = Color(0xFF2C2D3A);
 }

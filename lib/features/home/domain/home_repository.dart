@@ -4,5 +4,7 @@ import 'package:activ/utils/helpers/repository_response.dart';
 
 abstract class HomeRepository {
   Future<RepositoryResponse<UserModel>> getUser();
-  
+  Future<RepositoryResponse<void>> updateUserLocationFromPoints(
+    LocationModel location,
+  );
 }

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:activ/core/models/location_model.dart';
 import 'package:activ/core/permissions/permission_manager.dart';
 import 'package:activ/exports.dart';
@@ -27,10 +29,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     // _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    await _getCurrentLocation();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +41,6 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       ),
       body: Stack(
         children: [
-          // Map Widget
           MapWidget(
             mapOptions: MapOptions(
               pixelRatio: MediaQuery.of(context).devicePixelRatio,
@@ -51,7 +48,13 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             cameraOptions: _initialCameraPosition,
             onMapCreated: (MapboxMap mapboxMap) async {
               this.mapboxMap = mapboxMap;
-              // await _getCurrentLocation();
+              mapboxMap.gestures.updateSettings(
+                GesturesSettings(
+                  doubleTapToZoomInEnabled: false,
+                  pinchToZoomEnabled: true,
+                  doubleTouchToZoomOutEnabled: false,
+                ),
+              );
             },
             onMapLoadedListener: (mapLoadedEventData) async {
               AppLogger.info('Map loaded, creating annotation managers...');

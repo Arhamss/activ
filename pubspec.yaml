@@ -65,7 +65,6 @@ flutter:
   assets:
     - assets/
     - assets/svgs/
-    - assets/svgs/interest_icons/
     - assets/svgs/sports_icons/
     - assets/svgs/navigation/
     - assets/images/

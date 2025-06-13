@@ -50,8 +50,6 @@ class HomeRepositoryImplementation implements HomeRepository {
         //_cache.setUserModel(result.response?.data?.user);
         _cache.setUserId(result.response?.data?.user.id ?? '');
 
-        
-
         return RepositoryResponse(
           isSuccess: true,
           data: result.response?.data?.user,
@@ -86,6 +84,40 @@ class HomeRepositoryImplementation implements HomeRepository {
     } catch (e, s) {
       AppLogger.error('Error connecting or creating user in Stream', e, s);
       rethrow;
+    }
+  }
+
+  @override
+  Future<RepositoryResponse<void>> updateUserLocationFromPoints(
+    LocationModel location,
+  ) async {
+    try {
+      final queryParams = {
+        'lat': location.latitude,
+        'lng': location.longitude,
+        'city': location.city,
+      };
+
+      final response = await _apiService.patch(
+        Endpoints.updateUserLocation,
+        queryParams,
+      );
+
+      if (response.statusCode == 200) {
+        return RepositoryResponse(
+          isSuccess: true,
+        );
+      } else {
+        return RepositoryResponse(
+          isSuccess: false,
+          message: response.data['message'] as String,
+        );
+      }
+    } catch (e) {
+      return RepositoryResponse(
+        isSuccess: false,
+        message: e.toString(),
+      );
     }
   }
 }

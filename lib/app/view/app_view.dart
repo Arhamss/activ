@@ -40,7 +40,36 @@ class AppView extends StatelessWidget {
                 debugShowCheckedModeBanner: false,
                 builder: (context, child) {
                   Localization.init(context);
-                  return StreamChat(client: client, child: child);
+                  return StreamChat(
+                    client: client,
+                    streamChatThemeData: StreamChatThemeData(
+                      messageListViewTheme:
+                          const StreamMessageListViewThemeData(
+                        backgroundColor: AppColors.darkWhiteBackground,
+                      ),
+                      messageInputTheme: StreamMessageInputThemeData(
+                      
+                        inputTextStyle: context.b1.copyWith(
+                          color: AppColors.chatText,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                        inputBackgroundColor: AppColors.white,
+                        inputDecoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: const BorderSide(
+                              color: AppColors.chatTimeText,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    child: child,
+                  );
                 },
               ),
             );

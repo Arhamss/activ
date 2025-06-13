@@ -78,4 +78,6 @@ class AssetPaths {
 
   //Chat Icons
   static const sendIcon = 'assets/svgs/send.svg';
+  static const cameraIcon = 'assets/svgs/camera.svg';
+  static const attachmentIcon = 'assets/svgs/attachment.svg';
 }

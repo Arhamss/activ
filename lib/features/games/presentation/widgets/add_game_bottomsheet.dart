@@ -10,18 +10,19 @@ import 'package:activ/utils/widgets/core_widgets/mb_text_button.dart';
 import 'package:activ/utils/widgets/core_widgets/slider.dart';
 
 class AddGameBottomSheet extends StatelessWidget {
-  const AddGameBottomSheet({
+   AddGameBottomSheet({
     super.key,
   });
 
+
+  final formKey = GlobalKey<FormState>();
+  final limitPlayersController = TextEditingController();
+  final gameNameController = TextEditingController();
+  final dateController = TextEditingController();
+  final timeController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    final limitPlayersController = TextEditingController();
-    final gameNameController = TextEditingController();
-    final dateController = TextEditingController();
-    final timeController = TextEditingController();
-
     return Form(
       key: formKey,
       child: Container(

@@ -52,17 +52,18 @@ class EmptyStateWidget extends StatelessWidget {
         SizedBox(height: spacing),
         Text(
           text,
+          textAlign: TextAlign.center,
           style: context.b1.copyWith(
             fontWeight: FontWeight.w800,
             fontSize: 22,
             color: AppColors.textPrimary,
           ),
-          textAlign: TextAlign.center,
         ),
         if (subtitle != null) ...[
           const SizedBox(height: 16),
           Text(
             subtitle!,
+            textAlign: TextAlign.center,
             style: context.b1.copyWith(
               fontWeight: FontWeight.w700,
               fontSize: 15,
